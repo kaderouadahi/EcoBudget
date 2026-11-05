@@ -63,7 +63,7 @@ Technologies libres, à condition de permettre une application fonctionnelle et 
 5. **Proposer avant de faire** pour tout changement de périmètre ou de structure : options, recommandation, puis attendre la validation.
 6. **Rien de technique tant que ce n'est pas dans DECISIONS.md** (stack, stockage, outils).
 7. **Territoires** (voir `docs/WORKFLOW.md`) : Cowork écrit dans `docs/` et `livrables/`, Claude Code dans `app/`. Les demandes passent par `docs/HANDOFF.md`.
-8. **Tâches** : la todo du projet est dans Notion (base « EcoBudget — Tâches »), pas dans GitHub. En début de session, lire le dernier commentaire de la tâche en cours. En fin de session, mettre à jour le statut de la tâche et y ajouter un commentaire : ce qui a été fait, où on s'est arrêté, prochaine étape.
+8. **Tâches** : la todo list du projet est dans Notion. En début de session, lire le dernier commentaire de la tâche en cours. En fin de session, mettre à jour le statut de la tâche et y ajouter un commentaire : ce qui a été fait, où on s'est arrêté, prochaine étape.
 9. **Langue** : documents et interface en français.
 
 ## 8. Principes ergonomiques transverses (C1, C3, C5, C6, C7)
