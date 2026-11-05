@@ -4,7 +4,7 @@
 **Décidé (voir DECISIONS.md) :** alerte de dépense inhabituelle, puis conseil, calculés par règles statistiques explicables.
 
 ## 1. Besoin réel adressé
-À remplir depuis l'analyse des besoins (citations réelles d'entretiens).
+À remplir depuis l'analyse des besoins (docs/01_analyse/besoins.md).
 
 ## 2. Comportement attendu
 - **Alerte** : quand une dépense ou un rythme de dépenses sort des habitudes.
