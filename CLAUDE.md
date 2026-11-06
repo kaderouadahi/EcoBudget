@@ -19,7 +19,7 @@ Application de gestion financière personnelle : suivre les dépenses, gérer le
   Clairement identifiée (§4), réellement intégrée à l'application (§6), démontrée (Livrable 2).
 
 ## 3. Les 8 critères de Bastien et Scapin (sujet §3)
-Chaque critère doit être **justifié par des éléments concrets de l'application**.
+Chaque critère doit être **justifié par des éléments concrets de l'application**. On s'en tient aux 8 critères du tableau du sujet, sans sous-critères (voir `docs/QUESTIONS.md`).
 
 | ID | Critère | Attendu (formulation du sujet) |
 |----|---------|--------------------------------|
@@ -44,15 +44,15 @@ Traçabilité : `docs/03_conception/matrice_criteres.md`, tenue à jour en perma
 Technologies libres, à condition de permettre une application fonctionnelle et de qualité.
 
 ## 5. Livrables (sujet §5) — présentés en PowerPoint
+Rendu le **17 novembre 2026**. L1 et L3 : diapositives uniquement, pas de rapport écrit. Code source remis en archive zip (voir `docs/QUESTIONS.md`).
 - **L1 Rapport de conception** : présentation du thème ; analyse des besoins ; utilisateurs cibles ; scénarios d'utilisation ; maquettes et prototype ; justification de l'application des huit critères.
 - **L2 Application réalisée** : code source ; application fonctionnelle ; démonstration de la fonctionnalité innovante.
 - **L3 Rapport d'évaluation ergonomique** : tests avec au moins trois utilisateurs représentatifs ; problèmes ergonomiques identifiés ; améliorations proposées.
 - **L4 Présentation** : présentation du projet ; démonstration pratique ; justification des choix ergonomiques et innovants.
 
-## 6. Organisation et évaluation (sujet §6, §7, §8)
+## 6. Organisation et évaluation (sujet §6, §8)
 - Binôme, un seul thème, démarche de conception centrée utilisateur.
 - Innovation réellement intégrée ; présentation avec démonstration pratique.
-- Note sur 12 points (barème non détaillé dans le sujet).
 - Consigne finale : ne pas se limiter à des fonctionnalités classiques. Essentiels : originalité, pertinence de l'innovation, qualité ergonomique, justification des choix de conception.
 
 ## 7. Règles de travail pour Claude
@@ -60,7 +60,7 @@ Technologies libres, à condition de permettre une application fonctionnelle et 
 2. **Centré utilisateur.** Partir des personas et scénarios de `docs/01_analyse/`. Un écran sans scénario se signale, il ne se conçoit pas.
 3. **Jamais de faux résultats.** Protocoles, grilles et analyses de notes réelles : oui. Participants, citations, mesures ou résultats inventés : jamais.
 4. **Expliquer le pourquoi** de chaque choix en une ou deux phrases, avec le critère concerné, pour que le binôme puisse le défendre à l'oral.
-5. **Proposer avant de faire** pour tout changement de périmètre ou de structure : options, recommandation, puis attendre la validation.
+5. **Rien sans feu vert.** Aucune modification de fichier ni de Notion (statut, commentaire, contenu) sans validation préalable. Claude liste les modifications prévues, attend l'accord, applique, puis répond seulement « Fait ». Pour un changement de périmètre ou de structure : options et recommandation avant la liste.
 6. **Rien de technique tant que ce n'est pas dans DECISIONS.md** (stack, stockage, outils).
 7. **Territoires** (voir `docs/WORKFLOW.md`) : Cowork écrit dans `docs/` et `livrables/`, Claude Code dans `app/`. Les demandes passent par `docs/HANDOFF.md`.
 8. **Tâches** : la todo list du projet est dans Notion. En début de session, lire le dernier commentaire de la tâche en cours. En fin de session, mettre à jour le statut de la tâche et y ajouter un commentaire : ce qui a été fait, où on s'est arrêté, prochaine étape.
