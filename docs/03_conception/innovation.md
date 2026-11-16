@@ -4,7 +4,10 @@
 **Décidé (voir DECISIONS.md) :** alerte de dépense inhabituelle, puis conseil, calculés par règles statistiques explicables.
 
 ## 1. Besoin réel adressé
-À remplir depuis l'analyse des besoins (docs/01_analyse/besoins.md).
+Voir `docs/01_analyse/besoins.md` §6.
+- **B6** Être prévenu avant de dépasser le budget : seules 18 % des 45 applications étudiées par Alenazi & Sas le font.
+- **B9** Comprendre pourquoi une dépense est signalée : expliquer une recommandation améliore son acceptation (Herlocker et al., CSCW 2000).
+- **B10** Garder la main (accepter, ignorer, désactiver) : le manque de contrôle freine l'usage des applications de budget (études citées par Alenazi & Sas 2023).
 
 ## 2. Comportement attendu
 - **Alerte** : quand une dépense ou un rythme de dépenses sort des habitudes.

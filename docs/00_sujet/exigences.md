@@ -20,7 +20,7 @@ Cocher uniquement quand la preuve existe (fichier, écran ou diapo).
 - [ ] C8 Compatibilité
 
 ## Réalisation (§4)
-- [ ] E1 Analyse des besoins des utilisateurs
+- [x] E1 Analyse des besoins des utilisateurs — preuve : docs/01_analyse/besoins.md
 - [ ] E2 Profils utilisateurs et scénarios d'utilisation
 - [ ] E3 Maquettes et prototype interactif
 - [ ] E4 Application fonctionnelle
