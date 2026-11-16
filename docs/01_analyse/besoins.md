@@ -21,7 +21,31 @@ Ni entretiens ni questionnaire (décisions du binôme). L'analyse s'appuie sur t
 
 **Implication** : pour la majorité des gens, aucune connexion à un compte bancaire n'est possible. Les dépenses, souvent payées en espèces, se saisissent à la main, sur téléphone. La rapidité de saisie est donc le premier besoin.
 
-## 3. Apports de la recherche
+## 3. Problématique
+
+> Comment aider des personnes qui paient surtout en espèces à suivre leurs dépenses et à tenir leur budget, alors que les applications existantes découragent par l'effort de saisie, aident peu à budgéter, et préviennent trop tard ou sans s'expliquer ?
+
+Elle repose sur trois constats :
+
+1. **Le paiement en espèces domine.** Une connexion bancaire est impossible pour la majorité, donc la saisie est forcément manuelle (§2, Findex).
+2. **Les applications suivent les dépenses mais aident peu à budgéter**, et la saisie rebute (§4, Alenazi & Sas ; Kaye et al.).
+3. **Elles préviennent trop tard** (seulement 18 % le font avant le dépassement), **et une alerte sans explication suscite la méfiance** (§4, Alenazi & Sas ; Herlocker et al.).
+
+### Problèmes rencontrés par les utilisateurs
+
+Problèmes relevés dans les études publiées, pas auprès de nos propres participants. Repris dans L1 (diapositive « Les problèmes rencontrés par les utilisateurs »).
+
+| Problème rencontré | Ce qu'on en tire | Besoins | Sources |
+|---|---|---|---|
+| Suivre ses dépenses demande trop d'effort : on paie en espèces, tout noter est fastidieux, et on finit par abandonner l'application | Une saisie en quelques secondes, une prise en main immédiate | B1, B2, B11 | Findex ; Alenazi & Sas ; Fröhlich et al. |
+| On découvre trop tard un dépassement ou une dépense qui sort de l'ordinaire | Prévenir avant le seuil, repérer l'inhabituel | B6, B9 | Alenazi & Sas (18 %) |
+| Quand l'application prévient, elle culpabilise ou ne dit pas pourquoi | Un ton qui ne juge pas, un « Pourquoi ? » sur chaque alerte | B9, B10, B12 | Kaye et al. ; Herlocker et al. |
+| On ne sait pas où part son argent | Des graphiques par catégorie et d'un mois à l'autre | B5, B7 | Alenazi & Sas (recommandations) — le moins bien sourcé : aucune étude ne mesure ce problème directement |
+| On a du mal à tenir ses objectifs d'épargne | Une progression visible et valorisée | B8 | Kivetz et al. |
+
+Les besoins du §6 répondent à cette problématique ; l'innovation répond directement au troisième constat (§7).
+
+## 4. Apports de la recherche
 
 | Source | Constat (reformulé) | Implication pour EcoBudget |
 |---|---|---|
@@ -33,7 +57,7 @@ Ni entretiens ni questionnaire (décisions du binôme). L'analyse s'appuie sur t
 | Kivetz, Urminsky & Zheng, Journal of Marketing Research 2006 | On redouble d'efforts quand on se sent proche de son objectif ; même un progrès apparent motive. L'étude porte sur des programmes de fidélité : c'est une transposition. | Progression visible de l'objectif d'épargne (B8). |
 | Fröhlich et al., DIS 2021 | La première utilisation d'une application financière est décisive pour son adoption. | Prise en main immédiate (B11). |
 
-## 4. Ce qui agace dans les applications existantes (source secondaire)
+## 5. Ce qui agace dans les applications existantes (source secondaire)
 
 Unstar (2026) a analysé des avis à 1–3 étoiles sur 5 applications américaines. Deux plaintes nous concernent :
 
@@ -44,7 +68,7 @@ Les autres plaintes (synchronisation bancaire, prix de l'abonnement) ne s'appliq
 
 Limites : l'article ne donne ni le nombre d'avis, ni la période, ni la méthode de classement, et son éditeur vend des analyses d'avis.
 
-## 5. Besoins identifiés
+## 6. Besoins identifiés
 
 | ID | Besoin | Fonctionnalité | Critères | Sources | Statut |
 |---|---|---|---|---|---|
@@ -62,7 +86,7 @@ Limites : l'article ne donne ni le nombre d'avis, ni la période, ni la méthode
 | B12 | Un ton qui ne culpabilise pas | Transversal | C7, C8 | Kaye et al. 2014 (dimension émotionnelle) | Établi |
 | B13 | Des montants en DA, des formats locaux, aucun lien bancaire exigé | Transversal | C8 | Findex ; DataReportal | Établi |
 
-## 6. Pourquoi l'innovation répond à un vrai besoin
+## 7. Pourquoi l'innovation répond à un vrai besoin
 
 1. **Les applications actuelles réagissent trop tard ou pas du tout** : seules 18 % préviennent avant le dépassement (B6).
 2. **Une alerte sans explication suscite la méfiance** ; une alerte expliquée est mieux acceptée (B9, Herlocker et al.).
@@ -70,7 +94,7 @@ Limites : l'article ne donne ni le nombre d'avis, ni la période, ni la méthode
 
 L'alerte de dépense inhabituelle, avec un « Pourquoi ? » et des boutons pour garder la main, répond donc à un manque constaté chez les concurrents. Ce n'est pas un gadget ajouté par-dessus.
 
-## 7. Ce que l'application ne doit pas faire
+## 8. Ce que l'application ne doit pas faire
 
 Proposition du binôme, déduite des besoins :
 
@@ -79,7 +103,7 @@ Proposition du binôme, déduite des besoins :
 - envoyer une alerte sans pouvoir l'expliquer, ou sans pouvoir la désactiver (B9, B10) ;
 - culpabiliser l'utilisateur, par la couleur seule ou par le texte (B12).
 
-## 8. Limites (à assumer à l'oral)
+## 9. Limites (à assumer à l'oral)
 
 - Aucune source n'a interrogé directement nos utilisateurs cibles. Les données Findex portent sur la population générale, pas spécialement sur les étudiants ou les jeunes actifs.
 - Une partie des études IHM a été menée hors d'Algérie : au Royaume-Uni, aux États-Unis, ou sur des applications distribuées au Royaume-Uni.
@@ -87,9 +111,9 @@ Proposition du binôme, déduite des besoins :
 - Kivetz et al. portent sur des programmes de fidélité, pas sur l'épargne.
 - **Réponse** : les besoins sont confirmés ou corrigés lors des tests L3, avec au moins 3 vrais participants, sur le prototype puis sur l'application finale.
 
-## 9. Pistes pour les personas (tâche 03, à décider)
+## 10. Pistes pour les personas
 
-Propositions, pas des conclusions :
+Retenues le 16/11/2026 : voir `docs/01_analyse/personas.md`. Pistes de départ :
 
 - **Étudiant** : petit budget, paie surtout en espèces, a besoin de saisir vite (B1, B5).
 - **Jeune actif** : salaire mensuel, suit un budget par catégorie et un objectif d'épargne (B4, B8).
