@@ -14,6 +14,7 @@ Une ligne par décision. Rien de technique n'est fixé tant que ce n'est pas éc
 | 2026-11-16 | Analyse des besoins sans entretiens ni questionnaire : recherche documentaire et études publiées ; besoins confirmés par les tests L3 | Sources vérifiables, rien d'inventé, tenable avant le 20/11 | C8 | binôme |
 | 2026-11-16 | Livrables L1 et L3 en fichier PowerPoint (.pptx) dans livrables/, une seule charte pour les deux | Format demandé (§5), versionné dans le dépôt avec le reste | C6 | binôme |
 | 2026-11-16 | Personas : Amine (étudiant), Yasmine (jeune active), Nadia (mère de famille) | Contrastés par revenu, paiement, aisance numérique et objectif ; servent de grille de recrutement L3 | C4, C8 | binôme |
+| 2026-11-16 | Scénarios : S1 première dépense (Amine), S2 budget des courses (Nadia), S3 point du soir (Yasmine), S4 dépense inhabituelle (Amine) ; 7 écrans en découlent | Un écran = au moins un scénario (règle 7.2) ; S4 sert aussi de script de démo de l'innovation | C1, C3, C8 | binôme |
 
 ## Questions ouvertes
 - Stockage des données : à déterminer
