@@ -22,7 +22,7 @@ Cocher uniquement quand la preuve existe (fichier, écran ou diapo).
 ## Réalisation (§4)
 - [x] E1 Analyse des besoins des utilisateurs — preuve : docs/01_analyse/besoins.md
 - [x] E2 Profils utilisateurs et scénarios d'utilisation — preuve : docs/01_analyse/personas.md, docs/01_analyse/scenarios.md
-- [ ] E3 Maquettes et prototype interactif
+- [x] E3 Maquettes et prototype interactif — preuve : docs/02_maquettes/README.md
 - [ ] E4 Application fonctionnelle
 - [ ] E5 Fonctionnalité innovante clairement identifiée
 - [ ] E6 Évaluation ergonomique
