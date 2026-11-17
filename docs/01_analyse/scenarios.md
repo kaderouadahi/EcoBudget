@@ -17,7 +17,7 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 
 - **Besoins** : B1, B2, B3, B5, B11, B13
 - **Critères** : C2 (saisie en peu d'actions), C1 (confirmation visible), C5 (correction de l'erreur), C3 (annuler)
-- **Écrans** : Accueil ; Ajouter / modifier une dépense
+- **Écrans** : Première ouverture ; Accueil ; Ajouter / modifier une dépense
 
 ## S2 · Nadia tient le budget des courses
 
@@ -36,7 +36,7 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 
 *Sur son ordinateur, au calme.*
 
-1. Quelques mois plus tôt, elle a créé son objectif « Ordinateur portable, 150 000 DA » : un nom, un montant, une date visée.
+1. Quelques mois plus tôt, sur son téléphone, elle a créé un compte et son objectif « Ordinateur portable, 150 000 DA » : un nom, un montant, une date visée.
 2. Ce soir, sur son PC, elle se connecte à son compte et retrouve les dépenses notées sur son téléphone.
 3. Elle ouvre les graphiques : la répartition du mois par catégorie, puis la comparaison avec le mois dernier. Ses sorties ont augmenté.
 4. Elle consulte son objectif. Elle en est à 60 %, et l'application souligne l'étape franchie.
@@ -44,7 +44,7 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 
 - **Besoins** : B7, B8, B10
 - **Critères** : C7 (graphiques lisibles), C1 (progression et étape valorisée), C3 (accepter ou ignorer), C8 (consultation sur ordinateur, données retrouvées d'un appareil à l'autre), C2 (création d'objectif en trois champs)
-- **Écrans** : Réglages (compte) ; Graphiques ; Objectifs d'épargne ; Alerte / conseil
+- **Écrans** : Créer un compte ; Première ouverture et Se connecter (sur son PC) ; Graphiques ; Objectifs d'épargne ; Alerte / conseil
 
 ## S4 · Amine reçoit une alerte de dépense inhabituelle (innovation)
 
@@ -64,6 +64,7 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 
 | Écran | Contenu principal | Scénarios |
 |---|---|---|
+| Première ouverture | Bienvenue, « Noter ma première dépense », catégories prêtes, budget facultatif, « Déjà un compte ? Se connecter » | S1, S3 |
 | Accueil | Reste à dépenser, état des budgets, alertes | S1, S2, S4 |
 | Ajouter / modifier une dépense | Montant, catégorie proposée, confirmation, annuler | S1, S2, S4 |
 | Budgets (et détail d'un budget) | Budget par catégorie, état couleur + icône + texte, dernières dépenses | S2 |
@@ -71,6 +72,8 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 | Objectifs d'épargne | Création (nom, montant, date visée), progression, étapes valorisées | S3 |
 | Alerte / conseil | Message, « Pourquoi ? », accepter, ignorer, « ce n'est pas inhabituel » | S3, S4 |
 | Réglages | Catégories, activation des alertes, compte facultatif (créer un compte, se connecter, message sur l'enregistrement anonyme) | S2, S3, S4 |
+| Créer un compte | Prénom (facultatif), e-mail, mot de passe avec règles affichées, erreurs au bon champ ; « ce que vous avez déjà noté est conservé » | S3 |
+| Se connecter | E-mail, mot de passe, mot de passe oublié ; message si des dépenses notées sans compte vont être ajoutées au compte | S3 |
 
 ## Cas d'utilisation (diagramme UML, en complément des scénarios)
 
