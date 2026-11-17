@@ -37,13 +37,14 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 *Sur son ordinateur, au calme.*
 
 1. Quelques mois plus tôt, elle a créé son objectif « Ordinateur portable, 150 000 DA » : un nom, un montant, une date visée.
-2. Ce soir, elle ouvre les graphiques : la répartition du mois par catégorie, puis la comparaison avec le mois dernier. Ses sorties ont augmenté.
-3. Elle consulte son objectif. Elle en est à 60 %, et l'application souligne l'étape franchie.
-4. Un conseil s'affiche : « En réduisant vos sorties de 2 000 DA par mois, vous atteindriez votre objectif un mois plus tôt. » Elle choisit de l'accepter ou de l'ignorer.
+2. Ce soir, sur son PC, elle se connecte à son compte et retrouve les dépenses notées sur son téléphone.
+3. Elle ouvre les graphiques : la répartition du mois par catégorie, puis la comparaison avec le mois dernier. Ses sorties ont augmenté.
+4. Elle consulte son objectif. Elle en est à 60 %, et l'application souligne l'étape franchie.
+5. Un conseil s'affiche : « En réduisant vos sorties de 2 000 DA par mois, vous atteindriez votre objectif un mois plus tôt. » Elle choisit de l'accepter ou de l'ignorer.
 
 - **Besoins** : B7, B8, B10
-- **Critères** : C7 (graphiques lisibles), C1 (progression et étape valorisée), C3 (accepter ou ignorer), C8 (consultation sur ordinateur), C2 (création d'objectif en trois champs)
-- **Écrans** : Graphiques ; Objectifs d'épargne ; Alerte / conseil
+- **Critères** : C7 (graphiques lisibles), C1 (progression et étape valorisée), C3 (accepter ou ignorer), C8 (consultation sur ordinateur, données retrouvées d'un appareil à l'autre), C2 (création d'objectif en trois champs)
+- **Écrans** : Réglages (compte) ; Graphiques ; Objectifs d'épargne ; Alerte / conseil
 
 ## S4 · Amine reçoit une alerte de dépense inhabituelle (innovation)
 
@@ -69,7 +70,7 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 | Graphiques | Répartition par catégorie, évolution d'un mois à l'autre | S3 |
 | Objectifs d'épargne | Création (nom, montant, date visée), progression, étapes valorisées | S3 |
 | Alerte / conseil | Message, « Pourquoi ? », accepter, ignorer, « ce n'est pas inhabituel » | S3, S4 |
-| Réglages | Catégories, activation des alertes | S2, S4 |
+| Réglages | Catégories, activation des alertes, compte facultatif (créer un compte, se connecter, message sur l'enregistrement anonyme) | S2, S3, S4 |
 
 ## Cas d'utilisation (diagramme UML, en complément des scénarios)
 
@@ -85,6 +86,7 @@ Le sujet demande des scénarios d'utilisation, pas d'UML : le diagramme est un c
 | Définir un objectif d'épargne | Association | S3 |
 | Suivre ses objectifs d'épargne | Association | S3 |
 | Gérer les réglages (catégories, alertes) | Association | S2, S4 |
+| Créer un compte ou se connecter (facultatif) | Association | S3 |
 | Annuler la dernière action | « extend » de Modifier ou supprimer une dépense | S1 |
 | Recevoir une alerte de dépense inhabituelle (innovation) | « extend » de Ajouter une dépense | S4 |
 | Voir le « Pourquoi ? » et répondre (innovation) | « extend » de Recevoir une alerte | S4 |
