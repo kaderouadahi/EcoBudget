@@ -16,8 +16,8 @@ Les montants sont des **données de démonstration** (voir `docs/01_analyse/scen
 |---|---|
 | S1 · Amine note sa première dépense | Première ouverture → « Noter ma première dépense » → Nouvelle dépense → « Enregistrer la dépense » → Accueil avec « Dépense ajoutée · Annuler » |
 | S2 · Nadia tient le budget des courses | Accueil → budget Courses (orange) → Budgets et détail ; Réglages → icône poubelle d'une catégorie → confirmation de suppression |
-| S3 · Yasmine fait le point le soir | Bouton « Ordinateur » → Première ouverture → « Se connecter » → Accueil → Graphiques → Objectifs (conseil : Accepter / Ignorer) ; création de compte depuis Réglages > « Créer un compte » |
-| S4 · Amine reçoit une alerte inhabituelle | Accueil → carte « Dépense inhabituelle » → « Pourquoi ? » → Alerte → « Ce n'est pas inhabituel » ou « Gérer les alertes » |
+| S3 · Yasmine fait le point le soir | Bouton « Ordinateur » → Première ouverture → « Se connecter » → Accueil → Graphiques → Objectifs (conseil : « Pourquoi ? » puis « Compris » ; décision du 18/11, le prototype affiche encore « Accepter / Ignorer », à mettre à jour) ; création de compte depuis Réglages > « Créer un compte » |
+| S4 · Amine reçoit une alerte inhabituelle | Accueil → carte « Dépense inhabituelle » → « Pourquoi ? » → Alerte → « Compris » ou « Gérer les alertes » (décision du 18/11 ; le prototype affiche encore « Ce n'est pas inhabituel » et « Ignorer », à mettre à jour) |
 
 ## Écrans, scénarios, besoins et critères
 
@@ -28,8 +28,8 @@ Les montants sont des **données de démonstration** (voir `docs/01_analyse/scen
 | Nouvelle dépense | telephone-03, ordinateur-03 | S1, S2, S4 | B1, B2, B3 | C2 montant, catégorie proposée, date du jour par défaut ; C5 aide sous le champ ; C1 et C3 confirmation avec « Annuler » |
 | Budgets et détail | telephone-04, ordinateur-04 | S2 | B4, B5, B6 | C1 et C7 état du budget ; C4 budget modifiable, reconduit chaque mois |
 | Graphiques | telephone-05, ordinateur-05 | S3 | B7 | C7 légende en texte avec pourcentages ; C2 une phrase qui résume l'évolution |
-| Objectifs d'épargne | telephone-06, ordinateur-06 | S3 | B8, B10 | C1 étape franchie valorisée ; C3 conseil accepté ou ignoré ; C2 objectif créé en trois champs |
-| Alerte et « Pourquoi ? » | telephone-07, ordinateur-07 | S4 | B9, B10 | C1 et C7 explication en une phrase ; C3 « Ce n'est pas inhabituel », « Ignorer » ; C4 alertes désactivables |
+| Objectifs d'épargne | telephone-06, ordinateur-06 | S3 | B8, B10 | C1 étape franchie valorisée ; C3 conseil qui ne modifie rien, « Compris » ; C2 objectif créé en trois champs |
+| Alerte et « Pourquoi ? » | telephone-07, ordinateur-07 | S4 | B9, B10 | C1 et C7 explication en une phrase ; C3 l'alerte informe sans rien déclencher, « Compris » la ferme ; C4 alertes désactivables |
 | Réglages et compte | telephone-08, ordinateur-08 | S2, S3, S4 | B2, B10, B11, B13 | C4 catégories, alertes, mois budgétaire, prénom ; C7 message clair sur l'enregistrement anonyme |
 | Supprimer une catégorie | telephone-09, ordinateur-11 | S2 | B2, B3 | C5 confirmation qui dit ce qui va se passer ; C3 annulation possible ; aucune dépense perdue |
 | Créer un compte | telephone-10, ordinateur-09 | S3 | B11 | C5 erreur signalée au bon champ avec la correction ; C1 règles du mot de passe affichées à l'avance |

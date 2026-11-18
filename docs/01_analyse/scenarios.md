@@ -40,25 +40,25 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 2. Ce soir, sur son PC, elle se connecte à son compte et retrouve les dépenses notées sur son téléphone.
 3. Elle ouvre les graphiques : la répartition du mois par catégorie, puis la comparaison avec le mois dernier. Ses sorties ont augmenté.
 4. Elle consulte son objectif. Elle en est à 60 %, et l'application souligne l'étape franchie.
-5. Un conseil s'affiche : « En réduisant vos sorties de 2 000 DA par mois, vous atteindriez votre objectif un mois plus tôt. » Elle choisit de l'accepter ou de l'ignorer.
+5. Un conseil s'affiche : « En réduisant vos sorties de 2 000 DA par mois, vous atteindriez votre objectif un mois plus tôt. » Elle touche « Pourquoi ? » pour voir le calcul, puis « Compris ».
 
 - **Besoins** : B7, B8, B10
-- **Critères** : C7 (graphiques lisibles), C1 (progression et étape valorisée), C3 (accepter ou ignorer), C8 (consultation sur ordinateur, données retrouvées d'un appareil à l'autre), C2 (création d'objectif en trois champs)
+- **Critères** : C7 (graphiques lisibles), C1 (progression et étape valorisée), C3 (le conseil ne modifie rien ; elle le ferme ou le désactive), C8 (consultation sur ordinateur, données retrouvées d'un appareil à l'autre), C2 (création d'objectif en trois champs)
 - **Écrans** : Créer un compte ; Première ouverture et Se connecter (sur son PC) ; Graphiques ; Objectifs d'épargne ; Alerte / conseil
 
 ## S4 · Amine reçoit une alerte de dépense inhabituelle (innovation)
 
 *Un samedi soir, après l'anniversaire d'un ami.*
 
-1. Il note 4 500 DA en Sorties. D'habitude, il dépense environ 1 000 DA par semaine dans cette catégorie.
+1. Il note 4 500 DA en Sorties. D'habitude, une sortie lui coûte environ 1 000 DA.
 2. Une alerte apparaît : « Dépense inhabituelle en Sorties ».
 3. Il touche « Pourquoi ? » et lit la comparaison en une phrase, qui confronte cette dépense à ses habitudes.
-4. Il choisit « Ce n'est pas inhabituel (anniversaire) ». L'alerte se ferme, et il sait qu'il peut aussi désactiver ces alertes dans les réglages.
+4. C'était un anniversaire : il touche « Compris » et l'alerte se ferme. Le lien « Gérer les alertes » lui montre qu'il peut les désactiver dans les réglages.
 
 - **Besoins** : B9, B10
-- **Critères** : C1 (alerte et explication), C7 (phrase compréhensible), C3 (l'utilisateur décide), C4 (alertes désactivables)
-- **Écrans** : Ajouter une dépense ; Alerte (Pourquoi ? et choix) ; Réglages (alertes)
-- **Démo** : ce scénario sert de script de démonstration de l'innovation (L2, L4). La règle de calcul exacte (« plus de X fois l'habitude ») sera fixée dans la fiche innovation (tâche 06) ; le scénario ne la tranche pas.
+- **Critères** : C1 (alerte et explication), C7 (phrase compréhensible), C3 (l'alerte ne déclenche aucune action, il la ferme), C4 (alertes désactivables)
+- **Écrans** : Ajouter une dépense ; Alerte (Pourquoi ?, Compris, Gérer les alertes) ; Réglages (alertes)
+- **Démo** : ce scénario sert de script de démonstration de l'innovation (L2, L4). La règle de calcul est fixée dans `docs/03_conception/innovation.md` §2.1 (décidée le 18/11/2026).
 
 ## Écrans qui en découlent (pour les maquettes, tâche 07)
 
@@ -70,7 +70,7 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 | Budgets (et détail d'un budget) | Budget par catégorie, état couleur + icône + texte, dernières dépenses | S2 |
 | Graphiques | Répartition par catégorie, évolution d'un mois à l'autre | S3 |
 | Objectifs d'épargne | Création (nom, montant, date visée), progression, étapes valorisées | S3 |
-| Alerte / conseil | Message, « Pourquoi ? », accepter, ignorer, « ce n'est pas inhabituel » | S3, S4 |
+| Alerte / conseil | Message, « Pourquoi ? », « Compris », lien vers Réglages (« Gérer les alertes » ou « Gérer les conseils ») | S3, S4 |
 | Réglages | Catégories, activation des alertes, compte facultatif (créer un compte, se connecter, message sur l'enregistrement anonyme) | S2, S3, S4 |
 | Créer un compte | Prénom (facultatif), e-mail, mot de passe avec règles affichées, erreurs au bon champ ; « ce que vous avez déjà noté est conservé » | S3 |
 | Se connecter | E-mail, mot de passe, mot de passe oublié ; message si des dépenses notées sans compte vont être ajoutées au compte | S3 |
@@ -92,7 +92,7 @@ Le sujet demande des scénarios d'utilisation, pas d'UML : le diagramme est un c
 | Créer un compte ou se connecter (facultatif) | Association | S3 |
 | Annuler la dernière action | « extend » de Modifier ou supprimer une dépense | S1 |
 | Recevoir une alerte de dépense inhabituelle (innovation) | « extend » de Ajouter une dépense | S4 |
-| Voir le « Pourquoi ? » et répondre (innovation) | « extend » de Recevoir une alerte | S4 |
+| Voir le « Pourquoi ? » (innovation) | « extend » de Recevoir une alerte | S4 |
 | Recevoir un conseil d'épargne (innovation) | « extend » de Suivre ses objectifs d'épargne | S3 |
 
 Chaque cas d'utilisation est illustré par au moins un scénario. « Définir un objectif d'épargne » n'en avait pas : ajouté au début de S3 le 17/11.

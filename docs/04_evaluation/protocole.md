@@ -16,7 +16,10 @@ Sujet : au moins trois utilisateurs représentatifs ; problèmes ergonomiques id
 | T2 | Créer un budget mensuel | | |
 | T3 | Lire un graphique et répondre à une question | | |
 | T4 | Créer et suivre un objectif d'épargne | | |
-| T5 | Comprendre une alerte et appliquer ou refuser le conseil | | |
+| T5 | Comprendre une alerte et un conseil, et savoir où les désactiver | | |
+
+## Questions après les tâches
+- Après T5 : « Après avoir fermé l'alerte, aimeriez-vous pouvoir la retrouver plus tard ? Pourquoi ? » (vérifie le besoin d'un historique des alertes et conseils, voir DECISIONS.md du 18/11).
 
 ## Méthode
 Pensée à voix haute ; un membre anime, l'autre note. Par tâche : réussite (seul / avec aide / échec), temps, erreurs.
