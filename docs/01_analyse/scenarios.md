@@ -36,7 +36,7 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 
 *Sur son ordinateur, au calme.*
 
-1. Quelques mois plus tôt, sur son téléphone, elle a créé un compte et son objectif « Ordinateur portable, 150 000 DA » : un nom, un montant, une date visée.
+1. Quelques mois plus tôt, sur son téléphone, elle a créé un compte et son objectif « Ordinateur portable, 150 000 DA » : un nom, un montant, une date visée. Depuis, chaque mois, elle y ajoute ce qu'elle a mis de côté (« Ajouter de l'épargne »).
 2. Ce soir, sur son PC, elle se connecte à son compte et retrouve les dépenses notées sur son téléphone.
 3. Elle ouvre les graphiques : la répartition du mois par catégorie, puis la comparaison avec le mois dernier. Ses sorties ont augmenté.
 4. Elle consulte son objectif. Elle en est à 60 %, et l'application souligne l'étape franchie.
@@ -69,7 +69,7 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 | Ajouter / modifier une dépense | Montant, catégorie proposée, confirmation, annuler | S1, S2, S4 |
 | Budgets (et détail d'un budget) | Budget par catégorie, état couleur + icône + texte, dernières dépenses | S2 |
 | Graphiques | Répartition par catégorie, évolution d'un mois à l'autre | S3 |
-| Objectifs d'épargne | Création (nom, montant, date visée), progression, étapes valorisées | S3 |
+| Objectifs d'épargne | Création (nom, montant, date visée), ajout d'épargne, progression, étapes valorisées, état Atteint | S3 |
 | Alerte / conseil | Message, « Pourquoi ? », « Compris », lien vers Réglages (« Gérer les alertes » ou « Gérer les conseils ») | S3, S4 |
 | Réglages | Catégories, activation des alertes, compte facultatif (créer un compte, se connecter, message sur l'enregistrement anonyme) | S2, S3, S4 |
 | Créer un compte | Prénom (facultatif), e-mail, mot de passe avec règles affichées, erreurs au bon champ ; « ce que vous avez déjà noté est conservé » | S3 |
@@ -88,6 +88,7 @@ Le sujet demande des scénarios d'utilisation, pas d'UML : le diagramme est un c
 | Consulter les graphiques | Association | S3 |
 | Définir un objectif d'épargne | Association | S3 |
 | Suivre ses objectifs d'épargne | Association | S3 |
+| Ajouter de l'épargne à un objectif | Association | S3 |
 | Gérer les réglages (catégories, alertes) | Association | S2, S4 |
 | Créer un compte ou se connecter (facultatif) | Association | S3 |
 | Annuler la dernière action | « extend » de Modifier ou supprimer une dépense | S1 |
