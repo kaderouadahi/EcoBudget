@@ -82,6 +82,11 @@
 
 .home-grid { display: flex; flex-direction: column; gap: 20px; }
 .home-col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+/* Téléphone (maquette telephone-02) : reste à dépenser, budgets, hors budget, puis dernières dépenses. */
+@media (max-width: 1099px) {
+  .home-col { display: contents; }
+  .home-latest { order: 2; }
+}
 @media (min-width: 1100px) {
   .home-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 32px; }
 }

@@ -114,7 +114,7 @@ export function HomeView({ user, categories, expenses, budgets, today }: {
               </Link>
             )}
 
-            <section className="home-section">
+            <section className="home-section home-latest">
               <h2 className="section-title">Dernières dépenses</h2>
               {latest.length > 0 ? (
                 <ExpenseList label="Dernières dépenses" expenses={latest} categories={categories} today={today} />
