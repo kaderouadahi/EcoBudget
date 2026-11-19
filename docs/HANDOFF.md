@@ -214,5 +214,5 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Les messages nomment l'objectif : « Objectif créé : Ordinateur portable », « Objectif supprimé : … ». Retour sous 100 % après modification : « Objectif modifié · Objectif de nouveau en cours » (la spec ne donne que l'exemple « Objectif atteint ! »).
   - Le formulaire « Modifier l'objectif » explique sous le montant épargné : « Pour corriger une erreur. Pour une nouvelle épargne, utilisez « Ajouter de l'épargne ». »
   - L'aide « Il reste X DA pour atteindre l'objectif » est suivie de « En dinars, sans centimes. Exemple : 250 » ; elle disparaît quand l'objectif est déjà atteint.
-  - Le message « Objectif atteint » et le bandeau d'étape sont en bleu clair avec icône ; pas de couleur d'état de budget.
+  - Sur la carte, « Objectif atteint ! » et le bandeau d'étape sont en bleu clair avec icône ; pas de couleur d'état de budget.
   - Plan : `app/docs/plans/2026-11-19-h4-objectifs.md`.
