@@ -30,7 +30,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H0 Socle — statut : fait (branche h0-socle, à relire avant fusion)
+### H0 Socle — statut : fait (fusionné dans main le 19/11, PR n°1)
 - **Scénario source** : tous (S1 à S4).
 - **Fonctionnalité du sujet** : transversal (sert F1 à F4 et INNOV).
 - **Contenu et interactions** :
@@ -60,7 +60,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H1 Dépenses — statut : fait (branche h1-depenses, à relire avant fusion)
+### H1 Dépenses — statut : fait (fusionné dans main le 19/11, PR n°1)
 - **Scénario source** : S1 (Amine note sa première dépense) ; aussi S2 et S4.
 - **Fonctionnalité du sujet** : F1.
 - **Contenu et interactions** :
@@ -98,7 +98,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H2 Budgets — statut : fait (branche h2-budgets, à relire avant fusion)
+### H2 Budgets — statut : fait (fusionné dans main le 19/11, PR n°1)
 - **Scénario source** : S2 (Nadia tient le budget des courses) ; aussi S1 et S3.
 - **Fonctionnalité du sujet** : F2.
 - **Contenu et interactions** :
@@ -136,7 +136,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H3 Alerte de dépense inhabituelle — statut : fait (branche h3-alerte, à relire avant fusion)
+### H3 Alerte de dépense inhabituelle — statut : fait (fusionné dans main le 19/11, PR n°2)
 - **Scénario source** : S4 (Amine reçoit une alerte de dépense inhabituelle) ; script de démo dans `docs/03_conception/innovation.md` §5.3.
 - **Fonctionnalité du sujet** : INNOV (détection de dépenses inhabituelles).
 - **Contenu et interactions** :
@@ -174,3 +174,37 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Pour la démo : le jeu de §5.2 n'est pas chargé tant que H8 n'existe pas ; il faut au moins 5 dépenses en Sorties avant d'ajouter les 4 500 DA.
   - Constaté en test automatique : la liste des dépenses se met à jour 20 à 60 ms après un enregistrement. Deux dépenses enregistrées à moins de 60 ms d'intervalle (impossible à la main) pourraient manquer une alerte ; pas de correctif.
   - Plan : `app/docs/plans/2026-11-19-h3-alerte.md`.
+
+---
+
+### H4 Objectifs d'épargne — statut : à faire
+- **Scénario source** : S3 (Yasmine fait le point le soir, étapes 1 et 4).
+- **Fonctionnalité du sujet** : F4.
+- **Contenu et interactions** :
+  - **Données** (H0) : objectif = nom, montant visé, mois visé ; versements = objectif, montant, date. **Montant épargné = somme des versements.** Le modèle exact est au choix de Claude Code.
+  - **Écran Objectifs** : titre « Objectifs », sous-titre « Votre épargne », bouton « Nouvel objectif ». ✱ Écran vide : « Pas encore d'objectif d'épargne » et bouton « Créer un objectif ».
+  - **Carte d'un objectif** : icône cible, nom, « Objectif visé : juin 2027 », pourcentage, barre en bleu vif (jamais vert, orange ou rouge, réservés aux budgets), « 90 000 DA épargnés sur 150 000 DA », bouton « Ajouter de l'épargne ». ✱ Toucher la carte ouvre « Modifier l'objectif ». Pourcentage arrondi vers le bas : jamais « 100 % » tant que l'objectif n'est pas atteint (comme la règle des pourcentages de H2).
+  - ✱ **Étapes** à 25, 50 et 75 % : la carte affiche « Étape franchie : vous avez passé les [50] % ! » (trophée) pour la plus haute étape atteinte sous 100 %. Le bandeau suit le pourcentage, il n'est pas stocké à part.
+  - **Objectif atteint** (100 % ou plus, DECISIONS.md 18/11) : icône et texte « Objectif atteint ! », bouton d'ajout masqué, carte en bas de la liste, plus de conseil (H5).
+  - ✱ **Date visée passée** sans que l'objectif soit atteint : texte neutre avec icône, « Date visée passée », et lien « Modifier la date ».
+  - ✱ **Tri** : objectifs en cours par mois visé, le plus proche en haut, puis par date de création ; objectifs atteints en bas, dans le même ordre.
+  - ✱ **Formulaire « Nouvel objectif » / « Modifier l'objectif »**, plein écran sur téléphone comme le formulaire Dépense :
+    - **Nom** : obligatoire ; erreur « Donnez un nom à votre objectif, par exemple Ordinateur portable ».
+    - **Montant à atteindre** : mêmes règles et messages que le montant d'une dépense.
+    - **Date visée** : mois et année ; ✱ pas de date par défaut ; aide « Au plus tôt [mois prochain] » ; ✱ un mois antérieur au mois prochain est refusé (« Choisissez un mois à partir de [décembre 2026] ») ; ✱ en modification, la règle ne s'applique que si la date est changée.
+    - **Montant épargné** (en modification seulement) : prérempli, entier supérieur ou égal à 0 ; ✱ le changer enregistre un versement de correction égal à la différence, daté du jour ; ✱ jamais sous 0.
+    - Boutons « Créer l'objectif » / « Enregistrer », et « Supprimer l'objectif » en modification.
+    - ✱ Messages « Objectif créé · Annuler » et « Objectif modifié · Annuler » ; « Annuler » remet l'état d'avant, versement de correction compris.
+    - ✱ L'état suit les changements : repasse « en cours » sous 100 %, devient « atteint » à 100 % ou plus ; le message le dit (« Objectif modifié · Objectif atteint ! »).
+  - ✱ **Supprimer un objectif** : confirmation « Supprimer l'objectif « [nom] » ? Son suivi ([X] DA épargnés) sera effacé. », puis message « Objectif supprimé · Annuler », qui rétablit l'objectif et ses versements.
+  - **Ajouter de l'épargne** (DECISIONS.md 18/11), même forme de formulaire : montant obligatoire, entier supérieur à 0 ; ✱ date du jour par défaut, date dans le futur refusée (mêmes règles et messages qu'une dépense) ; aide « Il reste [X] DA pour atteindre l'objectif » ; montant supérieur au reste accepté ; message « [X] DA ajoutés à « [objectif] » · Annuler » ; ✱ si une étape est franchie, le message ajoute « Étape franchie : 50 % ! », et « Objectif atteint ! » à 100 %.
+  - ✱ Versements enregistrés mais pas affichés en liste.
+  - Hors périmètre : carte Conseil (H5), liste des versements, rappel d'épargne.
+- **Critères visés et comment** : C1 (progression, étape franchie, aide « Il reste X DA ») ; C2 (objectif en trois champs, tri par urgence) ; C3 (suppression avec confirmation et « Annuler », « Annuler » après chaque action) ; C5 (date visée contrôlée, montant épargné jamais négatif, correction possible) ; C6 (mêmes formulaires, règles et messages que Dépense et Budget) ; C7 (Atteint et date passée avec icône et texte, barre bleue sans couleur de budget) ; C8 (saisie manuelle adaptée aux espèces).
+- **Critères d'acceptation** :
+  - Tests Vitest (CLAUDE.md §9) : montant épargné = somme des versements ; pourcentage arrondi vers le bas, 100 % seulement si atteint ; étape à 24, 25, 49, 50, 75, 99 et 100 % ; correction à la hausse, à la baisse, jusqu'à 0, refus sous 0 ; passage atteint ↔ en cours après correction ou changement du montant visé ; tri ; date visée (mois en cours refusé, mois prochain accepté, date passée inchangée acceptée en modification).
+  - Un objectif se crée avec ses trois champs seulement ; l'épargne existante s'ajoute par un premier versement.
+  - Chaque action affiche son message, et « Annuler » rétablit l'état d'avant.
+  - Aucun état signalé par la couleur seule.
+- **Maquette** : `telephone-06`, `ordinateur-06`. Écarts (DECISIONS.md prime) : formulaire en bas de l'écran remplacé par « Nouvel objectif » et un formulaire à part ; étape « 60 % » remplacée par 25, 50 et 75 % ; bouton « Ajouter de l'épargne », état Atteint et « Date visée passée » non dessinés ; carte Conseil relevant de H5.
+- **Écarts constatés (rempli par Claude Code)** :
