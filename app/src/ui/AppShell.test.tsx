@@ -38,9 +38,9 @@ describe('AppShell', () => {
   })
 
   it('marque la page active', () => {
-    renderAt('/budgets')
+    renderAt('/objectifs')
     const sidebar = screen.getByRole('navigation', { name: 'Navigation principale (ordinateur)' })
-    expect(within(sidebar).getByRole('link', { name: 'Budgets' })).toHaveAttribute('aria-current', 'page')
+    expect(within(sidebar).getByRole('link', { name: 'Objectifs' })).toHaveAttribute('aria-current', 'page')
   })
 
   it('Se connecter et Créer un compte s’affichent sans navigation', () => {

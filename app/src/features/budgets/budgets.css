@@ -74,3 +74,16 @@
 }
 .section-head { display: flex; align-items: baseline; justify-content: space-between; }
 .section-head a { font-weight: 600; }
+.small-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--tap);
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: none;
+}

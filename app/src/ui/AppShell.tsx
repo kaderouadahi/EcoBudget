@@ -32,7 +32,8 @@ export function AppShell() {
   const [home, budgets, charts, goals] = NAV_ITEMS
   // Le formulaire Dépense s'affiche en plein écran sur téléphone, avec son propre bouton Fermer
   // (maquette telephone-03) : ni icône Réglages, ni barre du bas qui masquerait ses boutons.
-  const onForm = useLocation().pathname.startsWith('/depense')
+  const { pathname } = useLocation()
+  const onForm = pathname.startsWith('/depense') || pathname === '/budgets/fixer' || pathname.endsWith('/modifier')
   return (
     <div className="shell">
       <nav className="sidebar" aria-label="Navigation principale (ordinateur)">
