@@ -1,0 +1,33 @@
+.expense-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.expense-list li + li { border-top: 1px solid var(--border); }
+.expense-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 8px 0;
+  color: inherit;
+  text-decoration: none;
+}
+.expense-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--blue-light);
+  color: var(--navy);
+}
+.expense-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.expense-title { font-weight: 600; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.expense-sub { color: var(--muted); font-size: 15px; }
+.expense-amount { font-weight: 700; font-size: 17px; white-space: nowrap; }
+.expense-chevron { color: var(--muted); flex: none; }

@@ -30,7 +30,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H0 Socle — statut : à faire
+### H0 Socle — statut : fait (branche h0-socle, à relire avant fusion)
 - **Scénario source** : tous (S1 à S4).
 - **Fonctionnalité du sujet** : transversal (sert F1 à F4 et INNOV).
 - **Contenu et interactions** :
@@ -51,10 +51,16 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Montants et dates s'affichent aux formats ci-dessus partout.
 - **Maquette** : `docs/02_maquettes/` (tous les écrans) et `prototype/index.html`. Écarts connus : voir la note « À compléter » du README des maquettes ; DECISIONS.md prime.
 - **Écarts constatés (rempli par Claude Code)** :
+  - L'ID réel du projet Firebase est `ecobudget-3b3a4` (nom affiché « EcoBudget »), pas « ecobudget » comme dans DECISIONS.md (19/11). Application en ligne : https://ecobudget-3b3a4.web.app
+  - Bibliothèque de graphiques choisie : **Recharts** (à ajouter à DECISIONS.md).
+  - Format des dates : « Hier » ajouté entre « Aujourd'hui » et le jour de la semaine ; de 2 à 6 jours, jour seul avec majuscule (« Samedi », comme les maquettes) ; au-delà, « samedi 14 novembre » (« 1er » pour le premier jour du mois).
+  - Le hors connexion suppose une première ouverture en ligne (création du compte anonyme). Sans réseau à la toute première ouverture, un message l'explique et l'application reprend seule au retour du réseau.
+  - Critère « dépense ajoutée hors connexion » : l'infrastructure est en place (cache Firestore persistant, écritures non bloquantes) ; il sera vérifié avec le vrai formulaire à la fin de H1.
+  - Plan d'implémentation : `app/docs/plans/2026-11-19-h0-socle.md`.
 
 ---
 
-### H1 Dépenses — statut : à faire
+### H1 Dépenses — statut : fait (branche h1-depenses, à relire avant fusion)
 - **Scénario source** : S1 (Amine note sa première dépense) ; aussi S2 et S4.
 - **Fonctionnalité du sujet** : F1.
 - **Contenu et interactions** :
@@ -81,10 +87,18 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Une dépense qui fait passer un budget à 80 % ou plus affiche l'état dans le message de confirmation.
 - **Maquette** : `telephone-01`, `telephone-02`, `telephone-03` (et `ordinateur-01` à `03`). Écart : le message de confirmation doit inclure l'état du budget quand il atteint 80 % (décision du 18/11).
 - **Écarts constatés (rempli par Claude Code)** :
+  - Vérifié dans un navigateur piloté, en local et en ligne : première ouverture, erreur au champ Montant, ajout, **ajout hors connexion visible tout de suite puis retrouvé après retour du réseau** (critère H0), confirmation de suppression puis « Annuler », catégorie proposée = dernière dépense.
+  - « Annuler » est aussi proposé après un ajout et une modification, pas seulement après une suppression (comme le prototype : « Dépense ajoutée · Annuler »).
+  - Le message de confirmation reste neutre (bleu nuit) ; il ne prend l'orange ou le rouge, avec icône, que pour l'état d'un budget (vert, orange, rouge réservés aux budgets).
+  - L'état du budget s'affiche à chaque dépense qui laisse la catégorie à 80 % ou plus, pas seulement au franchissement du seuil. Calcul testé ; vérification à l'écran avec H2 (pas d'écran Budgets avant).
+  - Sur téléphone, le formulaire s'affiche en plein écran, sans barre du bas (comme `telephone-03`) ; le message de l'action précédente se ferme à son ouverture pour ne pas masquer « Enregistrer la dépense ».
+  - Les milliers sont séparés par une espace insécable normale : l'espace fine était presque invisible dans la police (« 1200 DA »).
+  - Le contrôle de l'alerte de dépense inhabituelle (H3) n'est pas encore branché.
+  - Plan : `app/docs/plans/2026-11-19-h1-depenses.md`.
 
 ---
 
-### H2 Budgets — statut : à faire
+### H2 Budgets — statut : fait (branche h2-budgets, à relire avant fusion)
 - **Scénario source** : S2 (Nadia tient le budget des courses) ; aussi S1 et S3.
 - **Fonctionnalité du sujet** : F2.
 - **Contenu et interactions** :
@@ -108,3 +122,14 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Aucun état n'est signalé par la couleur seule.
 - **Maquette** : `telephone-02`, `telephone-04` (et `ordinateur-02`, `ordinateur-04`). Écarts : les choix ✱ ci-dessus ne sont pas dessinés.
 - **Écarts constatés (rempli par Claude Code)** :
+  - Tests Vitest demandés : états à 79, 80, 100 et 101 % ; reste à dépenser avec et sans hors budget ; reste négatif ; aucun budget ; reconduction novembre → décembre ; dépenses d'un autre mois exclues.
+  - Vérifié dans un navigateur piloté, en local et en ligne : fixer un budget, message « Dépense ajoutée : 8 500 DA, Courses · Courses : il reste 1 500 DA » en orange avec icône (critère H1), reste à dépenser sur l'Accueil, détail, modification jusqu'au dépassement (« Dépassé de 500 DA », « Budgets dépassés de 500 DA »), retrait avec confirmation puis « Annuler ».
+  - Écrans : `/budgets` (liste), `/budgets/:catégorie` (détail), `/budgets/fixer` et `/budgets/:catégorie/modifier` (formulaire, plein écran sur téléphone comme le formulaire Dépense). Montant du budget : mêmes règles et messages que le montant d'une dépense.
+  - « Fixer un budget » sur l'Accueil sans budget mène directement au formulaire ; sur l'écran de première ouverture, il mène à l'écran Budgets (comme la maquette).
+  - Quand les budgets sont dépassés, le chiffre principal de l'Accueil s'affiche sur fond rouge clair avec icône et texte (« Budgets dépassés de X DA »), pas sur le fond bleu nuit.
+  - Pas de carte d'alerte (H3) ni de prénom (H7) pour l'instant : l'Accueil affiche « Bonjour » et une icône de profil.
+  - Pourcentage affiché arrondi par défaut, et au moins 101 % dès qu'un budget est dépassé : le chiffre est toujours d'accord avec la couleur (jamais « 80 % » en vert ni « 100 % » en rouge).
+  - Pourcentage affiché dans la liste de l'écran Budgets (demandé par la spec) ; les cartes de l'Accueil restent sans pourcentage, comme la maquette.
+  - Chaque ligne « Hors budget » porte l'icône de sa catégorie.
+  - Un budget fixé depuis l'écran de première ouverture fait passer l'Accueil en mode normal (sinon le budget n'y serait pas visible).
+  - Plan : `app/docs/plans/2026-11-19-h2-budgets.md`.
