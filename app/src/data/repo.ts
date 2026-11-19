@@ -19,9 +19,12 @@ export function subscribeCollection<T extends { id: string }>(
   }, report)
 }
 
-export function subscribeUserDoc(uid: string, cb: (u: UserDoc | null) => void): () => void {
-  return onSnapshot(doc(db, 'users', uid), (snap) => {
-    cb(snap.exists() ? (snap.data() as UserDoc) : null)
+export function subscribeUserDoc(
+  uid: string,
+  cb: (u: UserDoc | null, meta: { fromCache: boolean }) => void,
+): () => void {
+  return onSnapshot(doc(db, 'users', uid), { includeMetadataChanges: true }, (snap) => {
+    cb(snap.exists() ? (snap.data() as UserDoc) : null, { fromCache: snap.metadata.fromCache })
   }, report)
 }
 

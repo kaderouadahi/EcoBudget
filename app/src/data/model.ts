@@ -4,6 +4,8 @@
 export type CollectionName = 'categories' | 'expenses' | 'budgets' | 'goals' | 'contributions'
 
 export interface UserDoc {
+  /** Catégories par défaut déjà créées. */
+  seeded?: boolean
   firstName?: string
   alertsEnabled: boolean
   adviceEnabled: boolean
