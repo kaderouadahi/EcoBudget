@@ -1,18 +1,19 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
+import { vi } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_CATEGORIES } from '../../data/defaults'
-import type { Budget, Expense, UserDoc } from '../../data/model'
+import type { Budget, Expense, UnusualAlert, UserDoc } from '../../data/model'
 import { HomeView } from './Home'
 
 const TODAY = new Date(2026, 10, 19)
 const user = (p: Partial<UserDoc> = {}): UserDoc => ({ alertsEnabled: true, adviceEnabled: true, onboardingDone: true, ...p })
 const exp = (id: string, p: Partial<Expense>): Expense => ({ id, amount: 100, categoryId: 'repas', date: '2026-11-19', createdAt: 0, ...p })
 
-function renderHome(u: UserDoc, expenses: Expense[] = [], budgets: Budget[] = []) {
+function renderHome(u: UserDoc, expenses: Expense[] = [], budgets: Budget[] = [], alert: UnusualAlert | null = null, onDismissAlert = () => {}) {
   return render(
     <MemoryRouter>
-      <HomeView user={u} categories={DEFAULT_CATEGORIES} expenses={expenses} budgets={budgets} today={TODAY} />
+      <HomeView user={u} categories={DEFAULT_CATEGORIES} expenses={expenses} budgets={budgets} today={TODAY} alert={alert} onDismissAlert={onDismissAlert} />
     </MemoryRouter>,
   )
 }
@@ -91,5 +92,55 @@ describe('Accueil', () => {
     expect(norm(container.textContent)).toContain('Dépensé ce mois')
     expect(norm(container.textContent)).toContain('2 500 DA')
     expect(screen.getByRole('link', { name: /Fixer un budget/ })).toHaveAttribute('href', '/budgets/fixer')
+  })
+
+  describe('alerte de dépense inhabituelle', () => {
+    const WHY = "D'habitude, une dépense en Sorties est d'environ 1 000 DA. Celle-ci est 4,5 fois plus élevée. Calcul fait sur vos 16 dépenses en Sorties depuis le 21 septembre."
+    const alert: UnusualAlert = { expenseId: 'x', amount: 4500, categoryId: 'sorties', date: '2026-11-14', why: WHY }
+    const withAlert = (onDismiss = vi.fn()) => {
+      const r = renderHome(user(), [exp('x', { amount: 4500, categoryId: 'sorties', date: '2026-11-14' })], [], alert, onDismiss)
+      return { ...r, onDismiss }
+    }
+
+    it('carte : cloche, titre, montant · jour, sans couleur de budget', () => {
+      const { container } = withAlert()
+      const card = screen.getByRole('region', { name: 'Dépense inhabituelle en Sorties' })
+      expect(norm(card.textContent)).toContain('4 500 DA · Samedi, nettement plus que d\'habitude')
+      expect(within(card).getByRole('button', { name: 'Pourquoi ?' })).toBeInTheDocument()
+      expect(within(card).getByRole('button', { name: 'Compris' })).toBeInTheDocument()
+      expect(card.querySelector('svg.lucide-bell')).not.toBeNull()
+      expect(container.querySelector('.alert-card .status-warn, .alert-card .status-over, .alert-card .status-ok')).toBeNull()
+    })
+
+    it('« Pourquoi ? » ouvre le panneau avec la phrase et « Gérer les alertes » ; la croix le ferme, la carte reste', () => {
+      withAlert()
+      fireEvent.click(screen.getByRole('button', { name: 'Pourquoi ?' }))
+      const panel = screen.getByRole('dialog', { name: 'Dépense inhabituelle en Sorties' })
+      expect(norm(panel.textContent)).toContain(WHY.replace(/\s/g, ' '))
+      expect(norm(panel.textContent)).toContain('4 500 DA · Samedi')
+      expect(within(panel).getByRole('link', { name: 'Gérer les alertes' })).toHaveAttribute('href', '/reglages')
+      fireEvent.click(within(panel).getByRole('button', { name: 'Fermer' }))
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      expect(screen.getByRole('region', { name: 'Dépense inhabituelle en Sorties' })).toBeInTheDocument()
+    })
+
+    it('« Compris » sur la carte ferme l’alerte', () => {
+      const { onDismiss } = withAlert()
+      fireEvent.click(screen.getByRole('button', { name: 'Compris' }))
+      expect(onDismiss).toHaveBeenCalledTimes(1)
+    })
+
+    it('« Compris » dans le panneau ferme l’alerte', () => {
+      const { onDismiss } = withAlert()
+      fireEvent.click(screen.getByRole('button', { name: 'Pourquoi ?' }))
+      fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Compris' }))
+      expect(onDismiss).toHaveBeenCalledTimes(1)
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
+    it('pas d’alerte : pas de carte', () => {
+      renderHome(user())
+      expect(screen.queryByRole('region', { name: /Dépense inhabituelle/ })).not.toBeInTheDocument()
+    })
   })
 })

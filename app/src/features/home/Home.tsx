@@ -2,7 +2,11 @@ import { ChevronRight, CircleAlert, Plus, User, Wallet } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { categoryIcon } from '../../data/defaults'
 import { useData } from '../../data/DataProvider'
-import type { Budget, Category, Expense, UserDoc } from '../../data/model'
+import type { Budget, Category, Expense, UnusualAlert, UserDoc } from '../../data/model'
+import { useUid } from '../../auth/AuthGate'
+import { setUserFields } from '../../data/repo'
+import { visibleAlert } from '../../lib/alert'
+import { AlertCard } from '../alert/AlertCard'
 import { barRatio, budgetSummary, headline } from '../../lib/budget'
 import { latestExpenses } from '../../lib/expenses'
 import { formatDA, formatMonthTitle, monthName } from '../../lib/format'
@@ -14,17 +18,31 @@ import { ExpenseList } from '../expenses/ExpenseList'
 import './Home.css'
 
 export function Home() {
+  const uid = useUid()
   const { user, categories, expenses, budgets, ready } = useData()
   if (!ready) return null
-  return <HomeView user={user} categories={categories} expenses={expenses} budgets={budgets} today={new Date()} />
+  return (
+    <HomeView
+      user={user}
+      categories={categories}
+      expenses={expenses}
+      budgets={budgets}
+      today={new Date()}
+      alert={visibleAlert(user?.alert, expenses)}
+      onDismissAlert={() => setUserFields(uid, { alert: undefined })}
+    />
+  )
 }
 
-export function HomeView({ user, categories, expenses, budgets, today }: {
+export function HomeView({ user, categories, expenses, budgets, today, alert = null, onDismissAlert = () => {} }: {
   user: UserDoc | null
   categories: Category[]
   expenses: Expense[]
   budgets: Budget[]
   today: Date
+  /** Alerte de dépense inhabituelle à afficher (déjà filtrée par visibleAlert). */
+  alert?: UnusualAlert | null
+  onDismissAlert?: () => void
 }) {
   const month = currentMonth(today)
   const summary = budgetSummary(budgets, categories, expenses, month)
@@ -102,6 +120,15 @@ export function HomeView({ user, categories, expenses, budgets, today }: {
                 </>
               )}
             </section>
+
+            {alert && (
+              <AlertCard
+                alert={alert}
+                categoryName={byId.get(alert.categoryId)?.name ?? 'Autres'}
+                today={today}
+                onDismiss={onDismissAlert}
+              />
+            )}
 
             {summary.rows.length === 0 && (
               <Link to="/budgets/fixer" className="card link-card">
