@@ -65,7 +65,7 @@ Pas de conseil si :
 - l'objectif est atteint ou sa date visée est passée ;
 - aucune catégorie n'a augmenté d'au moins 500 DA.
 
-Pourquoi le rythme prévu : l'application n'enregistre pas les versements datés sur un objectif ; la date visée suffit, dès la création de l'objectif. Limite assumée : le calcul suppose que l'utilisateur suit son plan, et la phrase le dit (« pour atteindre… en juin 2027, il faut… »).
+Pourquoi le rythme prévu, et non le rythme réel des versements : l'application enregistre des versements datés (F4, décision du 18/11), mais un rythme réel suppose plusieurs mois de versements réguliers ; le rythme prévu fonctionne dès la création de l'objectif, avec la seule date visée. Limite assumée : le calcul suppose que l'utilisateur suit son plan, et la phrase le dit (« pour atteindre… en juin 2027, il faut… »).
 
 Vérification sur le prototype : reste 60 000 DA, 7 mois, rythme prévu ≈ 8 600 DA par mois ; avec 2 000 DA de plus, 60 000 ÷ 10 571 ≈ 5,7, donc 6 mois : un mois plus tôt.
 
