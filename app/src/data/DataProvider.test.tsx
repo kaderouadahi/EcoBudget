@@ -13,18 +13,22 @@ vi.mock('./repo', () => ({
 import { DataProvider, useData } from './DataProvider'
 
 function Show() {
-  const { ready, expenses, budgets } = useData()
-  return <p data-testid="s">{ready ? `prêt ${expenses.length} ${budgets.length}` : 'chargement'}</p>
+  const { ready, expenses, budgets, goals, contributions } = useData()
+  return <p data-testid="s">{ready ? `prêt ${expenses.length} ${budgets.length} ${goals.length} ${contributions.length}` : 'chargement'}</p>
 }
 
 describe('DataProvider', () => {
-  it('n’est prêt qu’une fois catégories, dépenses, budgets et réglages reçus', () => {
+  it('n’est prêt qu’une fois catégories, dépenses, budgets, objectifs, versements et réglages reçus', () => {
     render(<DataProvider><Show /></DataProvider>)
     act(() => { cbs.categories([]); userCb({ seeded: true }, { fromCache: false }) })
     expect(screen.getByTestId('s')).toHaveTextContent('chargement')
     act(() => cbs.expenses([{ id: 'e' }]))
     expect(screen.getByTestId('s')).toHaveTextContent('chargement')
     act(() => cbs.budgets([]))
-    expect(screen.getByTestId('s')).toHaveTextContent('prêt 1 0')
+    expect(screen.getByTestId('s')).toHaveTextContent('chargement')
+    act(() => cbs.goals([{ id: 'g' }]))
+    expect(screen.getByTestId('s')).toHaveTextContent('chargement')
+    act(() => cbs.contributions([{ id: 'c1' }, { id: 'c2' }]))
+    expect(screen.getByTestId('s')).toHaveTextContent('prêt 1 0 1 2')
   })
 })
