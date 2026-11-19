@@ -28,6 +28,8 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         navigateFallback: '/index.html',
+        // Le bundle principal doit toujours être précaché, sinon écran blanc hors connexion.
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
       },
     }),
   ],

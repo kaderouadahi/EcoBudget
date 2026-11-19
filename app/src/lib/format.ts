@@ -7,6 +7,7 @@ const MINUS = '−'
 
 /** « 34 000 DA », « −250 DA ». Montants entiers en dinars. */
 export function formatDA(amount: number): string {
+  if (!Number.isFinite(amount)) return `\u2014${NBSP}DA`
   const abs = Math.round(Math.abs(amount))
   const digits = String(abs).replace(/\B(?=(\d{3})+(?!\d))/g, THIN_NBSP)
   return `${amount < 0 && abs !== 0 ? MINUS : ''}${digits}${NBSP}DA`
@@ -29,7 +30,9 @@ export function formatDay(iso: string, today: Date): string {
   if (diff === 0) return "Aujourd'hui"
   if (diff === 1) return 'Hier'
   if (diff >= 2 && diff <= 6) return capitalize(weekday.format(date))
-  return (date.getFullYear() === today.getFullYear() ? longDate : longDateYear).format(date)
+  const text = (date.getFullYear() === today.getFullYear() ? longDate : longDateYear).format(date)
+  // « 1er novembre » : usage français pour le premier jour du mois.
+  return date.getDate() === 1 ? text.replace(/(^|\s)1(\s)/, '$11er$2') : text
 }
 
 /** « Novembre 2026 » */

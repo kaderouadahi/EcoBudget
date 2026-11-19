@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
+import { collection, deleteDoc, deleteField, doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 import type { CollectionName, UserDoc } from './model'
 
@@ -33,7 +33,7 @@ export function createDoc(uid: string, name: CollectionName, data: object, id?: 
 }
 
 export function updateDocFields(uid: string, name: CollectionName, id: string, patch: object): void {
-  updateDoc(doc(col(uid, name), id), stripUndefined(patch)).catch(report)
+  updateDoc(doc(col(uid, name), id), undefinedToDelete(patch)).catch(report)
 }
 
 export function removeDoc(uid: string, name: CollectionName, id: string): void {
@@ -41,10 +41,15 @@ export function removeDoc(uid: string, name: CollectionName, id: string): void {
 }
 
 export function setUserFields(uid: string, patch: Partial<UserDoc>): void {
-  setDoc(doc(db, 'users', uid), stripUndefined(patch), { merge: true }).catch(report)
+  setDoc(doc(db, 'users', uid), undefinedToDelete(patch), { merge: true }).catch(report)
 }
 
-// Firestore refuse les champs undefined (ex. note facultative vide).
+// Modification : un champ remis à undefined (ex. note vidée) est supprimé du document.
+function undefinedToDelete(o: object): Record<string, unknown> {
+  return Object.fromEntries(Object.entries(o).map(([k, v]) => [k, v === undefined ? deleteField() : v]))
+}
+
+// Création : Firestore refuse les champs undefined (ex. note facultative vide), on les omet.
 function stripUndefined(o: object): Record<string, unknown> {
   return Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined))
 }

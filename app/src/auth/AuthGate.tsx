@@ -1,5 +1,5 @@
 import { onAuthStateChanged, signInAnonymously } from 'firebase/auth'
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { auth } from '../firebase'
 import './AuthGate.css'
 
@@ -12,29 +12,35 @@ export function useUid(): string {
   return uid
 }
 
-type State = { kind: 'loading' } | { kind: 'offline' } | { kind: 'ready'; uid: string }
+export const RETRY_MS = 10_000
+
+type State =
+  | { kind: 'loading' }
+  | { kind: 'failed'; network: boolean }
+  | { kind: 'ready'; uid: string }
 
 /**
  * Compte anonyme créé à la première ouverture, sans aucun écran (DECISIONS.md 17/11, C2).
- * Seule exception : la toute première ouverture sans réseau.
+ * Seule exception : l'échec de cette création (pas de réseau, quota…), expliqué avec un
+ * nouvel essai automatique et un bouton « Réessayer » (C1, C5).
  */
 export function AuthGate({ children }: { children: ReactNode }) {
   const [state, setState] = useState<State>({ kind: 'loading' })
+  const tryRef = useRef<() => void>(() => {})
 
   useEffect(() => {
     let cancelled = false
-    const tryAnonymous = () => {
-      signInAnonymously(auth).catch(() => {
-        if (!cancelled) setState({ kind: 'offline' })
+    tryRef.current = () => {
+      if (auth.currentUser) return
+      signInAnonymously(auth).catch((e: { code?: string }) => {
+        if (!cancelled) setState({ kind: 'failed', network: e?.code === 'auth/network-request-failed' })
       })
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) setState({ kind: 'ready', uid: user.uid })
-      else tryAnonymous()
+      else tryRef.current()
     })
-    const onOnline = () => {
-      if (!auth.currentUser) tryAnonymous()
-    }
+    const onOnline = () => tryRef.current()
     window.addEventListener('online', onOnline)
     return () => {
       cancelled = true
@@ -43,18 +49,33 @@ export function AuthGate({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  // Réseau annoncé mais inutilisable (portail captif, forfait épuisé) : l'événement online ne viendra pas.
+  const failed = state.kind === 'failed'
+  useEffect(() => {
+    if (!failed) return
+    const id = setInterval(() => tryRef.current(), RETRY_MS)
+    return () => clearInterval(id)
+  }, [failed])
+
+  const retry = useCallback(() => tryRef.current(), [])
+
   if (state.kind === 'ready') {
     return <UidContext.Provider value={state.uid}>{children}</UidContext.Provider>
   }
-  if (state.kind === 'offline') {
+  if (state.kind === 'failed') {
     return (
       <main className="auth-gate" role="alert">
         <h1>EcoBudget</h1>
-        <p>
-          Première ouverture : connectez-vous à internet une fois pour commencer. Vos dépenses
-          seront ensuite enregistrées même sans réseau.
-        </p>
-        <p className="auth-gate-hint">L'application reprendra toute seule dès que le réseau revient.</p>
+        {state.network ? (
+          <p>
+            Première ouverture : connectez-vous à internet une fois pour commencer. Vos dépenses
+            seront ensuite enregistrées même sans réseau.
+          </p>
+        ) : (
+          <p>Impossible de démarrer EcoBudget pour le moment. Réessayez dans quelques instants.</p>
+        )}
+        <button type="button" className="auth-gate-retry" onClick={retry}>Réessayer</button>
+        <p className="auth-gate-hint">L'application réessaie aussi toute seule.</p>
       </main>
     )
   }

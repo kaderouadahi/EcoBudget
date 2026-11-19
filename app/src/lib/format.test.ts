@@ -14,6 +14,9 @@ describe('formatDA', () => {
   it('millions', () => {
     expect(formatDA(1234567)).toBe('1 234 567 DA')
   })
+  it('valeur absente ou invalide : pas de « NaN »', () => {
+    expect(formatDA(Number.NaN)).toBe(String.fromCharCode(0x2014, 0xa0) + 'DA')
+  })
   it('négatif avec le vrai signe moins', () => {
     expect(formatDA(-250)).toBe('−250 DA')
     expect(formatDA(-6500)).toBe('−6 500 DA')
@@ -33,7 +36,8 @@ describe('formatDay', () => {
     expect(formatDay('2026-11-13', today)).toBe('Vendredi')
   })
   it('date complète au-delà', () => {
-    expect(formatDay('2026-11-01', today)).toBe('dimanche 1 novembre')
+    expect(formatDay('2026-11-01', today)).toBe('dimanche 1er novembre')
+    expect(formatDay('2026-11-02', today)).toBe('lundi 2 novembre')
   })
   it('année ajoutée si différente', () => {
     expect(formatDay('2025-12-24', today)).toBe('mercredi 24 décembre 2025')
