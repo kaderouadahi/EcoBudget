@@ -136,7 +136,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H3 Alerte de dépense inhabituelle — statut : à faire
+### H3 Alerte de dépense inhabituelle — statut : fait (branche h3-alerte, à relire avant fusion)
 - **Scénario source** : S4 (Amine reçoit une alerte de dépense inhabituelle) ; script de démo dans `docs/03_conception/innovation.md` §5.3.
 - **Fonctionnalité du sujet** : INNOV (détection de dépenses inhabituelles).
 - **Contenu et interactions** :
@@ -166,3 +166,11 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Alertes désactivées → aucun contrôle (testé sur le réglage ; l'interrupteur arrive en H7).
 - **Maquette** : `telephone-02` (carte), `telephone-07` et `ordinateur-07` (panneau). Écarts (DECISIONS.md prime) : « C'est normal », « Ce n'est pas inhabituel » et « Ignorer pour cette fois » remplacés par « Compris » ; lien « Gérer les alertes » à ajouter ; phrase « par semaine » remplacée par celle de §2.2 ; orange remplacé par le bleu vif.
 - **Écarts constatés (rempli par Claude Code)** :
+  - Tests Vitest de la règle et de la phrase : tous les cas demandés, plus le jeu de `innovation.md` §5.2 vérifié pour une dépense de 4 500 DA en Sorties le 1er, le 10, le 19 et le 28 du mois (« environ 1 000 DA », « 4,5 fois » à chaque fois) ; « Modifier ne crée jamais d'alerte » et « alertes désactivées → aucun contrôle » testés.
+  - Vérifié dans un navigateur piloté, en local et en ligne (13 étapes) : 5 dépenses Sorties à 1 000 DA puis 4 500 DA → carte ; « Pourquoi ? » → phrase exacte ; croix → la carte reste ; rechargement → la carte reste ; « Compris » → disparue, et pas de retour après rechargement ; dépense modifiée → disparue, « Annuler » → revenue ; nouvelle alerte → remplace l'ancienne ; « Annuler » de l'ajout → disparue ; ordinateur (panneau centré).
+  - Précisions de la règle : fenêtre de 8 semaines = 56 jours avant la date de la dépense, bornes incluses ; « moins de 6 mois » = plus ancienne dépense strictement après la même date 6 mois plus tôt.
+  - Phrase : si la médiane arrondie à la centaine donnerait « 0 DA » (médiane sous 50 DA), elle est affichée à l'unité ; l'année est ajoutée à la date de départ si elle diffère de celle de la dépense (« depuis le 24 décembre 2025 »).
+  - « Gérer les alertes » mène à l'écran Réglages actuel (provisoire) en attendant la section « Alertes et conseils » de H7.
+  - Pour la démo : le jeu de §5.2 n'est pas chargé tant que H8 n'existe pas ; il faut au moins 5 dépenses en Sorties avant d'ajouter les 4 500 DA.
+  - Constaté en test automatique : la liste des dépenses se met à jour 20 à 60 ms après un enregistrement. Deux dépenses enregistrées à moins de 60 ms d'intervalle (impossible à la main) pourraient manquer une alerte ; pas de correctif.
+  - Plan : `app/docs/plans/2026-11-19-h3-alerte.md`.
