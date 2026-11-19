@@ -177,7 +177,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H4 Objectifs d'épargne — statut : à faire
+### H4 Objectifs d'épargne — statut : fait (branche h4-objectifs, à relire avant fusion)
 - **Scénario source** : S3 (Yasmine fait le point le soir, étapes 1 et 4).
 - **Fonctionnalité du sujet** : F4.
 - **Contenu et interactions** :
@@ -208,3 +208,11 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Aucun état signalé par la couleur seule.
 - **Maquette** : `telephone-06`, `ordinateur-06`. Écarts (DECISIONS.md prime) : formulaire en bas de l'écran remplacé par « Nouvel objectif » et un formulaire à part ; étape « 60 % » remplacée par 25, 50 et 75 % ; bouton « Ajouter de l'épargne », état Atteint et « Date visée passée » non dessinés ; carte Conseil relevant de H5.
 - **Écarts constatés (rempli par Claude Code)** :
+  - Tests Vitest demandés : épargné = somme des versements ; pourcentage arrondi vers le bas (59,9 → 59, 99,9 → 99, 100 seulement atteint, plafonné à 100 au-delà) ; étapes à 24, 25, 49, 50, 75, 99, 100 % ; correction à la hausse, à la baisse, jusqu'à 0, « -1 » refusé ; atteint ↔ en cours ; tri ; date visée (mois en cours refusé, mois prochain accepté, date passée inchangée acceptée en modification).
+  - Vérifié dans un navigateur piloté, en local et en ligne (14 étapes) : écran vide ; mois en cours refusé au champ ; création puis « Annuler » (objectif disparu) ; ajout de 10 000 DA puis « Annuler » (retour à 0 %) ; ajout de 90 000 DA → « Étape franchie : 50 % ! », carte à 60 % avec bandeau ; objectif plus proche en haut ; montant épargné corrigé à 150 000 → « Objectif modifié · Objectif atteint ! », carte en bas sans bouton d'ajout, « Annuler » → 60 % ; suppression avec confirmation puis « Annuler » → objectif et versements rétablis ; ordinateur en deux colonnes.
+  - Date visée : deux menus, Mois et Année (de l'année en cours à +10, plus l'année déjà choisie en modification), plutôt qu'un champ « mois » que Firefox n'affiche pas.
+  - Les messages nomment l'objectif : « Objectif créé : Ordinateur portable », « Objectif supprimé : … ». Retour sous 100 % après modification : « Objectif modifié · Objectif de nouveau en cours » (la spec ne donne que l'exemple « Objectif atteint ! »).
+  - Le formulaire « Modifier l'objectif » explique sous le montant épargné : « Pour corriger une erreur. Pour une nouvelle épargne, utilisez « Ajouter de l'épargne ». »
+  - L'aide « Il reste X DA pour atteindre l'objectif » est suivie de « En dinars, sans centimes. Exemple : 250 » ; elle disparaît quand l'objectif est déjà atteint.
+  - Le message « Objectif atteint » et le bandeau d'étape sont en bleu clair avec icône ; pas de couleur d'état de budget.
+  - Plan : `app/docs/plans/2026-11-19-h4-objectifs.md`.
