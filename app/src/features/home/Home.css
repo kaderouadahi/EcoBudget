@@ -79,3 +79,26 @@
 
 .home-section { display: flex; flex-direction: column; gap: 12px; }
 .section-title { font-size: 22px; }
+
+.home-grid { display: flex; flex-direction: column; gap: 20px; }
+.home-col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+@media (min-width: 1100px) {
+  .home-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 32px; }
+}
+.headline-card {
+  padding: 22px 24px;
+  border-radius: 24px;
+  background: var(--navy);
+  color: #fff;
+}
+.headline-card p { margin: 0; }
+.headline-label { display: flex; align-items: center; gap: 8px; color: #C9D5FA; font-size: 17px; }
+.headline-value { font-size: 44px; font-weight: 700; letter-spacing: -0.5px; margin: 4px 0 !important; }
+.headline-sub { color: #C9D5FA; }
+.headline-bar { height: 8px; margin-top: 14px; border-radius: 999px; background: rgb(255 255 255 / 18%); overflow: hidden; }
+.headline-bar div { height: 100%; border-radius: 999px; background: #8FA8F5; }
+.headline-card.is-danger { background: var(--danger-bg); color: var(--danger); border: 2px solid var(--danger); }
+.headline-card.is-danger .headline-label { color: var(--danger); font-weight: 700; }
+.headline-card.is-danger .headline-sub { color: var(--danger); }
+.headline-card.is-danger .headline-bar { background: rgb(184 62 39 / 15%); }
+.headline-card.is-danger .headline-bar div { background: var(--danger); }
