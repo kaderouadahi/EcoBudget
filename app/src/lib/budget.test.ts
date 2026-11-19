@@ -51,7 +51,7 @@ describe('budgetSummary', () => {
     expect(s.spentTotal).toBe(44950)
     expect(s.offBudget).toEqual([{ categoryId: 'sante', spent: 1800 }])
     expect(s.rows.map((r) => [r.categoryId, r.kind, r.percent])).toEqual([
-      ['repas', 'ok', 41], ['courses', 'warn', 85], ['sorties', 'over', 118],
+      ['repas', 'ok', 40], ['courses', 'warn', 85], ['sorties', 'over', 118],
     ])
   })
 
@@ -92,9 +92,11 @@ describe('budgetSummary', () => {
 })
 
 describe('percent et barRatio', () => {
-  it('pourcentage arrondi', () => {
+  it('pourcentage cohérent avec la couleur : jamais « 80 % » en vert ni « 100 % » en rouge', () => {
     expect(percent(34000, 40000)).toBe(85)
-    expect(percent(1, 3)).toBe(33)
+    expect(percent(7999, 10000)).toBe(79)
+    expect(percent(10040, 10000)).toBe(101)
+    expect(percent(10000, 10000)).toBe(100)
   })
   it('barre bornée entre 0 et 1', () => {
     expect(barRatio(5900, 5000)).toBe(1)

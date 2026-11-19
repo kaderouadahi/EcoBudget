@@ -38,5 +38,19 @@ describe('BudgetCard', () => {
     expect(norm(container.textContent)).toContain('34 000 DA sur 40 000 DA')
     expect(norm(container.textContent)).toContain('Il reste 6 000 DA')
     expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '85')
+    expect(norm(container.textContent)).not.toContain('85 %')
+  })
+
+  it('écran Budgets : le pourcentage est affiché (HANDOFF H2)', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <BudgetCard
+          showPercent
+          category={{ id: 'courses', name: 'Courses', icon: 'ShoppingCart', order: 1, locked: false }}
+          row={{ categoryId: 'courses', amount: 40000, spent: 34000, kind: 'warn', remaining: 6000, percent: 85 }}
+        />
+      </MemoryRouter>,
+    )
+    expect(norm(container.textContent)).toContain('34 000 DA sur 40 000 DA · 85 %')
   })
 })

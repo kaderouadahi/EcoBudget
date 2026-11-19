@@ -1,11 +1,11 @@
-import { Heart, Pencil, Plus } from 'lucide-react'
+import { Pencil, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useUid } from '../../auth/AuthGate'
 import { categoryIcon } from '../../data/defaults'
 import { useData } from '../../data/DataProvider'
 import type { Category } from '../../data/model'
-import { createDoc, removeDoc, updateDocFields } from '../../data/repo'
+import { createDoc, removeDoc, setUserFields, updateDocFields } from '../../data/repo'
 import { budgetSummary, type BudgetSummary } from '../../lib/budget'
 import { sortByRecent } from '../../lib/expenses'
 import { formatDA, formatMonthTitle } from '../../lib/format'
@@ -27,16 +27,20 @@ function useSummary(): { summary: BudgetSummary; categories: Category[]; month: 
 
 /** « Hors budget : Santé 1 800 DA » : dépenses du mois des catégories sans budget (DECISIONS.md 17/11). */
 export function OffBudgetList({ summary, categories }: { summary: BudgetSummary; categories: Category[] }) {
-  const names = new Map(categories.map((c) => [c.id, c.name]))
+  const byId = new Map(categories.map((c) => [c.id, c]))
   return (
     <>
-      {summary.offBudget.map((o) => (
-        <p key={o.categoryId} className="off-budget">
-          <Heart aria-hidden size={18} />
-          <span>Hors budget : {names.get(o.categoryId) ?? 'Autres'}</span>
-          <strong>{formatDA(o.spent)}</strong>
-        </p>
-      ))}
+      {summary.offBudget.map((o) => {
+        const c = byId.get(o.categoryId)
+        const Icon = categoryIcon(c?.icon)
+        return (
+          <p key={o.categoryId} className="off-budget">
+            <Icon aria-hidden size={18} />
+            <span>Hors budget : {c?.name ?? 'Autres'}</span>
+            <strong>{formatDA(o.spent)}</strong>
+          </p>
+        )
+      })}
     </>
   )
 }
@@ -58,7 +62,7 @@ export function BudgetsPage() {
         </p>
       )}
       <div className="budget-list">
-        {summary.rows.map((r) => <BudgetCard key={r.categoryId} category={byId.get(r.categoryId)!} row={r} />)}
+        {summary.rows.map((r) => <BudgetCard key={r.categoryId} showPercent category={byId.get(r.categoryId)!} row={r} />)}
         <OffBudgetList summary={summary} categories={categories} />
       </div>
       {canAdd && (
@@ -78,17 +82,8 @@ export function BudgetDetail() {
   if (!ready) return null
   const category = categories.find((c) => c.id === categoryId)
   const row = summary.rows.find((r) => r.categoryId === categoryId)
-  if (!category || !row) {
-    return (
-      <section className="home">
-        <h1>Pas de budget{category ? ` pour ${category.name}` : ''}</h1>
-        <p className="muted">
-          <Link to={`/budgets/fixer${category ? `?categorie=${category.id}` : ''}`}>Fixer un budget</Link> ou{' '}
-          <Link to="/budgets">revenir aux budgets</Link>.
-        </p>
-      </section>
-    )
-  }
+  // Budget retiré (ou catégorie disparue) : retour à la liste plutôt qu'une page vide.
+  if (!category || !row) return <Navigate to="/budgets" replace />
   const Icon = categoryIcon(category.icon)
   const list = sortByRecent(expenses.filter((e) => e.categoryId === categoryId && isInMonth(e.date, month))).slice(0, 10)
   return (
@@ -127,7 +122,7 @@ export function BudgetDetail() {
 
 export function SetBudget() {
   const uid = useUid()
-  const { categories, budgets, ready } = useData()
+  const { categories, budgets, user, ready } = useData()
   const { show, dismiss } = useToast()
   const navigate = useNavigate()
   const close = useClose()
@@ -147,6 +142,8 @@ export function SetBudget() {
       onClose={close}
       onSubmit={({ categoryId, amount }) => {
         createDoc(uid, 'budgets', { amount }, categoryId)
+        // Fixé depuis la première ouverture : l'Accueil doit montrer ce budget, pas la bienvenue.
+        if (!user?.onboardingDone) setUserFields(uid, { onboardingDone: true })
         const name = categories.find((c) => c.id === categoryId)?.name ?? ''
         navigate('/budgets', { replace: true })
         show({

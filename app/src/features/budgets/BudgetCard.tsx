@@ -6,7 +6,7 @@ import type { BudgetRow } from '../../lib/budget'
 import { formatDA } from '../../lib/format'
 import { ProgressBar, StatusChip } from './StatusChip'
 
-export function BudgetCard({ category, row }: { category: Category; row: BudgetRow }) {
+export function BudgetCard({ category, row, showPercent = false }: { category: Category; row: BudgetRow; showPercent?: boolean }) {
   const Icon = categoryIcon(category.icon)
   return (
     <Link to={`/budgets/${row.categoryId}`} className="budget-card">
@@ -14,7 +14,7 @@ export function BudgetCard({ category, row }: { category: Category; row: BudgetR
         <span className="round-icon"><Icon aria-hidden size={22} /></span>
         <span className="budget-card-text">
           <strong>{category.name}</strong>
-          <span className="muted">{formatDA(row.spent)} sur {formatDA(row.amount)}</span>
+          <span className="muted">{formatDA(row.spent)} sur {formatDA(row.amount)}{showPercent && ` · ${row.percent} %`}</span>
         </span>
         <ChevronRight aria-hidden size={20} className="muted" />
       </span>

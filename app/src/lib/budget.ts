@@ -47,8 +47,12 @@ export interface BudgetSummary {
   spentTotal: number
 }
 
+/** Pourcentage affiché, toujours d'accord avec la couleur : arrondi par défaut (79,9 % reste « 79 % » en vert),
+ * et au moins 101 % dès que le budget est dépassé. */
 export function percent(spent: number, budget: number): number {
-  return budget > 0 ? Math.round((spent * 100) / budget) : 0
+  if (budget <= 0) return 0
+  const p = Math.floor((spent * 100) / budget)
+  return spent > budget ? Math.max(101, p) : p
 }
 
 export function barRatio(spent: number, budget: number): number {
