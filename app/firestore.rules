@@ -1,0 +1,13 @@
+rules_version = '2';
+// « Chacun ses données » (DECISIONS.md 17/11) : un utilisateur, même anonyme,
+// ne lit et n'écrit que sous users/{son uid}. Tout le reste est refusé par défaut.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+      match /{document=**} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+  }
+}

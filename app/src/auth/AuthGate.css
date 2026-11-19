@@ -1,0 +1,12 @@
+.auth-gate {
+  min-height: 100%;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  padding: 24px;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+}
+.auth-gate p { margin: 0; line-height: 1.5; }
+.auth-gate-hint { color: var(--muted); }
