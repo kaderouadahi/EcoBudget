@@ -27,7 +27,7 @@ export function NewExpense() {
     if (!user?.onboardingDone) setUserFields(uid, { onboardingDone: true })
     const name = categories.find((c) => c.id === v.categoryId)?.name ?? 'Autres'
     const notice = noticeAfterAdd(expenses, budgets, v, name, today)
-    navigate('/')
+    navigate('/', { replace: true })
     show({
       message: `Dépense ajoutée : ${formatDA(v.amount)}, ${name}${notice ? ` · ${notice.text}` : ''}`,
       tone: notice?.tone,

@@ -18,8 +18,8 @@ const DataContext = createContext<Data | null>(null)
 export function DataProvider({ children }: { children: ReactNode }) {
   const uid = useUid()
   const [categories, setCategories] = useState<Category[] | null>(null)
-  const [expenses, setExpenses] = useState<Expense[]>([])
-  const [budgets, setBudgets] = useState<Budget[]>([])
+  const [expenses, setExpenses] = useState<Expense[] | null>(null)
+  const [budgets, setBudgets] = useState<Budget[] | null>(null)
   const [user, setUser] = useState<UserDoc | null | undefined>(undefined)
 
   useEffect(() => {
@@ -38,10 +38,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<Data>(() => ({
     categories: categories ?? [],
-    expenses,
-    budgets,
+    expenses: expenses ?? [],
+    budgets: budgets ?? [],
     user: user ?? null,
-    ready: categories !== null && user !== undefined,
+    // Prêt seulement quand tout est arrivé : sinon « Aucune dépense » ou une catégorie proposée fausse s'affichent un instant.
+    ready: categories !== null && expenses !== null && budgets !== null && user !== undefined,
   }), [categories, expenses, budgets, user])
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>

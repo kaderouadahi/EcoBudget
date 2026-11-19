@@ -34,7 +34,7 @@ export function EditExpense() {
 
   function save(v: ExpenseValues) {
     updateDocFields(uid, 'expenses', id, v)
-    navigate('/')
+    navigate('/', { replace: true })
     show({
       message: `Dépense modifiée : ${formatDA(v.amount)}`,
       undo: () => updateDocFields(uid, 'expenses', id, { ...previous, note: previous.note }),
@@ -44,7 +44,7 @@ export function EditExpense() {
   function remove() {
     removeDoc(uid, 'expenses', id)
     setConfirming(false)
-    navigate('/')
+    navigate('/', { replace: true })
     show({
       message: `Dépense supprimée : ${formatDA(previous.amount)}`,
       undo: () => createDoc(uid, 'expenses', previous, id),
@@ -54,6 +54,7 @@ export function EditExpense() {
   return (
     <>
       <ExpenseForm
+        key={id}
         categories={categories}
         proposedId={expense.categoryId}
         initial={expense}
