@@ -133,3 +133,36 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Chaque ligne « Hors budget » porte l'icône de sa catégorie.
   - Un budget fixé depuis l'écran de première ouverture fait passer l'Accueil en mode normal (sinon le budget n'y serait pas visible).
   - Plan : `app/docs/plans/2026-11-19-h2-budgets.md`.
+
+---
+
+### H3 Alerte de dépense inhabituelle — statut : à faire
+- **Scénario source** : S4 (Amine reçoit une alerte de dépense inhabituelle) ; script de démo dans `docs/03_conception/innovation.md` §5.3.
+- **Fonctionnalité du sujet** : INNOV (détection de dépenses inhabituelles).
+- **Contenu et interactions** :
+  - **Règle** : `innovation.md` §2.1 (DECISIONS.md, 18/11), à appliquer telle quelle.
+    - ✱ Contrôle **seulement à l'ajout d'une dépense** (formulaire H1), jamais à la modification, et seulement si les alertes sont activées (activées par défaut tant que H7 n'existe pas).
+    - ✱ **Historique** : les autres dépenses de la même catégorie datées du même jour ou d'avant ; les fenêtres de 8 semaines et de 6 mois se comptent à partir de la date de la dépense, pas du jour de saisie.
+    - Au moins 5 dépenses dans les 8 semaines : on les prend toutes ; sinon les 5 dernières, si la plus ancienne a moins de 6 mois ; sinon pas d'alerte.
+    - **Inhabituelle** si le montant est strictement supérieur à 3 × la médiane **et** au moins égal à la médiane + 1 000 DA.
+    - Le calcul se fait sur l'appareil : il fonctionne aussi hors connexion.
+  - ✱ **Carte d'alerte sur l'Accueil**, entre le reste à dépenser et « Vos budgets » : cloche, titre « Dépense inhabituelle en [Catégorie] », sous-titre « [montant] · [jour], nettement plus que d'habitude », boutons « Pourquoi ? » et « Compris ». ✱ En bleu vif (contour et cloche), jamais en vert, orange ou rouge (réservés aux budgets).
+  - **Panneau Alerte**, ouvert par « Pourquoi ? » (monte du bas sur téléphone, comme `ordinateur-07` sur ordinateur) : titre, « 4 500 DA · Samedi » (format de date de H0), phrase « Pourquoi ? », bouton « Compris », lien « Gérer les alertes » vers Réglages, section « Alertes et conseils » (H7 ; d'ici là, l'écran Réglages actuel). La croix ferme le panneau, la carte reste.
+  - **Phrase « Pourquoi ? »** (`innovation.md` §2.2, mot pour mot) : « D'habitude, une dépense en [catégorie] est d'environ [médiane] DA. Celle-ci est [rapport] fois plus élevée. Calcul fait sur vos [N] dépenses en [catégorie] depuis le [date de la plus ancienne]. »
+    - Médiane arrondie à la centaine ; rapport = montant ÷ médiane non arrondie, une décimale avec virgule (« 4,5 ») ; date « 21 septembre » (« 1er » pour le premier jour du mois).
+    - ✱ Phrase calculée au moment de l'ajout et gardée telle quelle.
+  - **« Compris »** (sur la carte ou dans le panneau) ferme l'alerte pour de bon ; la disparition de la carte est le retour visible. Pas d'« Annuler » (rien n'est détruit).
+  - ✱ **Une seule carte** : elle reste jusqu'à « Compris », même après fermeture de l'application et sur un autre appareil du même compte (état gardé dans Firestore). ✱ Une nouvelle alerte remplace l'ancienne.
+  - ✱ **Lien avec la dépense** : la carte ne s'affiche que si la dépense signalée existe encore avec le même montant, la même catégorie et la même date. Modifiée ou supprimée → la carte disparaît ; rétablie par « Annuler » → la carte revient ; « Annuler » après l'ajout → la carte disparaît.
+  - La dépense signalée compte ensuite dans l'historique comme les autres. Le message de confirmation de H1 est inchangé.
+  - Hors périmètre : historique des alertes, marque « Inhabituelle » sur la dépense (prévus après les tests L3).
+- **Critères visés et comment** : C1 (alerte visible sur l'Accueil, phrase avec les chiffres et la période du calcul) ; C2 (rien à décider, un seul bouton, explication à un geste) ; C3 (l'alerte ne modifie rien, l'utilisateur la ferme ou la désactive) ; C4 (désactivable, habitude propre à chaque utilisateur) ; C5 (peu de fausses alertes, carte jamais en décalage avec la dépense) ; C6 (même modèle de phrase pour toutes les catégories) ; C7 (langage courant, cloche et texte, pas l'orange des budgets).
+- **Critères d'acceptation** :
+  - Tests Vitest de la règle (CLAUDE.md §9) : moins de 5 dépenses → pas d'alerte ; 5 ou plus en 8 semaines → toutes prises, sinon les 5 dernières ; plus ancienne des 5 à plus de 6 mois → pas d'alerte ; exactement 3 × la médiane → pas d'alerte ; café 50 → 200 DA → pas d'alerte ; S4 4 500 contre 1 000 → alerte ; médiane sur un nombre pair de dépenses ; dépense saisie avec une date passée ; arrondis, N et date dans la phrase.
+  - Avec le jeu de données de `innovation.md` §5.2 (en test ; son chargement dans l'application relève de H8), 4 500 DA en Sorties donnent « environ 1 000 DA » et « 4,5 fois ».
+  - Modifier une dépense ne crée jamais d'alerte.
+  - La carte reste après un rechargement ; disparaît avec « Compris », et quand la dépense est modifiée ou supprimée ; revient avec « Annuler ».
+  - Une deuxième alerte remplace la première.
+  - Alertes désactivées → aucun contrôle (testé sur le réglage ; l'interrupteur arrive en H7).
+- **Maquette** : `telephone-02` (carte), `telephone-07` et `ordinateur-07` (panneau). Écarts (DECISIONS.md prime) : « C'est normal », « Ce n'est pas inhabituel » et « Ignorer pour cette fois » remplacés par « Compris » ; lien « Gérer les alertes » à ajouter ; phrase « par semaine » remplacée par celle de §2.2 ; orange remplacé par le bleu vif.
+- **Écarts constatés (rempli par Claude Code)** :
