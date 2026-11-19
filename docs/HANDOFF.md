@@ -60,7 +60,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H1 Dépenses — statut : à faire
+### H1 Dépenses — statut : fait (branche h1-depenses, à relire avant fusion)
 - **Scénario source** : S1 (Amine note sa première dépense) ; aussi S2 et S4.
 - **Fonctionnalité du sujet** : F1.
 - **Contenu et interactions** :
@@ -87,6 +87,14 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Une dépense qui fait passer un budget à 80 % ou plus affiche l'état dans le message de confirmation.
 - **Maquette** : `telephone-01`, `telephone-02`, `telephone-03` (et `ordinateur-01` à `03`). Écart : le message de confirmation doit inclure l'état du budget quand il atteint 80 % (décision du 18/11).
 - **Écarts constatés (rempli par Claude Code)** :
+  - Vérifié dans un navigateur piloté, en local et en ligne : première ouverture, erreur au champ Montant, ajout, **ajout hors connexion visible tout de suite puis retrouvé après retour du réseau** (critère H0), confirmation de suppression puis « Annuler », catégorie proposée = dernière dépense.
+  - « Annuler » est aussi proposé après un ajout et une modification, pas seulement après une suppression (comme le prototype : « Dépense ajoutée · Annuler »).
+  - Le message de confirmation reste neutre (bleu nuit) ; il ne prend l'orange ou le rouge, avec icône, que pour l'état d'un budget (vert, orange, rouge réservés aux budgets).
+  - L'état du budget s'affiche à chaque dépense qui laisse la catégorie à 80 % ou plus, pas seulement au franchissement du seuil. Calcul testé ; vérification à l'écran avec H2 (pas d'écran Budgets avant).
+  - Sur téléphone, le formulaire s'affiche en plein écran, sans barre du bas (comme `telephone-03`) ; le message de l'action précédente se ferme à son ouverture pour ne pas masquer « Enregistrer la dépense ».
+  - Les milliers sont séparés par une espace insécable normale : l'espace fine était presque invisible dans la police (« 1200 DA »).
+  - Le contrôle de l'alerte de dépense inhabituelle (H3) n'est pas encore branché.
+  - Plan : `app/docs/plans/2026-11-19-h1-depenses.md`.
 
 ---
 
