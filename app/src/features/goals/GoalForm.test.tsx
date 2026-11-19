@@ -53,7 +53,7 @@ describe('GoalForm (création)', () => {
     fillNew('Vacances', '40000', '07', '')
     create()
     expect(onSubmit).not.toHaveBeenCalled()
-    expect(screen.getByText('Choisissez une date visée')).toBeInTheDocument()
+    expect(screen.getByText("Choisissez aussi l'année")).toBeInTheDocument()
   })
 
   it('mois en cours refusé', () => {

@@ -215,4 +215,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Le formulaire « Modifier l'objectif » explique sous le montant épargné : « Pour corriger une erreur. Pour une nouvelle épargne, utilisez « Ajouter de l'épargne ». »
   - L'aide « Il reste X DA pour atteindre l'objectif » est suivie de « En dinars, sans centimes. Exemple : 250 » ; elle disparaît quand l'objectif est déjà atteint.
   - Sur la carte, « Objectif atteint ! » et le bandeau d'étape sont en bleu clair avec icône ; pas de couleur d'état de budget.
+  - Mois ou année choisi seul : l'erreur dit ce qui manque (« Choisissez aussi l'année » / « Choisissez aussi le mois »).
+  - Écran vide : le bouton « Nouvel objectif » de l'en-tête est masqué, « Créer un objectif » est juste en dessous.
+  - Pour H5 : les objectifs dont la date visée est passée sont triés avec les objectifs en cours ; le conseil devra les exclure explicitement (statut « en cours » seulement), et un objectif visé pour le mois en cours laisse 0 mois restant.
   - Plan : `app/docs/plans/2026-11-19-h4-objectifs.md`.

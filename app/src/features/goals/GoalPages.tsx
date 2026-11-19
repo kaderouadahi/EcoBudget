@@ -5,7 +5,7 @@ import { useUid } from '../../auth/AuthGate'
 import { useData } from '../../data/DataProvider'
 import { createDoc, removeDoc, updateDocFields } from '../../data/repo'
 import { formatDA } from '../../lib/format'
-import { correction, goalPercent, goalStatus, progressNotice, savedAmount, sortGoals } from '../../lib/goals'
+import { correction, editNotice, goalPercent, goalStatus, progressNotice, savedAmount, sortGoals } from '../../lib/goals'
 import { currentMonth, toISODate } from '../../lib/month'
 import { ConfirmDialog } from '../../ui/ConfirmDialog'
 import { useToast } from '../../ui/Toast'
@@ -107,9 +107,7 @@ export function EditGoal() {
           const corrId = diff !== 0
             ? createDoc(uid, 'contributions', { goalId: id, amount: diff, date: toISODate(today), createdAt: Date.now() })
             : null
-          const wasReached = saved >= previous.target
-          const isReached = newSaved >= target
-          const state = isReached && !wasReached ? ' · Objectif atteint !' : !isReached && wasReached ? ' · Objectif de nouveau en cours' : ''
+          const state = editNotice(saved, previous.target, newSaved, target)
           navigate('/objectifs', { replace: true })
           show({
             message: `Objectif modifié${state}`,

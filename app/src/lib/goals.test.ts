@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { Contribution, Goal } from '../data/model'
 import {
-  correction, goalPercent, goalStatus, milestone, monthLabel, nextMonth, parseSaved,
+  correction, editNotice, goalPercent, goalStatus, milestone, monthLabel, nextMonth, parseSaved,
   progressNotice, savedAmount, sortGoals, validateTargetMonth,
 } from './goals'
 
@@ -70,6 +70,8 @@ describe('sortGoals', () => {
 describe('parseSaved et correction', () => {
   it('0 accepté, entier positif accepté', () => {
     expect(parseSaved('0')).toEqual({ ok: true, value: 0 })
+    expect(parseSaved('0 000')).toEqual({ ok: true, value: 0 })
+    expect(parseSaved('0\u00A0')).toEqual({ ok: true, value: 0 })
     expect(parseSaved('90 000')).toEqual({ ok: true, value: 90000 })
   })
   it('négatif refusé', () => {
@@ -96,6 +98,10 @@ describe('date visée', () => {
   it('vide refusé', () => {
     expect(validateTargetMonth('', TODAY)).toBe('Choisissez une date visée')
   })
+  it('mois ou année seul : dit ce qui manque', () => {
+    expect(validateTargetMonth('2027-', TODAY)).toBe('Choisissez aussi le mois')
+    expect(validateTargetMonth('-06', TODAY)).toBe("Choisissez aussi l'année")
+  })
   it('mois en cours refusé, mois prochain accepté', () => {
     expect(validateTargetMonth('2026-11', TODAY)).toBe('Choisissez un mois à partir de décembre 2026')
     expect(validateTargetMonth('2026-12', TODAY)).toBeNull()
@@ -113,5 +119,24 @@ describe('progressNotice', () => {
   it('déjà atteint : rien de nouveau', () => { expect(progressNotice(150000, 160000, 150000)).toBeNull() })
   it('premier versement qui saute deux étapes : la plus haute', () => {
     expect(progressNotice(0, 120000, 150000)).toBe('Étape franchie : 75 % !')
+  })
+})
+
+describe('editNotice (message de modification)', () => {
+  it('montant visé baissé sous l’épargné : atteint', () => {
+    expect(editNotice(90000, 150000, 90000, 80000)).toBe(' · Objectif atteint !')
+  })
+  it('montant visé remonté au-dessus : de nouveau en cours', () => {
+    expect(editNotice(90000, 80000, 90000, 150000)).toBe(' · Objectif de nouveau en cours')
+  })
+  it('épargné corrigé jusqu’au visé : atteint', () => {
+    expect(editNotice(90000, 150000, 150000, 150000)).toBe(' · Objectif atteint !')
+  })
+  it('épargné corrigé sous le visé : de nouveau en cours', () => {
+    expect(editNotice(150000, 150000, 100000, 150000)).toBe(' · Objectif de nouveau en cours')
+  })
+  it('pas de changement d’état : rien', () => {
+    expect(editNotice(90000, 150000, 95000, 150000)).toBe('')
+    expect(editNotice(150000, 150000, 160000, 150000)).toBe('')
   })
 })

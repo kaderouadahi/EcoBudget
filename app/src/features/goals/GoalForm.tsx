@@ -44,7 +44,8 @@ export function GoalForm({ initial, initialSaved, today, onSubmit, onDelete, onC
     e.preventDefault()
     if (sent.current) return
     const target = parseAmount(targetText)
-    const targetMonth = month && year ? `${year}-${month}` : ''
+    // Partiel (« 2027- » ou « -06 ») : l'erreur dit ce qui manque.
+    const targetMonth = month || year ? `${year}-${month}` : ''
     const saved = editing ? parseSaved(savedText) : null
     const next = {
       name: name.trim() ? undefined : 'Donnez un nom à votre objectif, par exemple Ordinateur portable',

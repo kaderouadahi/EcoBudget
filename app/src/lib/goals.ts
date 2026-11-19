@@ -40,7 +40,7 @@ export function sortGoals<T extends { goal: Goal; status: GoalStatus }>(items: T
 
 /** Montant épargné saisi en modification : entier ≥ 0. */
 export function parseSaved(text: string): AmountResult {
-  if (/^\s*0+\s*$/.test(text)) return { ok: true, value: 0 }
+  if (/^0+$/.test(text.replace(/[\s\u00A0\u202F]/g, ''))) return { ok: true, value: 0 }
   if (/^\s*-\s*\d/.test(text)) return { ok: false, error: 'Le montant épargné ne peut pas être négatif, par exemple 0' }
   return parseAmount(text)
 }
@@ -61,7 +61,10 @@ export function monthLabel(month: string): string {
 
 /** Au plus tôt le mois prochain ; en modification, contrôle seulement si la date change. */
 export function validateTargetMonth(month: string, today: Date, original?: string): string | null {
-  if (!month) return 'Choisissez une date visée'
+  if (!month || month === '-') return 'Choisissez une date visée'
+  // « 2027- » : année choisie, mois manquant ; « -06 » : mois choisi, année manquante.
+  if (month.endsWith('-')) return 'Choisissez aussi le mois'
+  if (month.startsWith('-')) return "Choisissez aussi l'année"
   if (original && month === original) return null
   const min = nextMonth(today)
   return month < min ? `Choisissez un mois à partir de ${monthLabel(min)}` : null
@@ -74,4 +77,13 @@ export function progressNotice(beforeSaved: number, afterSaved: number, target: 
   if (after === 100 && before < 100) return 'Objectif atteint !'
   const m = milestone(after)
   return m && m !== milestone(before) && (milestone(before) ?? 0) < m ? `Étape franchie : ${m} % !` : null
+}
+
+/** Ajout au message « Objectif modifié » quand l'état change (correction ou nouveau montant visé). */
+export function editNotice(beforeSaved: number, beforeTarget: number, afterSaved: number, afterTarget: number): string {
+  const was = beforeSaved >= beforeTarget
+  const is = afterSaved >= afterTarget
+  if (is && !was) return ' · Objectif atteint !'
+  if (!is && was) return ' · Objectif de nouveau en cours'
+  return ''
 }
