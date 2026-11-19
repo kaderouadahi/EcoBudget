@@ -62,7 +62,7 @@ Rendu le **20 novembre 2026**. **Un seul diaporama** (`livrables/EcoBudget.pptx`
 4. **Expliquer le pourquoi** de chaque choix en une ou deux phrases, avec le critère concerné, pour que le binôme puisse le défendre à l'oral.
 5. **Rien sans feu vert.** Aucune modification de fichier ni de Notion (statut, commentaire, contenu) sans validation préalable. Claude liste les modifications prévues, attend l'accord, applique, puis répond seulement « Fait ». Pour un changement de périmètre ou de structure : options et recommandation avant la liste.
 6. **Rien de technique tant que ce n'est pas dans DECISIONS.md** (stack, stockage, outils).
-7. **Territoires** (voir `docs/WORKFLOW.md`) : Cowork écrit dans `docs/` et `livrables/`, Claude Code dans `app/`. Les demandes passent par `docs/HANDOFF.md`.
+7. **Territoires** (voir `docs/WORKFLOW.md`) : Cowork écrit dans `docs/` et `livrables/`, Claude Code dans `app/`. Les demandes passent par `docs/HANDOFF.md`. **Commits** : Kader et Claude Code uniquement ; Cowork modifie les fichiers et propose le message de commit.
 8. **Tâches** : la todo list du projet est dans Notion. En début de session, lire le dernier commentaire de la tâche en cours. En fin de session, mettre à jour le statut de la tâche et y ajouter un commentaire : ce qui a été fait, où on s'est arrêté, prochaine étape.
 9. **Langue** : documents et interface en français.
 
