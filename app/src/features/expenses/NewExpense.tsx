@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useUid } from '../../auth/AuthGate'
 import { useData } from '../../data/DataProvider'
 import { createDoc, removeDoc, setUserFields } from '../../data/repo'
+import { checkUnusual, whySentence } from '../../lib/alert'
 import { proposedCategoryId } from '../../lib/expenses'
 import { formatDA } from '../../lib/format'
 import { useToast } from '../../ui/Toast'
@@ -26,6 +27,16 @@ export function NewExpense() {
     const id = createDoc(uid, 'expenses', { ...v, createdAt: Date.now() })
     if (!user?.onboardingDone) setUserFields(uid, { onboardingDone: true })
     const name = categories.find((c) => c.id === v.categoryId)?.name ?? 'Autres'
+    // Innovation (H3) : contrôle seulement à l'ajout, sur l'appareil (fonctionne hors connexion).
+    if (user?.alertsEnabled !== false) {
+      const hit = checkUnusual({ id, amount: v.amount, categoryId: v.categoryId, date: v.date }, expenses)
+      if (hit) {
+        const oldest = hit.history.reduce((min, e) => (e.date < min ? e.date : min), hit.history[0].date)
+        const why = whySentence(name, hit.median, hit.ratio, hit.history.length, oldest, v.date)
+        // Une seule alerte : la nouvelle remplace l'ancienne.
+        setUserFields(uid, { alert: { expenseId: id, amount: v.amount, categoryId: v.categoryId, date: v.date, why } })
+      }
+    }
     const notice = noticeAfterAdd(expenses, budgets, v, name, today)
     navigate('/', { replace: true })
     show({
