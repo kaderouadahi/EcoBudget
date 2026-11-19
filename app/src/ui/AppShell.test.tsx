@@ -11,13 +11,13 @@ function renderAt(path: string) {
 
 describe('AppShell', () => {
   it('la barre latérale (ordinateur) contient toutes les entrées', () => {
-    renderAt('/')
+    renderAt('/graphiques')
     const sidebar = screen.getByRole('navigation', { name: 'Navigation principale (ordinateur)' })
     for (const label of LABELS) expect(within(sidebar).getByRole('link', { name: label })).toBeInTheDocument()
   })
 
   it('la barre du bas (téléphone) contient les mêmes entrées, Réglages en haut à droite', () => {
-    renderAt('/')
+    renderAt('/graphiques')
     const bottom = screen.getByRole('navigation', { name: 'Navigation principale (téléphone)' })
     for (const label of ['Accueil', 'Budgets', 'Graphiques', 'Objectifs', 'Ajouter une dépense']) {
       expect(within(bottom).getByRole('link', { name: label })).toBeInTheDocument()

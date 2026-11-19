@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { EditExpense } from './features/expenses/EditExpense'
 import { NewExpense } from './features/expenses/NewExpense'
+import { Home } from './features/home/Home'
 import { Placeholder } from './pages/Placeholder'
 import { AppShell, BareLayout } from './ui/AppShell'
 
@@ -8,7 +9,7 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route element={<AppShell />}>
-        <Route index element={<Placeholder title="Accueil" />} />
+        <Route index element={<Home />} />
         <Route path="budgets" element={<Placeholder title="Budgets" />} />
         <Route path="graphiques" element={<Placeholder title="Graphiques" />} />
         <Route path="objectifs" element={<Placeholder title="Objectifs d'épargne" />} />
