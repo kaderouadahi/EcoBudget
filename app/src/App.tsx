@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { EditExpense } from './features/expenses/EditExpense'
 import { NewExpense } from './features/expenses/NewExpense'
 import { BudgetDetail, BudgetsPage, EditBudget, SetBudget } from './features/budgets/BudgetPages'
+import { AddSavings, EditGoal, GoalsPage, NewGoal } from './features/goals/GoalPages'
 import { Home } from './features/home/Home'
 import { Placeholder } from './pages/Placeholder'
 import { AppShell, BareLayout } from './ui/AppShell'
@@ -16,7 +17,10 @@ export function AppRoutes() {
         <Route path="budgets/:categoryId" element={<BudgetDetail />} />
         <Route path="budgets/:categoryId/modifier" element={<EditBudget />} />
         <Route path="graphiques" element={<Placeholder title="Graphiques" />} />
-        <Route path="objectifs" element={<Placeholder title="Objectifs d'épargne" />} />
+        <Route path="objectifs" element={<GoalsPage />} />
+        <Route path="objectifs/nouveau" element={<NewGoal />} />
+        <Route path="objectifs/:id" element={<EditGoal />} />
+        <Route path="objectifs/:id/epargne" element={<AddSavings />} />
         <Route path="reglages" element={<Placeholder title="Réglages" />} />
         <Route path="depense/nouvelle" element={<NewExpense />} />
         <Route path="depense/:id" element={<EditExpense />} />
