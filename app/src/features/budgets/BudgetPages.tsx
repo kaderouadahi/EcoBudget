@@ -148,7 +148,7 @@ export function SetBudget() {
       onSubmit={({ categoryId, amount }) => {
         createDoc(uid, 'budgets', { amount }, categoryId)
         const name = categories.find((c) => c.id === categoryId)?.name ?? ''
-        navigate('/budgets')
+        navigate('/budgets', { replace: true })
         show({
           message: `Budget fixé : ${name}, ${formatDA(amount)} par mois`,
           undo: () => removeDoc(uid, 'budgets', categoryId),
