@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { ADD_EXPENSE, NAV_ITEMS, SETTINGS_ITEM, type NavItem } from './nav'
 import './AppShell.css'
 
@@ -30,6 +30,8 @@ export function AppShell() {
   const AddIcon = ADD_EXPENSE.icon
   const SettingsIcon = SETTINGS_ITEM.icon
   const [home, budgets, charts, goals] = NAV_ITEMS
+  // Le formulaire Dépense a son propre bouton Fermer en haut à droite (maquette telephone-03).
+  const onForm = useLocation().pathname.startsWith('/depense')
   return (
     <div className="shell">
       <nav className="sidebar" aria-label="Navigation principale (ordinateur)">
@@ -46,7 +48,7 @@ export function AppShell() {
         </div>
       </nav>
 
-      <header className="topbar">
+      <header className="topbar" hidden={onForm}>
         <NavLink to={SETTINGS_ITEM.to} className="topbar-settings" aria-label={SETTINGS_ITEM.label}>
           <SettingsIcon aria-hidden size={22} />
         </NavLink>
