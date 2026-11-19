@@ -79,6 +79,11 @@ describe('budgetSummary', () => {
     expect(headline(s, 'novembre')).toEqual({ label: 'Reste à dépenser en novembre', value: 0, tone: 'neutral' })
   })
 
+  it('reconduit : un budget fixé en novembre existe en décembre avec le même montant, dépenses remises à zéro', () => {
+    const s = budgetSummary([B('courses', 40000)], CATS, expenses, '2026-12')
+    expect(s.rows).toEqual([{ categoryId: 'courses', amount: 40000, spent: 0, kind: 'ok', remaining: 40000, percent: 0 }])
+  })
+
   it('budget d’une catégorie disparue : ignoré', () => {
     const s = budgetSummary([B('fantome', 1000), B('repas', 8000)], CATS, expenses, '2026-11')
     expect(s.rows.map((r) => r.categoryId)).toEqual(['repas'])

@@ -98,7 +98,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H2 Budgets — statut : à faire
+### H2 Budgets — statut : fait (branche h2-budgets, à relire avant fusion)
 - **Scénario source** : S2 (Nadia tient le budget des courses) ; aussi S1 et S3.
 - **Fonctionnalité du sujet** : F2.
 - **Contenu et interactions** :
@@ -122,3 +122,10 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Aucun état n'est signalé par la couleur seule.
 - **Maquette** : `telephone-02`, `telephone-04` (et `ordinateur-02`, `ordinateur-04`). Écarts : les choix ✱ ci-dessus ne sont pas dessinés.
 - **Écarts constatés (rempli par Claude Code)** :
+  - Tests Vitest demandés : états à 79, 80, 100 et 101 % ; reste à dépenser avec et sans hors budget ; reste négatif ; aucun budget ; reconduction novembre → décembre ; dépenses d'un autre mois exclues.
+  - Vérifié dans un navigateur piloté, en local et en ligne : fixer un budget, message « Dépense ajoutée : 8 500 DA, Courses · Courses : il reste 1 500 DA » en orange avec icône (critère H1), reste à dépenser sur l'Accueil, détail, modification jusqu'au dépassement (« Dépassé de 500 DA », « Budgets dépassés de 500 DA »), retrait avec confirmation puis « Annuler ».
+  - Écrans : `/budgets` (liste), `/budgets/:catégorie` (détail), `/budgets/fixer` et `/budgets/:catégorie/modifier` (formulaire, plein écran sur téléphone comme le formulaire Dépense). Montant du budget : mêmes règles et messages que le montant d'une dépense.
+  - « Fixer un budget » sur l'Accueil sans budget mène directement au formulaire ; sur l'écran de première ouverture, il mène à l'écran Budgets (comme la maquette).
+  - Le budget « Reste à dépenser » dépassé s'affiche sur fond rouge clair avec icône et texte (« Budgets dépassés de X DA »), pas sur le fond bleu nuit.
+  - Pas de carte d'alerte (H3) ni de prénom (H7) pour l'instant : l'Accueil affiche « Bonjour » et une icône de profil.
+  - Plan : `app/docs/plans/2026-11-19-h2-budgets.md`.
