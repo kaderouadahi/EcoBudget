@@ -3,8 +3,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ToastProvider, useToast, type ToastOptions } from './Toast'
 
 let show: (t: ToastOptions) => void = () => {}
+let dismiss: () => void = () => {}
 function Grab() {
-  show = useToast().show
+  const api = useToast()
+  show = api.show
+  dismiss = api.dismiss
   return null
 }
 const setup = () => render(<ToastProvider><Grab /></ToastProvider>)
@@ -49,6 +52,13 @@ describe('message de confirmation commun', () => {
     setup()
     act(() => show({ message: 'Courses : il reste 6 000 DA', tone: 'warn' }))
     expect(screen.getByTestId('toast-icon')).toBeInTheDocument()
+  })
+
+  it('dismiss ferme le message (à l’ouverture d’un formulaire, pour ne pas masquer son bouton)', () => {
+    setup()
+    act(() => show({ message: 'Dépense ajoutée : 250 DA, Repas', undo: () => {} }))
+    act(() => dismiss())
+    expect(screen.queryByText('Dépense ajoutée : 250 DA, Repas')).not.toBeInTheDocument()
   })
 
   it('un nouveau message remplace le précédent', () => {

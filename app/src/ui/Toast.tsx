@@ -14,6 +14,8 @@ export interface ToastOptions {
 
 interface ToastApi {
   show: (t: ToastOptions) => void
+  /** Ferme le message en cours (ex. à l'ouverture d'un formulaire, pour ne pas masquer son bouton). */
+  dismiss: () => void
 }
 
 const ToastContext = createContext<ToastApi | null>(null)
@@ -28,7 +30,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<(ToastOptions & { key: number }) | null>(null)
 
   const show = useCallback((t: ToastOptions) => setToast({ ...t, key: Date.now() + Math.random() }), [])
-  const api = useMemo(() => ({ show }), [show])
+  const dismiss = useCallback(() => setToast(null), [])
+  const api = useMemo(() => ({ show, dismiss }), [show, dismiss])
 
   useEffect(() => {
     if (!toast) return

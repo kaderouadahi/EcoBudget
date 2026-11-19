@@ -68,6 +68,11 @@
   box-shadow: 0 6px 16px rgb(52 96 224 / 35%);
 }
 
+@media (max-width: 899px) {
+  .panel-form { padding-bottom: calc(32px + env(safe-area-inset-bottom)); }
+}
+.bottom-bar[hidden], .topbar[hidden] { display: none; }
+
 /* --- Ordinateur --- */
 @media (min-width: 900px) {
   body:has(.shell) { background: var(--navy); }

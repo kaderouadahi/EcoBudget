@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useUid } from '../../auth/AuthGate'
 import { useData } from '../../data/DataProvider'
@@ -13,7 +13,9 @@ export function EditExpense() {
   const { id = '' } = useParams()
   const uid = useUid()
   const { categories, expenses, ready } = useData()
-  const { show } = useToast()
+  const { show, dismiss } = useToast()
+  // Le message de l'action précédente ne doit pas masquer « Enregistrer ».
+  useEffect(() => dismiss(), [dismiss])
   const navigate = useNavigate()
   const close = useClose()
   const [confirming, setConfirming] = useState(false)

@@ -24,7 +24,7 @@ describe('budgetNotice (message de confirmation)', () => {
     expect(budgetNotice('Repas', 3250, 8000)).toBeNull()
   })
   it('il reste X DA entre 80 et 100 %', () => {
-    expect(budgetNotice('Courses', 34000, 40000)).toEqual({ text: 'Courses : il reste 6 000 DA', tone: 'warn' })
+    expect(budgetNotice('Courses', 34000, 40000)).toEqual({ text: 'Courses : il reste 6 000 DA', tone: 'warn' })
   })
   it('dépassé de X DA au-delà', () => {
     expect(budgetNotice('Sorties', 5900, 5000)).toEqual({ text: 'Sorties : dépassé de 900 DA', tone: 'danger' })

@@ -1,5 +1,6 @@
 import { render, screen, within } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { AppShell } from './AppShell'
 import { describe, expect, it } from 'vitest'
 import { AppRoutes } from '../App'
 
@@ -24,6 +25,16 @@ describe('AppShell', () => {
     }
     const top = screen.getByRole('banner')
     expect(within(top).getByRole('link', { name: 'Réglages' })).toBeInTheDocument()
+  })
+
+  it('formulaire Dépense : pas de barre du bas (elle masquerait ses boutons)', () => {
+    render(
+      <MemoryRouter initialEntries={['/depense/nouvelle']}>
+        <Routes><Route element={<AppShell />}><Route path="depense/nouvelle" element={<p>formulaire</p>} /></Route></Routes>
+      </MemoryRouter>,
+    )
+    expect(screen.getByText('formulaire')).toBeInTheDocument()
+    expect(screen.queryByRole('navigation', { name: 'Navigation principale (téléphone)' })).not.toBeInTheDocument()
   })
 
   it('marque la page active', () => {

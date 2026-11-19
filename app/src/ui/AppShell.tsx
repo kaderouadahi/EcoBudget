@@ -30,7 +30,8 @@ export function AppShell() {
   const AddIcon = ADD_EXPENSE.icon
   const SettingsIcon = SETTINGS_ITEM.icon
   const [home, budgets, charts, goals] = NAV_ITEMS
-  // Le formulaire Dépense a son propre bouton Fermer en haut à droite (maquette telephone-03).
+  // Le formulaire Dépense s'affiche en plein écran sur téléphone, avec son propre bouton Fermer
+  // (maquette telephone-03) : ni icône Réglages, ni barre du bas qui masquerait ses boutons.
   const onForm = useLocation().pathname.startsWith('/depense')
   return (
     <div className="shell">
@@ -54,11 +55,11 @@ export function AppShell() {
         </NavLink>
       </header>
 
-      <main className="panel">
+      <main className={onForm ? 'panel panel-form' : 'panel'}>
         <Outlet />
       </main>
 
-      <nav className="bottom-bar" aria-label="Navigation principale (téléphone)">
+      <nav className="bottom-bar" aria-label="Navigation principale (téléphone)" hidden={onForm}>
         <BottomLink item={home} />
         <BottomLink item={budgets} />
         <NavLink to={ADD_EXPENSE.to} className="bottom-add" aria-label={ADD_EXPENSE.label}>

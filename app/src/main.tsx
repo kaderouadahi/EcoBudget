@@ -11,11 +11,11 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthGate>
       <DataProvider>
-        <ToastProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <ToastProvider>
             <AppRoutes />
-          </BrowserRouter>
-        </ToastProvider>
+          </ToastProvider>
+        </BrowserRouter>
       </DataProvider>
     </AuthGate>
   </StrictMode>,

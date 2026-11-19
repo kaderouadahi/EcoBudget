@@ -1,7 +1,7 @@
 import { parseISODate } from './month'
 
 // Formats d'affichage communs (HANDOFF H0) : seuls ces helpers servent à afficher montants et dates.
-const THIN_NBSP = ' '
+// Milliers séparés par une espace insécable normale : l'espace fine est presque invisible dans la police.
 const NBSP = ' '
 const MINUS = '−'
 
@@ -9,7 +9,7 @@ const MINUS = '−'
 export function formatDA(amount: number): string {
   if (!Number.isFinite(amount)) return `\u2014${NBSP}DA`
   const abs = Math.round(Math.abs(amount))
-  const digits = String(abs).replace(/\B(?=(\d{3})+(?!\d))/g, THIN_NBSP)
+  const digits = String(abs).replace(/\B(?=(\d{3})+(?!\d))/g, NBSP)
   return `${amount < 0 && abs !== 0 ? MINUS : ''}${digits}${NBSP}DA`
 }
 

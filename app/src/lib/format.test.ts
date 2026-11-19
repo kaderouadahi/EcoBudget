@@ -3,7 +3,7 @@ import { formatDA, formatDay, formatMonthTitle, monthName } from './format'
 
 describe('formatDA', () => {
   it('sépare les milliers et ajoute DA', () => {
-    expect(formatDA(34000)).toBe('34 000 DA')
+    expect(formatDA(34000)).toBe('34 000 DA')
   })
   it('petit montant', () => {
     expect(formatDA(250)).toBe('250 DA')
@@ -12,14 +12,14 @@ describe('formatDA', () => {
     expect(formatDA(0)).toBe('0 DA')
   })
   it('millions', () => {
-    expect(formatDA(1234567)).toBe('1 234 567 DA')
+    expect(formatDA(1234567)).toBe('1 234 567 DA')
   })
   it('valeur absente ou invalide : pas de « NaN »', () => {
     expect(formatDA(Number.NaN)).toBe(String.fromCharCode(0x2014, 0xa0) + 'DA')
   })
   it('négatif avec le vrai signe moins', () => {
     expect(formatDA(-250)).toBe('−250 DA')
-    expect(formatDA(-6500)).toBe('−6 500 DA')
+    expect(formatDA(-6500)).toBe('−6 500 DA')
   })
 })
 
