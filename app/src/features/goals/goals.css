@@ -1,0 +1,55 @@
+.input-with-unit { display: flex; align-items: center; gap: 10px; }
+.input-with-unit span { font-weight: 700; color: var(--navy); }
+.date-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.date-fieldset legend { font-weight: 600; margin-bottom: 6px; padding: 0; }
+.month-year { display: grid; grid-template-columns: 3fr 2fr; gap: 10px; }
+select.text-input { appearance: auto; }
+
+.goal-list { display: flex; flex-direction: column; gap: 14px; }
+@media (min-width: 1100px) { .goal-list { display: grid; grid-template-columns: 1fr 1fr; align-items: start; } }
+.goal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.goal-card-head { display: flex; align-items: center; gap: 14px; color: inherit; text-decoration: none; }
+.goal-icon { color: var(--blue); }
+.goal-card-titles { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.goal-card-titles strong { font-size: 19px; }
+.goal-percent { font-size: 28px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+.goal-bar { height: 10px; border-radius: 999px; background: var(--border); overflow: hidden; }
+.goal-bar div { height: 100%; border-radius: 999px; background: var(--blue); }
+.goal-amounts { margin: 0; }
+.goal-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--blue-light);
+  color: var(--navy);
+  font-weight: 600;
+}
+.goal-late { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0; color: var(--muted); font-weight: 600; }
+.goal-late a { margin-left: auto; min-height: var(--tap); display: inline-flex; align-items: center; }
+.goal-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--tap);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: none;
+}
+.goal-card.is-reached { background: var(--bg); }
+.goals-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-right: 56px; }
+@media (min-width: 900px) { .goals-head { padding-right: 0; } }
+.goals-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
