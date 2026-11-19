@@ -28,7 +28,9 @@ export function referenceHistory(
 ): Expense[] | null {
   const day = parseISODate(e.date)
   const windowStart = toISODate(new Date(day.getFullYear(), day.getMonth(), day.getDate() - WINDOW_DAYS))
-  const maxAge = toISODate(new Date(day.getFullYear(), day.getMonth() - MAX_AGE_MONTHS, day.getDate()))
+  // Même jour 6 mois plus tôt, borné au dernier jour du mois (31 août → 28 février, pas 3 mars).
+  const lastDay = new Date(day.getFullYear(), day.getMonth() - MAX_AGE_MONTHS + 1, 0).getDate()
+  const maxAge = toISODate(new Date(day.getFullYear(), day.getMonth() - MAX_AGE_MONTHS, Math.min(day.getDate(), lastDay)))
   const same = all.filter((x) => x.categoryId === e.categoryId && x.id !== e.id && x.date <= e.date).sort(byRecent)
   const recent = same.filter((x) => x.date >= windowStart)
   if (recent.length >= MIN_HISTORY) return recent

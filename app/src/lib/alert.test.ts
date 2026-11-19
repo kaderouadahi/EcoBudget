@@ -40,6 +40,13 @@ describe('referenceHistory', () => {
     expect(referenceHistory(add(4500, '2026-11-19'), all)).toBeNull()
   })
 
+  it('limite des 6 mois en fin de mois : 31 août → 28 février (pas de débordement sur mars)', () => {
+    const all = ['2026-03-01', '2026-04-15', '2026-05-20', '2026-08-10', '2026-08-20'].map((d) => E(1000, d))
+    expect(referenceHistory(add(4500, '2026-08-31'), all)).toHaveLength(5)
+    const tooOld = ['2026-02-28', '2026-04-15', '2026-05-20', '2026-08-10', '2026-08-20'].map((d) => E(1000, d))
+    expect(referenceHistory(add(4500, '2026-08-31'), tooOld)).toBeNull()
+  })
+
   it('dépense saisie avec une date passée : les dépenses d’après sont exclues', () => {
     const all = ['2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04', '2026-10-05', '2026-11-10', '2026-11-12'].map((d) => E(1000, d))
     expect(referenceHistory(add(4500, '2026-10-06'), all)).toHaveLength(5)
