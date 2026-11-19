@@ -1,0 +1,43 @@
+@import '@fontsource/plus-jakarta-sans/400.css';
+@import '@fontsource/plus-jakarta-sans/500.css';
+@import '@fontsource/plus-jakarta-sans/600.css';
+@import '@fontsource/plus-jakarta-sans/700.css';
+
+/* Charte EcoBudget (DECISIONS.md 17/11) — vert, orange, rouge réservés aux états de budget */
+:root {
+  --navy: #1E2B4F;
+  --navy-2: #2A3A63;
+  --blue: #3460E0;
+  --blue-light: #E8EDFB;
+  --blue-soft: #C9D5FA;
+  --bg: #F5F7FB;
+  --surface: #FFFFFF;
+  --border: #DCE1EC;
+  --text: #161A24;
+  --muted: #576074;
+  --ok: #2F7D5B;
+  --ok-bg: #E3F0E9;
+  --warn: #D9961A;
+  --warn-text: #8A5300;
+  --warn-bg: #FBF1DE;
+  --danger: #B83E27;
+  --danger-bg: #F8E6E1;
+  --tap: 44px;
+  --radius: 16px;
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: var(--blue); }
+h1, h2, h3 { color: var(--navy); margin: 0; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
