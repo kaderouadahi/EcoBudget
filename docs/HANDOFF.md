@@ -128,4 +128,8 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - « Fixer un budget » sur l'Accueil sans budget mène directement au formulaire ; sur l'écran de première ouverture, il mène à l'écran Budgets (comme la maquette).
   - Quand les budgets sont dépassés, le chiffre principal de l'Accueil s'affiche sur fond rouge clair avec icône et texte (« Budgets dépassés de X DA »), pas sur le fond bleu nuit.
   - Pas de carte d'alerte (H3) ni de prénom (H7) pour l'instant : l'Accueil affiche « Bonjour » et une icône de profil.
+  - Pourcentage affiché arrondi par défaut, et au moins 101 % dès qu'un budget est dépassé : le chiffre est toujours d'accord avec la couleur (jamais « 80 % » en vert ni « 100 % » en rouge).
+  - Pourcentage affiché dans la liste de l'écran Budgets (demandé par la spec) ; les cartes de l'Accueil restent sans pourcentage, comme la maquette.
+  - Chaque ligne « Hors budget » porte l'icône de sa catégorie.
+  - Un budget fixé depuis l'écran de première ouverture fait passer l'Accueil en mode normal (sinon le budget n'y serait pas visible).
   - Plan : `app/docs/plans/2026-11-19-h2-budgets.md`.
