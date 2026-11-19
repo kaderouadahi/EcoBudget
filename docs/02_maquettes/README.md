@@ -10,7 +10,7 @@ Mis à jour le 17/11/2026. Décisions : voir `docs/DECISIONS.md` (17/11/2026).
 
 Les montants sont des **données de démonstration** (voir `docs/01_analyse/scenarios.md`).
 
-**À compléter (décisions du 18/11/2026)** : écran Objectifs (bouton « Ajouter de l'épargne », formulaire avec l'aide « Il reste X DA », état Atteint) ; écrans Alerte et Objectifs (« Compris » au lieu des anciens boutons) ; Réglages (section « Alertes et conseils », deux interrupteurs).
+**À compléter (décisions du 18/11/2026)** : écran Objectifs (bouton « Ajouter de l'épargne », formulaire avec l'aide « Il reste X DA », état Atteint) ; écrans Alerte et Objectifs (« Compris » au lieu des anciens boutons) ; Réglages (section « Alertes et conseils », deux interrupteurs ; retirer « Mois budgétaire » et l'interrupteur « Alerte de budget »).
 
 ## Parcourir les 4 scénarios dans le prototype
 

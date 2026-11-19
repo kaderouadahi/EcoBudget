@@ -9,3 +9,102 @@
 - Critères d'acceptation :
 - Maquette :
 - Écarts constatés (rempli par Claude Code) :
+
+## Ordre de priorité (décidé le 18/11/2026)
+Si le temps manque, les specs du bas sont les premières à tomber. Sources : `docs/DECISIONS.md` (prime en cas d'écart avec une maquette), `docs/01_analyse/scenarios.md`, `docs/03_conception/innovation.md`, `docs/02_maquettes/`.
+
+| Ordre | Spec | Fonctionnalité |
+|---|---|---|
+| 1 | H0 Socle | Transversal |
+| 2 | H1 Dépenses | F1 |
+| 3 | H2 Budgets | F2 |
+| 4 | H3 Alerte de dépense inhabituelle | INNOV |
+| 5 | H4 Objectifs d'épargne | F4 |
+| 6 | H5 Conseil d'épargne | INNOV |
+| 7 | H6 Graphiques | F3 |
+| 8 | H7 Réglages | Transversal |
+| 9 | H8 Données de démo | Démo (L2, L4) |
+| 10 | H9 Compte e-mail facultatif | Transversal (première fonction retirée en cas de retard) |
+
+Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme le 19/11/2026.
+
+---
+
+### H0 Socle — statut : à faire
+- **Scénario source** : tous (S1 à S4).
+- **Fonctionnalité du sujet** : transversal (sert F1 à F4 et INNOV).
+- **Contenu et interactions** :
+  - **Stack** (DECISIONS.md, 17/11) : React + Vite + TypeScript, application web installable (PWA), tests Vitest ; Firebase Authentication, Firestore, Hosting. Bibliothèque de graphiques au choix de Claude Code : noter le choix dans `docs/HANDOFF.md` (Écarts constatés), le binôme l'ajoutera à DECISIONS.md.
+  - **Compte et données** : à la première ouverture, un compte anonyme est créé sans aucun écran. Données dans Firestore, avec copie hors connexion (une dépense notée sans réseau est enregistrée et synchronisée ensuite). Règles de sécurité « chacun ses données », testées à l'émulateur.
+  - **Données à stocker** (par utilisateur) : catégories (nom, icône, ordre, « Autres » non supprimable) ; dépenses (montant entier en DA, catégorie, date, note facultative) ; budgets (catégorie, montant mensuel, reconduit chaque mois) ; objectifs d'épargne (nom, montant visé, mois visé) ; versements (objectif, montant, date) ; réglages (prénom facultatif, alertes activées, conseils activés) ; état de l'innovation (conseil masqué jusqu'à quel mois). Le modèle exact est au choix de Claude Code.
+  - **Mois** : toujours du 1er au dernier jour du mois (DECISIONS.md, 18/11).
+  - **Navigation** (DECISIONS.md, 17/11) : sur téléphone, barre en bas Accueil · Budgets · [+] · Graphiques · Objectifs, Réglages par une icône en haut à droite. Sur ordinateur, barre latérale bleu nuit sur toute la hauteur (EcoBudget, bouton « Ajouter une dépense », Accueil, Budgets, Graphiques, Objectifs ; Réglages tout en bas), contenu dans un panneau clair. Créer un compte et Se connecter s'affichent sans barre latérale. Seule la disposition change entre les deux.
+  - **Charte** : bleu nuit #1E2B4F, bleu vif #3460E0, police Plus Jakarta Sans ; vert, orange et rouge réservés aux états de budget ; cibles tactiles d'au moins 44 px.
+  - **Formats** : montants entiers en DA avec séparateur de milliers (« 34 000 DA »), dates en français (« Aujourd'hui », « samedi 14 novembre »).
+  - **Message de confirmation commun** : affiché après chaque action, en bas de l'écran, avec un bouton « Annuler » quand l'action est réversible. Réutilisé par toutes les specs.
+- **Critères visés et comment** : C6 (mêmes composants, libellés et charte sur téléphone et ordinateur) ; C8 (installable, hors connexion, DA, formats locaux) ; C1 (retour visible après chaque action) ; C2 (aucune inscription avant d'utiliser).
+- **Critères d'acceptation** :
+  - L'application s'installe depuis le navigateur (HTTPS, Firebase Hosting) et s'ouvre sans écran d'inscription.
+  - Une dépense ajoutée hors connexion est visible tout de suite et retrouvée après retour du réseau.
+  - Les tests des règles de sécurité passent à l'émulateur : un utilisateur ne lit ni n'écrit les données d'un autre.
+  - Les mêmes entrées de navigation et les mêmes libellés existent sur téléphone et sur ordinateur.
+  - Montants et dates s'affichent aux formats ci-dessus partout.
+- **Maquette** : `docs/02_maquettes/` (tous les écrans) et `prototype/index.html`. Écarts connus : voir la note « À compléter » du README des maquettes ; DECISIONS.md prime.
+- **Écarts constatés (rempli par Claude Code)** :
+
+---
+
+### H1 Dépenses — statut : à faire
+- **Scénario source** : S1 (Amine note sa première dépense) ; aussi S2 et S4.
+- **Fonctionnalité du sujet** : F1.
+- **Contenu et interactions** :
+  - **Première ouverture** (une seule fois) : « Bienvenue sur EcoBudget », « Noter ma première dépense » (ouvre le formulaire), la liste des catégories prêtes, « Fixer un budget » (facultatif, ouvre Budgets), « Déjà un compte ? Se connecter ».
+  - **Catégories par défaut**, chacune avec une icône : Repas, Courses, Transport, Sorties, Santé, Logement, Études, Autres. « Autres » ne peut pas être supprimée.
+  - **Formulaire « Nouvelle dépense »**, ouvert par [+] ou « Ajouter une dépense » depuis n'importe quel écran :
+    - Montant : entier supérieur à 0, en DA ; aide « En dinars, sans centimes. Exemple : 250 ».
+    - Catégorie : ✱ proposée = celle de la dernière dépense (Repas pour la toute première), affichée « Proposée : Repas », modifiable.
+    - Date : aujourd'hui par défaut, modifiable ; ✱ une date dans le futur est refusée.
+    - Note : facultative.
+    - Bouton « Enregistrer la dépense ».
+  - **Erreurs** signalées au champ concerné, avec la façon de corriger (ex. « Saisissez un montant en dinars, par exemple 250 » ; « La date ne peut pas être dans le futur »).
+  - **Après l'enregistrement** : retour à l'Accueil, message « Dépense ajoutée : 250 DA, Repas » ; si la dépense fait passer le budget de sa catégorie à 80 % ou plus, le message ajoute l'état (« Courses : il reste 6 000 DA » ou « Courses : dépassé de 900 DA », avec couleur et icône). Le reste à dépenser se met à jour. Le contrôle de l'alerte de dépense inhabituelle (H3) se fait à ce moment.
+  - **Modifier** : toucher une dépense dans une liste ouvre le même formulaire prérempli (« Enregistrer », « Supprimer la dépense »).
+  - **Supprimer** : confirmation (« Supprimer cette dépense de 2 500 DA ? ») **et** message « Dépense supprimée · Annuler » (CLAUDE.md §8).
+  - **Dernières dépenses** sur l'Accueil : ✱ les 4 plus récentes ; titre = la note, sinon le nom de la catégorie ; sous-titre « Catégorie · jour » ; montant « −250 DA ».
+- **Critères visés et comment** : C2 (montant, catégorie proposée, date du jour : une dépense en quelques gestes) ; C1 (confirmation visible, état du budget annoncé) ; C5 (erreurs au bon champ, correction en deux gestes) ; C3 (annuler une suppression) ; C8 (DA, sans centimes, espèces).
+- **Critères d'acceptation** :
+  - À la première ouverture, une dépense peut être enregistrée sans rien configurer.
+  - Montant vide, nul, négatif ou décimal : enregistrement bloqué, message au champ Montant.
+  - La catégorie proposée est celle de la dernière dépense.
+  - Une dépense modifiée met à jour l'Accueil, le budget et les graphiques.
+  - Une suppression demande confirmation et peut être annulée depuis le message.
+  - Une dépense qui fait passer un budget à 80 % ou plus affiche l'état dans le message de confirmation.
+- **Maquette** : `telephone-01`, `telephone-02`, `telephone-03` (et `ordinateur-01` à `03`). Écart : le message de confirmation doit inclure l'état du budget quand il atteint 80 % (décision du 18/11).
+- **Écarts constatés (rempli par Claude Code)** :
+
+---
+
+### H2 Budgets — statut : à faire
+- **Scénario source** : S2 (Nadia tient le budget des courses) ; aussi S1 et S3.
+- **Fonctionnalité du sujet** : F2.
+- **Contenu et interactions** :
+  - **Budget par catégorie**, facultatif : montant mensuel entier supérieur à 0, reconduit chaque mois, modifiable à tout moment (« Budget reconduit chaque mois. Vous pouvez le changer à tout moment. »). « Fixer un budget pour une catégorie » depuis la liste.
+  - **État d'un budget** (dépenses du mois ÷ budget), toujours couleur + icône + texte, sans reproche :
+    - moins de 80 % : vert, « Dans le budget » ;
+    - de 80 % à 100 % inclus : orange, « Il reste X DA » ;
+    - plus de 100 % : rouge, « Dépassé de X DA ».
+  - **Reste à dépenser** = somme des budgets fixés − dépenses du mois de ces catégories ; sous-titre « sur X DA de budgets · N jours restants ».
+    - ✱ Reste négatif : « Budgets dépassés de X DA », en rouge avec icône.
+    - ✱ Aucun budget fixé : « Dépensé ce mois : X DA » et une invitation « Fixer un budget ».
+  - **Hors budget** : les catégories sans budget ont leurs dépenses du mois listées en « Hors budget : Santé 1 800 DA ».
+  - **Accueil** : « Bonjour [prénom] » (ou « Bonjour » sans prénom), mois en cours, reste à dépenser, carte d'alerte (H3) s'il y en a une, « Vos budgets » avec « Tout voir », Hors budget, Dernières dépenses (H1).
+  - **Écran Budgets** : liste des budgets avec montant, pourcentage et état ; **détail** d'un budget : montant, état, « Modifier », dernières dépenses de la catégorie.
+  - ✱ **Retirer un budget** : bouton « Retirer le budget » dans Modifier ; la catégorie repasse en Hors budget ; confirmation et message « Budget retiré · Annuler ».
+- **Critères visés et comment** : C1 (reste à dépenser en tête, prévenu dès 80 %) ; C7 (couleur + icône + texte, jamais la couleur seule) ; C4 (budget facultatif, modifiable, reconduit) ; C5 (prévention du dépassement) ; C2 (l'essentiel sur l'Accueil).
+- **Critères d'acceptation** :
+  - Tests Vitest (CLAUDE.md §9) : état à 79 %, 80 %, 100 % et 101 % ; reste à dépenser avec et sans catégories hors budget ; reste négatif ; aucun budget.
+  - Un budget fixé en novembre existe encore en décembre, avec le même montant.
+  - Les dépenses d'une catégorie sans budget n'entrent pas dans le reste à dépenser et apparaissent en Hors budget.
+  - Aucun état n'est signalé par la couleur seule.
+- **Maquette** : `telephone-02`, `telephone-04` (et `ordinateur-02`, `ordinateur-04`). Écarts : les choix ✱ ci-dessus ne sont pas dessinés.
+- **Écarts constatés (rempli par Claude Code)** :
