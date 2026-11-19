@@ -1,9 +1,19 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { AppRoutes } from './App'
+import { AuthGate } from './auth/AuthGate'
+import { ToastProvider } from './ui/Toast'
 import './ui/theme.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <h1>EcoBudget</h1>
+    <AuthGate>
+      <ToastProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </ToastProvider>
+    </AuthGate>
   </StrictMode>,
 )
