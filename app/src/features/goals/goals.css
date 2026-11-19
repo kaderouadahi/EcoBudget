@@ -1,0 +1,6 @@
+.input-with-unit { display: flex; align-items: center; gap: 10px; }
+.input-with-unit span { font-weight: 700; color: var(--navy); }
+.date-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.date-fieldset legend { font-weight: 600; margin-bottom: 6px; padding: 0; }
+.month-year { display: grid; grid-template-columns: 3fr 2fr; gap: 10px; }
+select.text-input { appearance: auto; }
