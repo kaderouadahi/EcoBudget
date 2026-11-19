@@ -12,6 +12,17 @@ export interface UserDoc {
   /** Conseil masqué jusqu'à ce mois inclus ('YYYY-MM'). */
   adviceHiddenUntil?: string
   onboardingDone: boolean
+  /** Alerte de dépense inhabituelle en cours (H3) : une seule, jusqu'à « Compris ». */
+  alert?: UnusualAlert
+}
+
+export interface UnusualAlert {
+  expenseId: string
+  amount: number
+  categoryId: string
+  date: string
+  /** Phrase « Pourquoi ? » calculée à l'ajout, gardée telle quelle. */
+  why: string
 }
 
 export interface Category {
