@@ -12,13 +12,13 @@ function renderAt(path: string) {
 
 describe('AppShell', () => {
   it('la barre latérale (ordinateur) contient toutes les entrées', () => {
-    renderAt('/graphiques')
+    renderAt('/reglages')
     const sidebar = screen.getByRole('navigation', { name: 'Navigation principale (ordinateur)' })
     for (const label of LABELS) expect(within(sidebar).getByRole('link', { name: label })).toBeInTheDocument()
   })
 
   it('la barre du bas (téléphone) contient les mêmes entrées, Réglages en haut à droite', () => {
-    renderAt('/graphiques')
+    renderAt('/reglages')
     const bottom = screen.getByRole('navigation', { name: 'Navigation principale (téléphone)' })
     for (const label of ['Accueil', 'Budgets', 'Graphiques', 'Objectifs', 'Ajouter une dépense']) {
       expect(within(bottom).getByRole('link', { name: label })).toBeInTheDocument()
@@ -38,9 +38,9 @@ describe('AppShell', () => {
   })
 
   it('marque la page active', () => {
-    renderAt('/graphiques')
+    renderAt('/reglages')
     const sidebar = screen.getByRole('navigation', { name: 'Navigation principale (ordinateur)' })
-    expect(within(sidebar).getByRole('link', { name: 'Graphiques' })).toHaveAttribute('aria-current', 'page')
+    expect(within(sidebar).getByRole('link', { name: 'Réglages' })).toHaveAttribute('aria-current', 'page')
   })
 
   it('Se connecter et Créer un compte s’affichent sans navigation', () => {
