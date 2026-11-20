@@ -254,3 +254,30 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - « Gérer les conseils » mène à l'écran Réglages provisoire en attendant H7.
   - Pour la démo : le jeu de §5.2 n'est pas chargé tant que H8 n'existe pas ; il faut des dépenses datées des 4 mois précédents (le formulaire accepte les dates passées) et ne pas avoir touché « Compris » ce mois-ci sur le compte de démo.
   - Plan : `app/docs/plans/2026-11-20-h5-conseil.md`.
+
+---
+
+### H8 Données de démo — statut : à faire
+- **Scénario source** : script de démo `docs/03_conception/innovation.md` §5.3 (S4 puis S3, enchaînés) ; second tour des tests L3 sur l'application finale.
+- **Fonctionnalité du sujet** : démonstration (L2 « démonstration de la fonctionnalité innovante », L4). Avancée en 7e position le 20/11 : l'application est montrée en direct, sans capture (QUESTIONS.md, 20/11).
+- **Contenu et interactions** :
+  - ✱ **Page cachée `/demo`**, absente de la navigation : titre « Données de démo », une phrase d'explication, bouton « Charger les données de démo ».
+  - ✱ **Confirmation** : « Toutes les données de ce compte seront remplacées par les données de démo. » ; après le chargement, message « Données de démo chargées » et retour à l'Accueil.
+  - ✱ **Le chargement remplace tout le compte en cours** : catégories remises par défaut (H1), dépenses, budgets, objectifs et versements remplacés ; prénom effacé ; alerte en attente et `adviceHiddenUntil` effacés ; alertes et conseils activés. Charger deux fois donne le même état. ✱ Pas d'« Annuler » : exception à CLAUDE.md §8, la page étant un outil de démo hors de l'interface utilisateur (DECISIONS.md, 20/11).
+  - **Dates relatives au jour du chargement** : M = mois en cours, M-1 = mois dernier, etc.
+  - **Sorties** : exactement le tableau de `innovation.md` §5.2 (M-4 à M-1) ; aucune dépense en Sorties dans le mois en cours.
+  - ✱ **Autres catégories, stables de M-4 à M-1** (rien ne doit augmenter, pour que Sorties soit la seule hausse) :
+    - Courses : 7 500 DA les 3, 10, 17 et 24 (30 000 DA par mois) ;
+    - Transport : 500 DA les 2, 7, 12, 17, 22 et 27 (3 000 DA par mois) ;
+    - Repas : 750 DA les 1, 5, 8, 12, 15, 19, 22 et 26 (6 000 DA par mois).
+  - ✱ **Mois en cours** : les mêmes dépenses de Courses, Transport et Repas, seulement celles datées d'aujourd'hui ou avant ; aucune en Sorties.
+  - ✱ **Budgets** : Courses 40 000, Repas 8 000, Transport 4 000, Sorties 5 000 DA. Avec ces montants, la dépense de 4 500 DA en Sorties de l'étape 2 du script affiche « Sorties : il reste 500 DA » (H1).
+  - **Objectifs** (`innovation.md` §5.2) : « Ordinateur portable », 150 000 DA visés en M+7 ; « Réserve de sécurité », 50 000 DA visés en M+13 ; créés en M-5. ✱ Épargne enregistrée en vrais versements, un par mois le 28, de M-4 à M-1 : 22 500 DA pour « Ordinateur portable » (90 000 DA), 3 000 DA pour « Réserve de sécurité » (12 000 DA).
+  - ✱ **Deux corrections de H5** : « 1 mois suffirait » (singulier) quand un seul mois suffit ; nom de catégorie gardé tel quel dans la phrase de la carte quand sa deuxième lettre est une majuscule (sigle : « EDF » reste « EDF »).
+- **Critères visés et comment** : C8 (démo reproductible en direct, quel que soit le jour) ; C5 (confirmation avant de remplacer les données).
+- **Critères d'acceptation** :
+  - ✱ Tests Vitest pour **chaque jour du 1er au 31**, dans un mois de 31 jours et en février : après chargement, une dépense de 4 500 DA en Sorties datée du jour déclenche l'alerte (« environ 1 000 DA », « 4,5 fois ») ; le conseil porte sur Sorties, 2 000 DA, « Ordinateur portable », un mois plus tôt ; aucun conseil pour « Réserve de sécurité ». Si un jour échoue, ajuster les dates des données et le signaler dans « Écarts constatés » (Cowork mettra `innovation.md` §5 à jour).
+  - Tests : chargement répété → même état ; catégories renommées remises par défaut ; alerte et masquage du conseil effacés ; « 1 mois suffirait » ; sigle conservé.
+  - Parcours dans un navigateur, en local et en ligne : `/demo` → chargement → Accueil avec budgets et reste à dépenser → ajout de 4 500 DA en Sorties → message « il reste 500 DA » et carte d'alerte → Objectifs → carte Conseil → « Compris » → nouveau chargement → le conseil revient.
+- **Maquette** : aucune (page technique, hors interface utilisateur).
+- **Écarts constatés (rempli par Claude Code)** :
