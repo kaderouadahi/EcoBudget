@@ -177,7 +177,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H4 Objectifs d'épargne — statut : fait (branche h4-objectifs, à relire avant fusion)
+### H4 Objectifs d'épargne — statut : fait (fusionné dans main le 19/11, PR n°3)
 - **Scénario source** : S3 (Yasmine fait le point le soir, étapes 1 et 4).
 - **Fonctionnalité du sujet** : F4.
 - **Contenu et interactions** :
@@ -219,3 +219,30 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Écran vide : le bouton « Nouvel objectif » de l'en-tête est masqué, « Créer un objectif » est juste en dessous.
   - Pour H5 : les objectifs dont la date visée est passée sont triés avec les objectifs en cours ; le conseil devra les exclure explicitement (statut « en cours » seulement), et un objectif visé pour le mois en cours laisse 0 mois restant.
   - Plan : `app/docs/plans/2026-11-19-h4-objectifs.md`.
+
+---
+
+### H5 Conseil d'épargne — statut : à faire
+- **Scénario source** : S3 (Yasmine fait le point le soir, étape 5) ; script de démo dans `docs/03_conception/innovation.md` §5.3, étape 5.
+- **Fonctionnalité du sujet** : INNOV (recommandations).
+- **Contenu et interactions** :
+  - **Règle** : `innovation.md` §2.4 (DECISIONS.md, 18/11), avec ces précisions :
+    - ✱ **Calcul à chaque ouverture de l'écran Objectifs**, sur le dernier mois complet (M-1), si les conseils sont activés (`adviceEnabled`, activés par défaut ; interrupteur en H7).
+    - ✱ **Objectif visé** : parmi les objectifs en cours, celui dont le mois visé est le plus proche (à égalité, le plus ancien créé). « En cours » ici = non atteint, date visée non passée, et mois visé postérieur au mois en cours.
+    - ✱ **Historique suffisant** : au moins une dépense, toutes catégories confondues, datée du mois M-4 ou avant ; sinon pas de conseil.
+    - **Catégorie visée** : plus forte hausse entre le total de M-1 et l'habitude (médiane des totaux de M-2, M-3 et M-4). ✱ Un mois sans dépense compte pour 0 DA. ✱ Santé, Logement **et Autres** sont exclues (reconnues à leur identifiant, pas à leur nom). À égalité, la première dans l'ordre des catégories.
+    - **Réduction** = la hausse arrondie à 500 DA en dessous ; si elle vaut 0, pas de conseil.
+    - **Mois restants** n = mois visé − mois en cours ; **reste** = montant visé − épargné ; **rythme prévu** = reste ÷ n.
+    - **Mois nécessaires** = arrondi au mois supérieur de reste × n ÷ (reste + réduction × n), calculé en nombres entiers (pas d'erreur d'arrondi) ; **gain** = n − mois nécessaires ; conseil seulement si le gain vaut au moins 1.
+  - ✱ **Carte Conseil**, juste sous la carte de l'objectif concerné, construite comme la carte d'alerte de H3 : bleu vif, ampoule, titre « Conseil », phrase « En réduisant vos [catégorie] de [réduction] DA par mois, vous atteindriez « [objectif] » [un mois / N mois] plus tôt. » (✱ nom de catégorie commençant par une minuscule : « vos sorties »), boutons « Pourquoi ? » et « Compris ».
+  - **Panneau Conseil**, ouvert par « Pourquoi ? », même composant que le panneau Alerte : titre, phrase « Pourquoi ? », bouton « Compris », lien « Gérer les conseils » vers `/reglages`. La croix ferme le panneau, la carte reste.
+  - **Phrase « Pourquoi ? »** (`innovation.md` §2.4, mot pour mot) : « Pour atteindre « [objectif] » en [mois visé], il faut mettre de côté environ [rythme prévu] DA par mois. Avec [réduction] DA de plus, [mois nécessaires] mois suffiraient au lieu de [mois restants]. Le mois dernier, vos dépenses en [Catégorie] ont atteint [montant] DA, contre environ [habitude] DA d'habitude. » Montants arrondis à la centaine ; ✱ le nom de catégorie garde sa majuscule (comme dans la phrase de l'alerte).
+  - ✱ **« Compris »** masque le conseil jusqu'à la fin du mois en cours (`adviceHiddenUntil` = mois en cours), sur tous les appareils ; le mois suivant, le calcul est refait.
+  - Le conseil informe seulement : il ne modifie aucun budget ni objectif.
+  - Hors périmètre : historique des conseils (après les tests L3).
+- **Critères visés et comment** : C1 (la carte et son « Pourquoi ? » montrent comment avancer vers l'objectif) ; C2 (rien à décider, un seul bouton) ; C3 (rien n'est modifié ; l'utilisateur ferme ou désactive) ; C4 (conseils désactivables à part) ; C5 (pas de conseil sur des données insuffisantes ou un objectif clos) ; C6 (même composant et même fonctionnement que l'alerte) ; C7 (revenir à son habitude plutôt que se priver, carte bleue et non orange) ; C8 (comparaison mensuelle cohérente avec Graphiques).
+- **Critères d'acceptation** :
+  - Tests Vitest (CLAUDE.md §9) : vérification du prototype (reste 60 000 DA, 7 mois → environ 8 600 DA par mois ; avec 2 000 DA de plus, 6 mois → un mois plus tôt) ; jeu §5.2 aux jours 1, 10, 19 et 28 du mois → conseil Sorties, 2 000 DA, « Ordinateur portable », un mois plus tôt, et rien pour « Réserve de sécurité » ; pas de conseil sans 4 mois d'historique, pour un objectif atteint, une date passée, le mois en cours, une hausse inférieure à 500 DA ou un gain de 0 ; Santé, Logement et Autres exclues même avec la plus forte hausse ; mois sans dépense compté pour 0 ; « Compris » masque jusqu'au mois suivant ; conseils désactivés → rien.
+  - Aucune couleur d'état de budget sur la carte et le panneau.
+- **Maquette** : `telephone-06` et `ordinateur-06` (carte), `telephone-07` (modèle du panneau). Écarts (DECISIONS.md prime) : orange remplacé par le bleu ; « Accepter » et « Ignorer » remplacés par « Compris » ; « Pourquoi ? » devient un bouton qui ouvre le panneau.
+- **Écarts constatés (rempli par Claude Code)** :

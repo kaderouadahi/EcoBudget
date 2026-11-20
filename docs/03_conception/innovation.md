@@ -52,17 +52,17 @@ Affichage : médiane arrondie à la centaine de DA, rapport avec une décimale.
 - Pas d'historique des alertes dans cette version. Une marque « Inhabituelle » sur la dépense (avec accès au « Pourquoi ? ») est prévue après les tests L3.
 
 ### 2.4 Conseil d'épargne : la règle
-Calculé au début de chaque mois, si les conseils sont activés dans Réglages. Un seul conseil à la fois, pour l'objectif en cours dont la date visée est la plus proche.
+Calculé à chaque ouverture de l'écran Objectifs, sur le dernier mois complet, si les conseils sont activés dans Réglages. Un seul conseil à la fois, pour l'objectif en cours dont la date visée est la plus proche.
 
-1. **Catégorie visée** : celle dont la dépense du **mois dernier** dépasse le plus son **habitude**, c'est-à-dire la médiane des dépenses mensuelles des **3 mois précédents**. Santé et Logement sont exclues.
+1. **Catégorie visée** : celle dont la dépense du **mois dernier** dépasse le plus son **habitude**, c'est-à-dire la médiane des dépenses mensuelles des **3 mois précédents**. Santé, Logement et Autres sont exclues ; un mois sans dépense compte pour 0 DA.
 2. **Réduction proposée** : cette hausse, arrondie à 500 DA en dessous. Si elle vaut 0, pas de conseil.
 3. **Rythme prévu** : reste à épargner ÷ mois restants jusqu'au mois visé (novembre 2026 → juin 2027 : 7 mois).
 4. **Mois nécessaires avec la réduction** : reste ÷ (rythme prévu + réduction), arrondi au mois supérieur.
 5. **Gain** = mois restants − mois nécessaires. Le conseil ne s'affiche que si le gain est d'au moins 1 mois.
 
 Pas de conseil si :
-- il n'y a pas au moins 4 mois d'historique (le mois dernier et les 3 mois précédents) ;
-- l'objectif est atteint ou sa date visée est passée ;
+- il n'y a pas au moins 4 mois d'historique (au moins une dépense datée du 4e mois avant le mois en cours, ou avant) ;
+- l'objectif est atteint, sa date visée est passée ou c'est le mois en cours ;
 - aucune catégorie n'a augmenté d'au moins 500 DA.
 
 Pourquoi le rythme prévu, et non le rythme réel des versements : l'application enregistre des versements datés (F4, décision du 18/11), mais un rythme réel suppose plusieurs mois de versements réguliers ; le rythme prévu fonctionne dès la création de l'objectif, avec la seule date visée. Limite assumée : le calcul suppose que l'utilisateur suit son plan, et la phrase le dit (« pour atteindre… en juin 2027, il faut… »).
