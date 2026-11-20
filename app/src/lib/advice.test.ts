@@ -93,9 +93,17 @@ describe('pas de conseil', () => {
     // M-1 = 7 000 − 1 400 − 1 200 = 4 400 → pas de hausse
     expect(computeAdvice({ ...d, expenses })).toBeNull()
   })
+  it('hausse de 1 à 499 DA : réduction arrondie à 0, pas de conseil', () => {
+    const d = base()
+    const M1 = addMonths(d.M, -1)
+    // Sorties du mois dernier ramenées à 5 400 (habitude 5 000) : hausse de 400 DA
+    const expenses = d.expenses.map((e) => (e.categoryId === 'sorties' && e.date.startsWith(M1) && e.amount === 1400 ? { ...e, amount: 0 } : e))
+      .map((e) => (e.categoryId === 'sorties' && e.date.startsWith(M1) && e.amount === 1200 ? { ...e, amount: 1000 } : e))
+    expect(computeAdvice({ ...d, expenses })).toBeNull()
+  })
   it('gain de 0 mois', () => {
     const d = base()
-    // reste 60 000 sur 13 mois : 2 000 de plus ne fait pas gagner un mois entier ? on vérifie avec un petit gain
+    // 1 000 000 DA à épargner en 2 mois : 2 000 DA de plus par mois ne fait pas gagner un mois entier
     const goals = [G('g', 'Grand projet', 1000000, addMonths(d.M, 2))]
     expect(computeAdvice({ ...d, goals, contributions: [] })).toBeNull()
   })
