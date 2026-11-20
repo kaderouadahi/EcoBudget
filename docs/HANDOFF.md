@@ -222,7 +222,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H5 Conseil d'épargne — statut : à faire
+### H5 Conseil d'épargne — statut : fait (branche h5-conseil, à relire avant fusion)
 - **Scénario source** : S3 (Yasmine fait le point le soir, étape 5) ; script de démo dans `docs/03_conception/innovation.md` §5.3, étape 5.
 - **Fonctionnalité du sujet** : INNOV (recommandations).
 - **Contenu et interactions** :
@@ -246,3 +246,11 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Aucune couleur d'état de budget sur la carte et le panneau.
 - **Maquette** : `telephone-06` et `ordinateur-06` (carte), `telephone-07` (modèle du panneau). Écarts (DECISIONS.md prime) : orange remplacé par le bleu ; « Accepter » et « Ignorer » remplacés par « Compris » ; « Pourquoi ? » devient un bouton qui ouvre le panneau.
 - **Écarts constatés (rempli par Claude Code)** :
+  - Tests Vitest : tous les cas demandés ; jeu de §5.2 vérifié aux jours 1, 10, 19 et 28 (Sorties, 2 000 DA, « Ordinateur portable », un mois plus tôt, rien pour « Réserve de sécurité ») ; phrase « Pourquoi ? » S3 mot pour mot (« environ 8 600 DA », « 6 mois suffiraient au lieu de 7 », « 7 000 DA, contre environ 5 000 DA ») ; un objectif en retard plus proche est écarté au profit du plus proche en cours ; catégorie renommée → nom actuel (« vos loisirs »).
+  - Vérifié dans un navigateur piloté, en local et en ligne (8 étapes) : 4 mois de Sorties (5 000, 4 800, 5 200, puis 7 000) et un objectif à 90 000 / 150 000 DA visé dans 7 mois → carte Conseil juste sous l'objectif, phrase exacte ; « Pourquoi ? » → phrase exacte et « Gérer les conseils » ; croix → la carte reste ; « Compris » → masqué, et toujours masqué après rechargement.
+  - La carte et le panneau de l'alerte (H3) sont devenus un composant commun (`InsightCard`) : alerte et conseil ont exactement le même fonctionnement (C6) ; l'alerte est inchangée (ses tests passent sans modification).
+  - Dans le panneau, la ligne sous le titre « Conseil » reprend la phrase de la carte.
+  - Sur ordinateur, les objectifs sont affichés sur une seule colonne (comme `ordinateur-06`), pour que le conseil reste juste sous l'objectif concerné.
+  - « Gérer les conseils » mène à l'écran Réglages provisoire en attendant H7.
+  - Pour la démo : le jeu de §5.2 n'est pas chargé tant que H8 n'existe pas ; il faut des dépenses datées des 4 mois précédents (le formulaire accepte les dates passées) et ne pas avoir touché « Compris » ce mois-ci sur le compte de démo.
+  - Plan : `app/docs/plans/2026-11-20-h5-conseil.md`.
