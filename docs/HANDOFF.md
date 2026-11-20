@@ -222,7 +222,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H5 Conseil d'épargne — statut : fait (branche h5-conseil, à relire avant fusion)
+### H5 Conseil d'épargne — statut : fait (fusionné dans main le 20/11, PR n°4)
 - **Scénario source** : S3 (Yasmine fait le point le soir, étape 5) ; script de démo dans `docs/03_conception/innovation.md` §5.3, étape 5.
 - **Fonctionnalité du sujet** : INNOV (recommandations).
 - **Contenu et interactions** :
@@ -257,7 +257,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H8 Données de démo — statut : fait (branche h8-demo, à relire avant fusion)
+### H8 Données de démo — statut : fait (fusionné dans main le 20/11, PR n°5)
 - **Scénario source** : script de démo `docs/03_conception/innovation.md` §5.3 (S4 puis S3, enchaînés) ; second tour des tests L3 sur l'application finale.
 - **Fonctionnalité du sujet** : démonstration (L2 « démonstration de la fonctionnalité innovante », L4). Avancée en 7e position le 20/11 : l'application est montrée en direct, sans capture (QUESTIONS.md, 20/11).
 - **Contenu et interactions** :
