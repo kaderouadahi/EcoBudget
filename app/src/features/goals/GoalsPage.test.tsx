@@ -1,11 +1,13 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
-import type { Contribution, Goal } from '../../data/model'
+import type { Contribution, Expense, Goal, UserDoc } from '../../data/model'
+import { DEFAULT_CATEGORIES } from '../../data/defaults'
 
 let data: Record<string, unknown> = {}
 vi.mock('../../auth/AuthGate', () => ({ useUid: () => 'u1' }))
-vi.mock('../../data/repo', () => ({ createDoc: vi.fn(), removeDoc: vi.fn(), updateDocFields: vi.fn() }))
+const setUserFields = vi.fn()
+vi.mock('../../data/repo', () => ({ createDoc: vi.fn(), removeDoc: vi.fn(), updateDocFields: vi.fn(), setUserFields: (...a: unknown[]) => setUserFields(...a) }))
 vi.mock('../../data/DataProvider', () => ({ useData: () => data }))
 
 import { GoalsPage } from './GoalPages'
@@ -18,8 +20,8 @@ const month = (offset: number) => {
 const G = (id: string, name: string, target: number, targetMonth: string, createdAt = 0): Goal => ({ id, name, target, targetMonth, createdAt })
 const C = (goalId: string, amount: number): Contribution => ({ id: `${goalId}-${amount}`, goalId, amount, date: '2026-11-01', createdAt: 0 })
 
-function renderPage(goals: Goal[], contributions: Contribution[] = []) {
-  data = { goals, contributions, ready: true }
+function renderPage(goals: Goal[], contributions: Contribution[] = [], expenses: Expense[] = [], user: Partial<UserDoc> = {}) {
+  data = { goals, contributions, expenses, categories: DEFAULT_CATEGORIES, user: { alertsEnabled: true, adviceEnabled: true, onboardingDone: true, ...user }, ready: true }
   return render(<MemoryRouter><GoalsPage /></MemoryRouter>)
 }
 
@@ -67,5 +69,54 @@ describe('Objectifs', () => {
   it('tri : le plus proche en haut', () => {
     renderPage([G('b', 'B', 1000, month(9)), G('a', 'A', 1000, month(3)), G('c', 'C', 1000, month(5))])
     expect(screen.getAllByRole('article').map((c) => c.getAttribute('aria-label'))).toEqual(['A', 'C', 'B'])
+  })
+})
+
+describe('carte Conseil (H5)', () => {
+  const day = (k: number, d: number) => `${month(-k)}-${String(d).padStart(2, '0')}`
+  // Sorties : 5 000, 4 800, 5 200 puis 7 000 le mois dernier (innovation.md §5.2, totaux)
+  const expenses: Expense[] = [
+    { id: 's4', amount: 5000, categoryId: 'sorties', date: day(4, 10), createdAt: 1 },
+    { id: 's3', amount: 4800, categoryId: 'sorties', date: day(3, 10), createdAt: 2 },
+    { id: 's2', amount: 5200, categoryId: 'sorties', date: day(2, 10), createdAt: 3 },
+    { id: 's1', amount: 7000, categoryId: 'sorties', date: day(1, 10), createdAt: 4 },
+  ]
+  const goals = [G('pc', 'Ordinateur portable', 150000, month(7), 1), G('res', 'Réserve de sécurité', 50000, month(13), 2)]
+  const contributions = [C('pc', 90000), C('res', 12000)]
+  const TEXT = 'En réduisant vos sorties de 2 000 DA par mois, vous atteindriez « Ordinateur portable » un mois plus tôt.'
+
+  it('juste sous la carte de l’objectif concerné, bleue, sans couleur de budget', () => {
+    setUserFields.mockClear()
+    const { container } = renderPage(goals, contributions, expenses)
+    const advice = screen.getByRole('region', { name: 'Conseil' })
+    expect(norm(advice.textContent)).toContain(TEXT)
+    expect(advice.querySelector('svg.lucide-lightbulb')).not.toBeNull()
+    const list = container.querySelector('.goal-list')!
+    const kids = [...list.children].map((el) => el.getAttribute('aria-label') ?? (el.matches('.alert-card') ? 'Conseil' : '?'))
+    expect(kids).toEqual(['Ordinateur portable', 'Conseil', 'Réserve de sécurité'])
+    expect(container.querySelector('[class*="status-"]')).toBeNull()
+  })
+
+  it('« Pourquoi ? » : phrase et « Gérer les conseils » ; la croix ferme, la carte reste', () => {
+    renderPage(goals, contributions, expenses)
+    fireEvent.click(screen.getByRole('button', { name: 'Pourquoi ?' }))
+    const panel = screen.getByRole('dialog', { name: 'Conseil' })
+    expect(norm(panel.textContent)).toContain('il faut mettre de côté environ 8 600 DA par mois. Avec 2 000 DA de plus, 6 mois suffiraient au lieu de 7.')
+    expect(norm(panel.textContent)).toContain('vos dépenses en Sorties ont atteint 7 000 DA, contre environ 5 000 DA d\'habitude.')
+    expect(within(panel).getByRole('link', { name: 'Gérer les conseils' })).toHaveAttribute('href', '/reglages')
+    fireEvent.click(within(panel).getByRole('button', { name: 'Fermer' }))
+    expect(screen.getByRole('region', { name: 'Conseil' })).toBeInTheDocument()
+  })
+
+  it('« Compris » masque le conseil jusqu’à la fin du mois en cours', () => {
+    setUserFields.mockClear()
+    renderPage(goals, contributions, expenses)
+    fireEvent.click(screen.getByRole('button', { name: 'Compris' }))
+    expect(setUserFields).toHaveBeenCalledWith('u1', { adviceHiddenUntil: month(0) })
+  })
+
+  it('déjà masqué ce mois-ci : pas de carte', () => {
+    renderPage(goals, contributions, expenses, { adviceHiddenUntil: month(0) })
+    expect(screen.queryByRole('region', { name: 'Conseil' })).not.toBeInTheDocument()
   })
 })

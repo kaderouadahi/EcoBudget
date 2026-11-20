@@ -1,9 +1,11 @@
 import { Plus } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useUid } from '../../auth/AuthGate'
 import { useData } from '../../data/DataProvider'
-import { createDoc, removeDoc, updateDocFields } from '../../data/repo'
+import { createDoc, removeDoc, setUserFields, updateDocFields } from '../../data/repo'
+import { adviceText, adviceWhy, computeAdvice } from '../../lib/advice'
+import { InsightCard } from '../alert/InsightCard'
 import { formatDA } from '../../lib/format'
 import { correction, editNotice, goalPercent, goalStatus, progressNotice, savedAmount, sortGoals } from '../../lib/goals'
 import { currentMonth, toISODate } from '../../lib/month'
@@ -16,9 +18,13 @@ import { GoalForm } from './GoalForm'
 import { SavingsForm } from './SavingsForm'
 
 export function GoalsPage() {
-  const { goals, contributions, ready } = useData()
+  const uid = useUid()
+  const { goals, contributions, expenses, categories, user, ready } = useData()
   if (!ready) return null
-  const month = currentMonth(new Date())
+  const today = new Date()
+  const month = currentMonth(today)
+  // Innovation (H5) : conseil recalculé à chaque ouverture, sur le dernier mois complet.
+  const advice = computeAdvice({ goals, contributions, expenses, categories, user, today })
   const items = sortGoals(goals.map((goal) => {
     const saved = savedAmount(goal.id, contributions)
     return { goal, saved, percent: goalPercent(saved, goal.target), status: goalStatus(saved, goal.target, goal.targetMonth, month) }
@@ -48,7 +54,21 @@ export function GoalsPage() {
         </section>
       ) : (
         <div className="goal-list">
-          {items.map((i) => <GoalCard key={i.goal.id} goal={i.goal} saved={i.saved} percent={i.percent} status={i.status} />)}
+          {items.map((i) => (
+            <Fragment key={i.goal.id}>
+              <GoalCard goal={i.goal} saved={i.saved} percent={i.percent} status={i.status} />
+              {advice?.goalId === i.goal.id && (
+                <InsightCard
+                  icon="bulb"
+                  title="Conseil"
+                  subtitle={adviceText(advice)}
+                  why={adviceWhy(advice)}
+                  manageLabel="Gérer les conseils"
+                  onDismiss={() => setUserFields(uid, { adviceHiddenUntil: month })}
+                />
+              )}
+            </Fragment>
+          ))}
         </div>
       )}
     </div>
