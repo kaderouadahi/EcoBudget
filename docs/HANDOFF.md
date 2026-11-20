@@ -257,7 +257,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H8 Données de démo — statut : à faire
+### H8 Données de démo — statut : fait (branche h8-demo, à relire avant fusion)
 - **Scénario source** : script de démo `docs/03_conception/innovation.md` §5.3 (S4 puis S3, enchaînés) ; second tour des tests L3 sur l'application finale.
 - **Fonctionnalité du sujet** : démonstration (L2 « démonstration de la fonctionnalité innovante », L4). Avancée en 7e position le 20/11 : l'application est montrée en direct, sans capture (QUESTIONS.md, 20/11).
 - **Contenu et interactions** :
@@ -281,3 +281,10 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Parcours dans un navigateur, en local et en ligne : `/demo` → chargement → Accueil avec budgets et reste à dépenser → ajout de 4 500 DA en Sorties → message « il reste 500 DA » et carte d'alerte → Objectifs → carte Conseil → « Compris » → nouveau chargement → le conseil revient.
 - **Maquette** : aucune (page technique, hors interface utilisateur).
 - **Écarts constatés (rempli par Claude Code)** :
+  - Jeu vérifié **pour chaque jour** du 1er au 31 janvier 2027, du 1er au 28 février 2027, le 29 février 2028 et trois jours de novembre 2026 : une dépense de 4 500 DA en Sorties déclenche l'alerte (« environ 1 000 DA », « 4,5 fois »), le message « Sorties : il reste 500 DA », et le conseil porte sur Sorties, 2 000 DA, « Ordinateur portable », un mois plus tôt ; jamais sur « Réserve de sécurité ». **Aucune date du jeu n'a eu besoin d'être ajustée** : `innovation.md` §5 reste valable, et vaut aussi pour les jours 29 à 31.
+  - Tests aussi : totaux mensuels (Sorties 5 000 / 4 800 / 5 200 / 7 000, Courses 30 000, Transport 3 000, Repas 6 000), mois en cours sans Sorties et sans date future, épargnés 90 000 et 12 000, chargement répété → même état, dépense et catégorie en trop supprimées, catégorie renommée remise par défaut, prénom, alerte et masquage du conseil effacés ; « 1 mois suffirait » ; « EDF » gardé tel quel.
+  - Vérifié dans un navigateur piloté, en local et en ligne (10 étapes) : `/demo` → confirmation → Accueil (reste à dépenser sur 57 000 DA de budgets) → 4 500 DA en Sorties → « Sorties : il reste 500 DA » et carte d'alerte → « Pourquoi ? » → Objectifs → carte Conseil → « Compris » → nouveau chargement → plus d'alerte ni de dépense de 4 500 DA → le conseil revient.
+  - Le chargement part en un seul envoi groupé (atomique) : jamais d'état à moitié chargé, et il fonctionne aussi hors connexion. Limite technique : 500 écritures par envoi ; le jeu en fait environ 140 plus la suppression des données existantes, largement suffisant pour un compte de démo ou de test.
+  - Les dépenses de démo ont des notes vides : la liste « Dernières dépenses » affiche le nom de la catégorie.
+  - La page `/demo` s'affiche dans la coquille de l'application (barre de navigation visible) mais n'apparaît dans aucun menu.
+  - Plan : `app/docs/plans/2026-11-20-h8-demo.md`.
