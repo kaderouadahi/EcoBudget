@@ -6,7 +6,8 @@
 select.text-input { appearance: auto; }
 
 .goal-list { display: flex; flex-direction: column; gap: 14px; }
-@media (min-width: 1100px) { .goal-list { display: grid; grid-template-columns: 1fr 1fr; align-items: start; } }
+/* Une seule colonne, aussi sur ordinateur : le Conseil reste juste sous l'objectif concerné (HANDOFF H5, ordinateur-06). */
+@media (min-width: 900px) { .goal-list { max-width: 760px; } }
 .goal-card {
   display: flex;
   flex-direction: column;
