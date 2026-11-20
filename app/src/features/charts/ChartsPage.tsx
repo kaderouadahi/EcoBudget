@@ -133,13 +133,20 @@ export function ChartsPage() {
                   interval={0}
                   height={44}
                   tick={(props: { x?: number | string; y?: number | string; payload?: { value: string } }) => (
-                    <MonthTick x={Number(props.x)} y={Number(props.y)} month={props.payload?.value ?? ''} selected={month} current={M} />
+                    <MonthTick
+                      x={Number(props.x)}
+                      y={Number(props.y)}
+                      month={props.payload?.value ?? ''}
+                      selected={month}
+                      current={M}
+                      zero={bars.find((b) => b.month === props.payload?.value)?.total === 0}
+                    />
                   )}
                 />
                 <YAxis hide domain={[0, 'auto']} />
                 <Bar dataKey="total" radius={[10, 10, 10, 10]} maxBarSize={56} isAnimationActive={false}>
                   {bars.map((b) => <Cell key={b.month} fill={b.month === month ? BAR_SELECTED : BAR_OTHER} />)}
-                  <LabelList dataKey="total" position="top" className="bar-label" formatter={(v) => formatNumber(Number(v))} />
+                  <LabelList dataKey="total" position="top" className="bar-label" fill="#161A24" formatter={(v) => (Number(v) > 0 ? formatNumber(Number(v)) : '')} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -162,10 +169,14 @@ export function ChartsPage() {
   )
 }
 
-/** Étiquette de mois sous une barre ; « en cours » sous le mois en cours ; le mois choisi en gras. */
-function MonthTick({ x, y, month, selected, current }: { x: number; y: number; month: string; selected: string; current: string }) {
+/**
+ * Étiquette de mois sous une barre ; « en cours » sous le mois en cours ; le mois choisi en gras.
+ * Mois à 0 : Recharts ne dessine ni barre ni étiquette, le « 0 » est donc écrit ici, sur la ligne de base.
+ */
+function MonthTick({ x, y, month, selected, current, zero }: { x: number; y: number; month: string; selected: string; current: string; zero: boolean }) {
   return (
     <g transform={`translate(${x},${y})`}>
+      {zero && <text textAnchor="middle" dy={-12} className="bar-label bar-zero">0</text>}
       <text textAnchor="middle" dy={14} className={month === selected ? 'tick tick-selected' : 'tick'}>{shortMonth(month)}</text>
       {month === current && <text textAnchor="middle" dy={32} className="tick tick-current">en cours</text>}
     </g>
