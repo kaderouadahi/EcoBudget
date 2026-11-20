@@ -293,7 +293,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H6 Graphiques — statut : fait (branche h6-graphiques, à relire avant fusion)
+### H6 Graphiques — statut : fait (fusionné dans main le 20/11, PR n°6)
 - **Scénario source** : S3 (Yasmine fait le point le soir, étape 3) ; démo `docs/03_conception/innovation.md` §5.3 (hausse des sorties visible avant la carte Conseil).
 - **Fonctionnalité du sujet** : F3.
 - **Contenu et interactions** :
@@ -339,3 +339,49 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Pourcentage de la légende plafonné à 99 % tant que la catégorie n'est pas seule : jamais « 100 % » à côté d'une autre part (comme H2 et H4).
   - Le tableau caché des barres nomme ce qu'il montre : « Montants par mois, toutes les dépenses » ou « Montants par mois, Sorties ».
   - Plan : `app/docs/plans/2026-11-20-h6-graphiques.md`.
+
+---
+
+### H7 Réglages — statut : à faire
+- **Scénario source** : S2 (Nadia crée la catégorie « Enfants », étape 1) ; S4 (« Gérer les alertes », étape 4) ; S3 (conseil désactivable) ; Accueil personnalisé par le prénom (DECISIONS.md, 17/11).
+- **Fonctionnalité du sujet** : transversal (les catégories servent F1, F2 et F3 ; les interrupteurs servent INNOV).
+- **Contenu et interactions** :
+  - **Écran Réglages** (`/reglages`, remplace l'écran provisoire ; icône en haut à droite sur téléphone, bas de la barre latérale sur ordinateur, H0) : titre « Réglages », trois sections dans cet ordre : **Compte**, **Catégories**, **Alertes et conseils**. Sur ordinateur, deux colonnes comme `ordinateur-08` (Compte à gauche ; Catégories puis Alertes et conseils à droite).
+  - ✱ **Retirés de la maquette** : interrupteur « Alerte de budget » et « Mois budgétaire » (DECISIONS.md, 18/11) ; section « Données de démonstration » (la démo passe par `/demo`, DECISIONS.md, 20/11).
+  - ✱ **Compte** (DECISIONS.md, 20/11) :
+    - Icône nuage, « Sans compte », « Vos données sont enregistrées de façon anonyme sur cet appareil. » **Pas de boutons « Créer un compte » ni « Se connecter »** : ils arrivent avec H9.
+    - Champ « Votre prénom (facultatif) », aide « Affiché sur l'accueil : « Bonjour [prénom] » » (« Bonjour » si le champ est vide).
+    - Enregistré en quittant le champ (ou avec Entrée), espaces de début et de fin retirés ; message « Prénom enregistré » seulement si la valeur a changé ; champ vide → prénom effacé. Longueur maximale au choix de Claude Code (à noter dans les écarts).
+    - Accueil (DECISIONS.md, 17/11) : « Bonjour [prénom] » et bulle de profil avec l'initiale ; sans prénom, « Bonjour » et l'icône de profil.
+  - **Catégories** :
+    - Liste dans l'ordre des catégories : icône, nom, crayon (« Modifier [Courses] »), ✱ corbeille **grise** (« Supprimer [Courses] ») ; « Autres » en dernier, avec un cadenas et « Toujours présente », sans crayon ni corbeille. Bouton « Ajouter une catégorie » sous la liste.
+    - ✱ **Ajouter / renommer** (DECISIONS.md, 20/11) : formulaire à part, plein écran sur téléphone comme le formulaire Dépense ; titre « Nouvelle catégorie » / « Modifier la catégorie ».
+      - **Nom** : obligatoire, 20 caractères au plus ; vide → « Donnez un nom à la catégorie, par exemple Enfants » ; déjà pris (quelles que soient les majuscules, espaces de début et de fin ignorés) → « Cette catégorie existe déjà » ; en modification, garder son propre nom n'est pas un doublon.
+      - **Icône** : choix dans la liste déjà prête (`CATEGORY_ICONS`) ; ✱ l'icône « … » d'« Autres » n'est pas proposée ; présélection : la première icône non utilisée par une autre catégorie (en modification, l'icône actuelle). Chaque icône a un nom accessible (« Bébé », « Cadeau »…).
+      - Boutons « Ajouter la catégorie » / « Enregistrer ». Nouvelle catégorie en fin de liste, juste avant « Autres ».
+      - Messages « Catégorie ajoutée : Enfants · Annuler » et « Catégorie modifiée · Annuler » (« Annuler » rétablit l'état d'avant).
+      - Le nouveau nom s'affiche partout aussitôt (budgets, graphiques, phrases de l'alerte et du conseil, qui utilisent déjà le nom actuel).
+    - ✱ **Supprimer** (DECISIONS.md, 20/11 ; maquette `telephone-09`) : la corbeille ouvre la fenêtre de confirmation commune (« Garder » / « Supprimer » en rouge) :
+      - titre « Supprimer la catégorie [Sorties] ? » ;
+      - avec des dépenses : « Les [12] dépenses de [Sorties] ne seront pas perdues : elles seront déplacées dans la catégorie choisie ci-dessous. » (au singulier pour une dépense) ; menu « Déplacer les dépenses vers », « Autres » par défaut, puis les autres catégories dans leur ordre ;
+      - sans dépense : « Aucune dépense dans [Sorties]. », pas de menu ;
+      - si la catégorie a un budget : « Le budget de [Sorties] sera supprimé. » ;
+      - « Vous pourrez l'annuler juste après. »
+      - Toutes les dépenses de la catégorie sont déplacées, quel que soit leur mois ; écriture groupée (atomique), comme le chargement de démo (H8) : jamais d'état à moitié fait, fonctionne hors connexion.
+      - Message « Catégorie supprimée : Sorties · 12 dépenses déplacées vers Autres · Annuler » (sans la partie sur les dépenses s'il n'y en a pas). « Annuler » rétablit la catégorie (même identifiant, nom, icône et place), son budget, et remet dans la catégorie les dépenses déplacées, celles-là seulement.
+      - La carte d'alerte suit la règle de H3 : si la dépense signalée change de catégorie, la carte disparaît ; « Annuler » la fait revenir.
+  - ✱ **Alertes et conseils** (DECISIONS.md, 18/11 et 20/11) :
+    - Deux lignes avec un interrupteur et le texte « Activé » / « Désactivé » à côté : « Dépenses inhabituelles », « Vous prévenir quand une dépense sort de vos habitudes » (`alertsEnabled`) ; « Conseils d'épargne », « Vous proposer comment atteindre un objectif plus tôt » (`adviceEnabled`).
+    - Effet immédiat, enregistré dans le compte (tous les appareils) ; message court « Alertes désactivées » / « Alertes activées » / « Conseils désactivés » / « Conseils activés », sans « Annuler ».
+    - Alertes désactivées : aucun contrôle à l'ajout (déjà en H3) et carte d'alerte en attente masquée ; elle revient à la réactivation si la dépense n'a pas changé (règle de H3).
+    - Conseils désactivés : pas de carte Conseil (déjà en H5).
+    - « Gérer les alertes » et « Gérer les conseils » (panneaux de H3 et H5) ouvrent Réglages directement sur la section « Alertes et conseils ».
+  - Hors périmètre : créer un compte et se connecter (H9), réordonner les catégories, changer l'icône d'« Autres », mois budgétaire, notifications.
+- **Critères visés et comment** : C1 (message après chaque action, liens qui mènent à la bonne section, aide « Bonjour [prénom] ») ; C3 (suppression confirmée et annulable ; alertes et conseils désactivables et réactivables d'un geste) ; C4 (catégories à son image, prénom, alertes et conseils réglés séparément) ; C5 (aucune dépense perdue, doublon refusé, erreurs au champ) ; C6 (mêmes formulaires, même fenêtre de confirmation et mêmes messages que les autres écrans) ; C7 (état des interrupteurs écrit en texte ; corbeilles grises, le rouge garde son sens ; cadenas « Toujours présente »).
+- **Critères d'acceptation** :
+  - Tests Vitest : nom vide, trop long, doublon (majuscules, espaces), propre nom accepté en modification ; icône présélectionnée ; suppression → toutes les dépenses déplacées vers la catégorie choisie, budget supprimé, « Annuler » rétablit catégorie, budget et seulement les dépenses déplacées ; « Autres » ni modifiable ni supprimable ; prénom : espaces retirés, vide → effacé ; alertes désactivées → carte masquée, réactivées → carte revenue.
+  - S2 étape 1 : « Enfants » créée avec l'icône bébé apparaît en fin de liste, dans le formulaire Dépense, dans Budgets et dans le menu de Graphiques.
+  - Parcours dans un navigateur, en local et en ligne : `/demo` → Réglages, prénom « Yasmine » → Accueil « Bonjour Yasmine » → 4 500 DA en Sorties → carte d'alerte → « Pourquoi ? » → « Gérer les alertes » → section affichée → désactiver → Accueil sans carte → réactiver → carte revenue → ajouter « Enfants » → renommer Sorties en « Loisirs » → Objectifs : conseil « vos loisirs » → supprimer « Loisirs » vers Autres → message avec le nombre de dépenses, budget retiré, carte d'alerte disparue → « Annuler » → catégorie, budget, dépenses et carte revenus. Recharger `/demo` à la fin.
+  - Mêmes sections et libellés sur téléphone et sur ordinateur ; aucun état signalé par la couleur seule.
+- **Maquette** : `telephone-08`, `ordinateur-08` (Réglages), `telephone-09`, `ordinateur-11` (suppression). Écarts (DECISIONS.md prime) : boutons « Créer un compte » / « Se connecter » retirés jusqu'à H9, message changé ; « Alerte de budget », « Mois budgétaire » et « Données de démonstration » retirés ; section « Alertes » renommée « Alertes et conseils », cases à cocher remplacées par des interrupteurs avec texte, ligne « Conseils d'épargne » ajoutée ; corbeilles grises au lieu de rouges ; « Enfants » est une catégorie créée par l'utilisateur (S2).
+- **Écarts constatés (rempli par Claude Code)** :

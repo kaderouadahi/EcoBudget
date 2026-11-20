@@ -14,6 +14,8 @@ Les montants sont des **données de démonstration** (voir `docs/01_analyse/scen
 
 **Écart (décision du 20/11/2026)** : écran Graphiques sans onglets ni phrase de synthèse (fond orange clair, ampoule) ; sélecteur de mois, menu de catégorie et montants au-dessus des barres à ajouter (spec H6 de `docs/HANDOFF.md`).
 
+**Écart (décisions du 20/11/2026)** : écran Réglages sans boutons « Créer un compte » / « Se connecter » (jusqu'à H9), sans « Alerte de budget », « Mois budgétaire » ni « Données de démonstration » ; section « Alertes et conseils » avec deux interrupteurs et leur texte ; corbeilles grises, rouge seulement sur le bouton « Supprimer » de la confirmation (spec H7 de `docs/HANDOFF.md`).
+
 ## Parcourir les 4 scénarios dans le prototype
 
 | Scénario | Parcours au clic |
