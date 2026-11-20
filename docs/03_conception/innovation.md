@@ -136,9 +136,9 @@ Sources : voir `docs/01_analyse/besoins.md`. Rien n'est affirmé sur les applica
 
 ### 5.1 Principe
 - **Un seul profil** de démo, sans prénom (l'Accueil affiche « Bonjour »), qui enchaîne l'alerte (S4) et le conseil (S3) sans changer de compte.
-- Dates **relatives au jour de la démo** : M = mois de la démo, M-1 = mois dernier, etc. Jours entre le 1er et le 28.
-- Chiffres vérifiés par calcul : la médiane des Sorties reste à 1 000 DA pour n'importe quel jour de démo du 1er au 28.
-- La façon de charger ces données dans l'application relève de la spec pour Claude Code (tâche 09, `HANDOFF.md`).
+- Dates **relatives au jour de la démo** : M = mois de la démo, M-1 = mois dernier, etc. N'importe quel jour du mois.
+- Chiffres vérifiés par des tests pour chaque jour du 1er au 31, en février et le 29 février (H8) : alerte, message de budget et conseil identiques, sans ajustement des dates.
+- Chargement : page cachée https://ecobudget-3b3a4.web.app/demo, bouton « Charger les données de démo ». Elle remplace tout le compte de l'appareil (catégories par défaut, dépenses, budgets, objectifs, versements) et efface le prénom, l'alerte en attente et le masquage du conseil ; dates calculées au moment du chargement (spec H8, `HANDOFF.md`).
 
 ### 5.2 Données
 **Sorties** (aucune dépense en M avant la démo) :
@@ -150,7 +150,14 @@ Sources : voir `docs/01_analyse/besoins.md`. Rien n'est affirmé sur les applica
 | M-2 | 4 : 700 · 10 : 1 000 · 16 : 1 000 · 22 : 1 200 · 27 : 1 300 | 5 200 |
 | M-1 | 2 : 600 · 6 : 800 · 10 : 1 000 · 14 : 1 000 · 18 : 1 000 · 22 : 1 200 · 27 : 1 400 | 7 000 |
 
-**Autres catégories**, stables pour que Sorties soit la seule à augmenter : Courses 30 000 DA par mois, Transport 3 000 DA par mois, de M-4 à M-1, répartis en plusieurs dépenses.
+**Autres catégories**, stables de M-4 à M-1 pour que Sorties soit la seule à augmenter :
+- Courses : 7 500 DA les 3, 10, 17 et 24 (30 000 DA par mois) ;
+- Transport : 500 DA les 2, 7, 12, 17, 22 et 27 (3 000 DA par mois) ;
+- Repas : 750 DA les 1, 5, 8, 12, 15, 19, 22 et 26 (6 000 DA par mois).
+
+**Mois en cours (M)** : les mêmes dépenses de Courses, Transport et Repas, seulement celles datées du jour du chargement ou avant ; aucune en Sorties.
+
+**Budgets** : Courses 40 000, Repas 8 000, Transport 4 000, Sorties 5 000 DA (57 000 DA au total). Tous restent au vert avant la démo (75 % au plus).
 
 **Objectifs d'épargne** :
 
@@ -159,14 +166,18 @@ Sources : voir `docs/01_analyse/besoins.md`. Rien n'est affirmé sur les applica
 | Ordinateur portable | 90 000 DA | 150 000 DA | M+7 |
 | Réserve de sécurité | 12 000 DA | 50 000 DA | M+13 |
 
+Objectifs créés en M-5 ; l'épargne est enregistrée en vrais versements, un par mois le 28, de M-4 à M-1 : 22 500 DA pour « Ordinateur portable », 3 000 DA pour « Réserve de sécurité ».
+
 Résultats attendus :
 - Alerte : médiane des Sorties = 1 000 DA ; une dépense de 4 500 DA donne 4,5 fois et 3 500 DA de plus → alerte.
+- Budget : la même dépense fait passer Sorties à 90 % de 5 000 DA → message « Sorties : il reste 500 DA » en orange.
 - Conseil : Sorties M-1 = 7 000 DA contre une habitude de 5 000 DA (médiane de 5 000, 4 800, 5 200) → réduction de 2 000 DA. Ordinateur portable (date la plus proche) : 60 000 DA en 7 mois, soit environ 8 600 DA par mois ; avec 2 000 DA de plus, 6 mois → un mois plus tôt. Réserve de sécurité : pas de conseil (un seul conseil à la fois).
 
 ### 5.3 Script de démo
-1. **Accueil** : présenter le reste à dépenser et les budgets.
-2. **Ajouter une dépense** : 4 500 DA en Sorties (« anniversaire d'un ami »), puis « Enregistrer la dépense ».
+0. **Avant de passer, le jour même, sur l'appareil de démo** : ouvrir l'application une fois en ligne (dernière version), puis https://ecobudget-3b3a4.web.app/demo → « Charger les données de démo » → « Charger ». À refaire après chaque répétition. Plan B sur téléphone : même chargement ; sur iPhone, faire la démo dans Safari (l'application installée ne partage pas les données de Safari).
+1. **Accueil** : présenter le reste à dépenser et les budgets, tous au vert (« Dans le budget »).
+2. **Ajouter une dépense** : 4 500 DA en Sorties (« anniversaire d'un ami »), puis « Enregistrer la dépense ». Le message affiche « Sorties : il reste 500 DA » en orange : l'état du budget change en direct.
 3. **Alerte** : la carte « Dépense inhabituelle en Sorties » apparaît sur l'Accueil ; toucher « Pourquoi ? ». Phrase attendue : « D'habitude, une dépense en Sorties est d'environ 1 000 DA. Celle-ci est 4,5 fois plus élevée. Calcul fait sur vos [N] dépenses en Sorties depuis le [date]. » N et la date dépendent du jour de la démo.
-4. Toucher **« Compris »** ; montrer le lien « Gérer les alertes ».
+4. Dans le panneau, **montrer le lien « Gérer les alertes » sans le toucher**, puis toucher **« Compris »** : l'alerte disparaît pour de bon.
 5. **Objectifs** : carte Conseil « En réduisant vos sorties de 2 000 DA par mois, vous atteindriez « Ordinateur portable » un mois plus tôt. » ; toucher « Pourquoi ? » : « Pour atteindre « Ordinateur portable » en [M+7], il faut mettre de côté environ 8 600 DA par mois. Avec 2 000 DA de plus, 6 mois suffiraient au lieu de 7. Le mois dernier, vos dépenses en Sorties ont atteint 7 000 DA, contre environ 5 000 DA d'habitude. » Puis « Compris ».
-6. **Réglages**, section « Alertes et conseils » : les deux interrupteurs, et la phrase « Les alertes d'une catégorie démarrent après 5 dépenses. »
+6. **Réglages** (si H7 est faite), section « Alertes et conseils » : les deux interrupteurs, et la phrase « Les alertes d'une catégorie démarrent après 5 dépenses. »
