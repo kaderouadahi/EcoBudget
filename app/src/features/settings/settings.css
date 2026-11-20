@@ -53,3 +53,6 @@
 .icon-grid { grid-template-columns: repeat(4, 1fr); }
 @media (min-width: 900px) { .icon-grid { grid-template-columns: repeat(8, 1fr); } }
 .icon-grid .category-tile { min-height: 56px; }
+
+.dialog-field { margin: 12px 0; }
+.dialog-field label { color: var(--text); }

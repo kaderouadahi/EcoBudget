@@ -1,10 +1,13 @@
-import { Cloud, Lock, Pencil, Plus } from 'lucide-react'
+import { Cloud, Lock, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useUid } from '../../auth/AuthGate'
 import { categoryIcon } from '../../data/defaults'
 import { useData } from '../../data/DataProvider'
-import { setUserFields } from '../../data/repo'
+import type { Category } from '../../data/model'
+import { applyBatch, setUserFields } from '../../data/repo'
+import { deleteCategoryPlan, deleteConfirmText, deleteMessage, OTHER_ID } from '../../lib/categories'
+import { ConfirmDialog } from '../../ui/ConfirmDialog'
 import { cleanFirstName, FIRST_NAME_MAX } from '../../lib/settings'
 import { useToast } from '../../ui/Toast'
 import '../expenses/ExpenseForm.css'
@@ -15,7 +18,8 @@ import './settings.css'
 /** Réglages (H7) : Compte, Catégories, Alertes et conseils (DECISIONS.md 18/11 et 20/11). */
 export function SettingsPage() {
   const uid = useUid()
-  const { user, categories, ready } = useData()
+  const { user, categories, expenses, budgets, ready } = useData()
+  const [deleting, setDeleting] = useState<Category | null>(null)
   const { show } = useToast()
   const { hash } = useLocation()
 
@@ -79,9 +83,14 @@ export function SettingsPage() {
                       {c.locked ? (
                         <span className="category-locked"><Lock aria-hidden size={16} />Toujours présente</span>
                       ) : (
-                        <Link to={`/reglages/categories/${c.id}`} className="row-action" aria-label={`Modifier ${c.name}`}>
-                          <Pencil aria-hidden size={19} />
-                        </Link>
+                        <>
+                          <Link to={`/reglages/categories/${c.id}`} className="row-action" aria-label={`Modifier ${c.name}`}>
+                            <Pencil aria-hidden size={19} />
+                          </Link>
+                          <button type="button" className="row-action is-delete" aria-label={`Supprimer ${c.name}`} onClick={() => setDeleting(c)}>
+                            <Trash2 aria-hidden size={19} />
+                          </button>
+                        </>
                       )}
                     </li>
                   )
@@ -93,6 +102,24 @@ export function SettingsPage() {
               </Link>
             </div>
           </section>
+
+          {deleting && (
+            <DeleteCategoryDialog
+              category={deleting}
+              categories={sorted}
+              count={expenses.filter((e) => e.categoryId === deleting.id).length}
+              hasBudget={budgets.some((b) => b.id === deleting.id)}
+              onCancel={() => setDeleting(null)}
+              onConfirm={(targetId) => {
+                const plan = deleteCategoryPlan(deleting, targetId, expenses, budgets)
+                setDeleting(null)
+                if (!plan) return
+                applyBatch(uid, plan.ops)
+                const targetName = sorted.find((c) => c.id === targetId)?.name ?? 'Autres'
+                show({ message: deleteMessage(deleting.name, plan.moved, targetName), undo: () => applyBatch(uid, plan.undo) })
+              }}
+            />
+          )}
 
           <section className="settings-section" id="alertes" aria-labelledby="alertes-title">
             <h2 id="alertes-title" className="section-title">Alertes et conseils</h2>
@@ -116,6 +143,43 @@ export function SettingsPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+/** Confirmation de suppression (maquette telephone-09) : nombre de dépenses, catégorie cible, budget supprimé. */
+function DeleteCategoryDialog({ category, categories, count, hasBudget, onCancel, onConfirm }: {
+  category: Category
+  categories: Category[]
+  count: number
+  hasBudget: boolean
+  onCancel: () => void
+  onConfirm: (targetId: string) => void
+}) {
+  const [target, setTarget] = useState(OTHER_ID)
+  // « Autres » d'abord (par défaut), puis les autres catégories dans leur ordre.
+  const targets = [
+    ...categories.filter((c) => c.id === OTHER_ID),
+    ...categories.filter((c) => c.id !== OTHER_ID && c.id !== category.id),
+  ]
+  const [first, ...rest] = deleteConfirmText(category.name, count, hasBudget)
+  return (
+    <ConfirmDialog
+      title={`Supprimer la catégorie ${category.name} ?`}
+      confirmLabel="Supprimer"
+      onCancel={onCancel}
+      onConfirm={() => onConfirm(target)}
+    >
+      <p>{first}</p>
+      {count > 0 && (
+        <div className="field dialog-field">
+          <label htmlFor="move-target">Déplacer les dépenses vers</label>
+          <select id="move-target" className="text-input" value={target} onChange={(e) => setTarget(e.target.value)}>
+            {targets.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+        </div>
+      )}
+      {rest.map((line) => <p key={line}>{line}</p>)}
+    </ConfirmDialog>
   )
 }
 
