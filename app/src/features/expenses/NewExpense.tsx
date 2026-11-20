@@ -34,7 +34,12 @@ export function NewExpense() {
         const oldest = hit.history.reduce((min, e) => (e.date < min ? e.date : min), hit.history[0].date)
         const why = whySentence(name, hit.median, hit.ratio, hit.history.length, oldest, v.date)
         // Une seule alerte : la nouvelle remplace l'ancienne.
-        setUserFields(uid, { alert: { expenseId: id, amount: v.amount, categoryId: v.categoryId, date: v.date, why } })
+        setUserFields(uid, {
+          alert: {
+            expenseId: id, amount: v.amount, categoryId: v.categoryId, date: v.date, why,
+            median: hit.median, ratio: hit.ratio, count: hit.history.length, oldest,
+          },
+        })
       }
     }
     const notice = noticeAfterAdd(expenses, budgets, v, name, today)

@@ -197,6 +197,11 @@ function FirstNameField({ saved, onSave }: { saved: string | undefined; onSave: 
     onSave(next)
   }
 
+  // Écran fermé sans quitter le champ (geste retour Android) : le prénom saisi est quand même enregistré.
+  const commitRef = useRef(commit)
+  commitRef.current = commit
+  useEffect(() => () => commitRef.current(), [])
+
   return (
     <div className="field">
       <label htmlFor="first-name">Votre prénom (facultatif)</label>

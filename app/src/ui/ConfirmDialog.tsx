@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useId, useRef, type ReactNode } from 'react'
 import './ConfirmDialog.css'
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
 /** Confirmation d'une action destructive (CLAUDE.md §8, C3/C5) ; toujours suivie d'un « Annuler ». */
 export function ConfirmDialog({ title, message, confirmLabel, cancelLabel = 'Garder', onConfirm, onCancel, children }: Props) {
   const cancelRef = useRef<HTMLButtonElement>(null)
+  const descId = useId()
   // Focus sur « Garder » à l'ouverture seulement : un nouveau rendu (menu modifié) ne doit pas voler le focus.
   const cancel = useRef(onCancel)
   cancel.current = onCancel
@@ -32,11 +33,14 @@ export function ConfirmDialog({ title, message, confirmLabel, cancelLabel = 'Gar
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="confirm-title"
+        aria-describedby={descId}
         onClick={(e) => e.stopPropagation()}
       >
         <h2 id="confirm-title">{title}</h2>
-        {message && <p>{message}</p>}
-        {children}
+        <div id={descId}>
+          {message && <p>{message}</p>}
+          {children}
+        </div>
         <div className="dialog-actions">
           <button type="button" ref={cancelRef} className="dialog-cancel" onClick={onCancel}>{cancelLabel}</button>
           <button type="button" className="dialog-confirm" onClick={onConfirm}>{confirmLabel}</button>

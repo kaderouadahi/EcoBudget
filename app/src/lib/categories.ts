@@ -26,11 +26,11 @@ export const PICKABLE_ICONS: { key: string; label: string }[] = [
   { key: 'Wrench', label: 'Outil' },
 ]
 
-const key = (name: string) => name.trim().toLocaleLowerCase('fr-FR')
+const key = (name: string) => name.normalize('NFC').trim().toLocaleLowerCase('fr-FR')
 
 /** Nom de catégorie : obligatoire, 20 caractères au plus, pas de doublon (majuscules et espaces ignorés). */
 export function validateCategoryName(name: string, categories: Category[], ownId?: string): string | null {
-  const t = name.trim()
+  const t = name.normalize('NFC').trim()
   if (!t) return 'Donnez un nom à la catégorie, par exemple Enfants'
   if (t.length > CATEGORY_NAME_MAX) return `${CATEGORY_NAME_MAX} caractères au plus`
   if (categories.some((c) => c.id !== ownId && key(c.name) === key(t))) return 'Cette catégorie existe déjà'
@@ -38,9 +38,12 @@ export function validateCategoryName(name: string, categories: Category[], ownId
 }
 
 /** Icône présélectionnée : l'actuelle en modification, sinon la première non utilisée par une autre catégorie. */
+/** Ancien nom d'icône (comptes d'avant le 19/11) ramené à l'icône proposée. */
+const canonicalIcon = (k: string) => (k === 'UtensilsCrossed' ? 'Utensils' : k)
+
 export function defaultIcon(categories: Category[], current?: string): string {
-  if (current) return current
-  const used = new Set(categories.map((c) => c.icon))
+  if (current) return canonicalIcon(current)
+  const used = new Set(categories.map((c) => canonicalIcon(c.icon)))
   return (PICKABLE_ICONS.find((i) => !used.has(i.key)) ?? PICKABLE_ICONS[0]).key
 }
 

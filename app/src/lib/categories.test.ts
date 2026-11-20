@@ -19,6 +19,9 @@ describe('validateCategoryName', () => {
     expect(validateCategoryName('  Sorties  ', CATS)).toBe('Cette catégorie existe déjà')
     expect(validateCategoryName('AUTRES', CATS)).toBe('Cette catégorie existe déjà')
   })
+  it('doublon reconnu même si le nom est collé avec des accents décomposés', () => {
+    expect(validateCategoryName('E\u0301tudes', CATS)).toBe('Cette catégorie existe déjà')
+  })
   it('en modification, garder son propre nom n’est pas un doublon', () => {
     expect(validateCategoryName('Sorties', CATS, 'sorties')).toBeNull()
     expect(validateCategoryName('sorties ', CATS, 'sorties')).toBeNull()
@@ -44,6 +47,11 @@ describe('icônes', () => {
   })
   it('en modification : l’icône actuelle', () => {
     expect(defaultIcon(CATS, 'Ticket')).toBe('Ticket')
+  })
+  it('ancien nom UtensilsCrossed (comptes d’avant le 19/11) traité comme Couverts', () => {
+    const old = CATS.map((c) => (c.id === 'repas' ? { ...c, icon: 'UtensilsCrossed' } : c))
+    expect(defaultIcon(old)).toBe('Baby')
+    expect(defaultIcon(old, 'UtensilsCrossed')).toBe('Utensils')
   })
 })
 

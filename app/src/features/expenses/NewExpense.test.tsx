@@ -69,7 +69,7 @@ describe('NewExpense', () => {
     expect(alertCalls()).toHaveLength(1)
     const [uid, { alert }] = alertCalls()[0] as [string, { alert: Record<string, unknown> }]
     expect(uid).toBe('u1')
-    expect(alert).toMatchObject({ expenseId: 'new-id', amount: 4500, categoryId: 'sorties', date: iso(0) })
+    expect(alert).toMatchObject({ expenseId: 'new-id', amount: 4500, categoryId: 'sorties', date: iso(0), median: 1000, ratio: 4.5, count: 5, oldest: iso(5) })
     expect(String(alert.why).replace(/\s/g, ' ')).toContain("Sorties est d'environ 1 000 DA. Celle-ci est 4,5 fois plus élevée. Calcul fait sur vos 5 dépenses en Sorties")
   })
 

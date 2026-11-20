@@ -4,6 +4,7 @@ import { categoryIcon } from '../../data/defaults'
 import type { Category } from '../../data/model'
 import { CATEGORY_NAME_MAX, defaultIcon, PICKABLE_ICONS, validateCategoryName } from '../../lib/categories'
 import '../expenses/ExpenseForm.css'
+import './settings.css'
 
 interface Props {
   categories: Category[]
@@ -28,7 +29,7 @@ export function CategoryForm({ categories, initial, onSubmit, onClose }: Props) 
     setError(problem ?? undefined)
     if (problem) return
     sent.current = true
-    onSubmit({ name: name.trim(), icon })
+    onSubmit({ name: name.normalize('NFC').trim(), icon })
   }
 
   return (

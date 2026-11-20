@@ -1,6 +1,7 @@
 .home { display: flex; flex-direction: column; gap: 20px; }
 .home-head { display: flex; align-items: center; gap: 14px; padding-right: 56px; }
-.home-head h1 { font-size: 30px; }
+.home-head h1 { font-size: 30px; overflow-wrap: anywhere; }
+.home-head > div { min-width: 0; }
 .home-month { margin: 2px 0 0; color: var(--muted); }
 .avatar {
   display: grid;

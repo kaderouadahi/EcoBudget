@@ -395,4 +395,9 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - La fenêtre de confirmation commune ne remet plus le focus sur « Garder » à chaque changement : choisir la catégorie cible dans le menu garde le focus dans le menu.
   - « Gérer les alertes » et « Gérer les conseils » mènent tous deux à `/reglages#alertes` (une seule section).
   - Après un changement (interrupteur, liste), l'écran se met à jour quelques dizaines de millisecondes après le message (délai d'écriture déjà constaté en H3).
+  - **À valider (conflit H3 / H7)** : H3 dit que la phrase « Pourquoi ? » de l'alerte est « calculée à l'ajout et gardée telle quelle », H7 qu'elle utilise « le nom actuel ». Choix fait : les **chiffres** restent ceux de l'ajout (H3), seul le **nom de la catégorie** suit un renommage (H7) ; « Pourquoi ? » après Sorties → Loisirs dit « une dépense en Loisirs ». Les alertes enregistrées avant ce changement gardent leur phrase d'origine.
+  - Comptes créés avant le 19/11 (ancien nom d'icône de Repas) : l'icône est reconnue comme « Couverts » (présélection et modification justes).
+  - Doublon de nom reconnu aussi pour un nom collé avec des accents décomposés ; « Sante » à côté de « Santé » reste accepté (la spec ne parle que des majuscules).
+  - Prénom enregistré aussi si l'écran se ferme sans quitter le champ (geste retour Android). Prénom long : passe à la ligne sur l'Accueil, sans déborder (vérifié à 360 px avec 30 caractères).
+  - Fenêtre de confirmation : ses phrases (dépenses déplacées, budget supprimé) sont lues par les lecteurs d'écran (vaut pour toutes les confirmations).
   - Plan : `app/docs/plans/2026-11-21-h7-reglages.md`.

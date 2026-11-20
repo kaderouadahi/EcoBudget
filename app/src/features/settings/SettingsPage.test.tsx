@@ -62,6 +62,13 @@ describe('Réglages', () => {
     expect(status()).toHaveTextContent('Prénom enregistré')
   })
 
+  it('prénom gardé si l’écran se ferme sans quitter le champ (geste retour Android)', () => {
+    const { unmount } = setup()
+    fireEvent.change(screen.getByLabelText('Votre prénom (facultatif)'), { target: { value: 'Amine' } })
+    unmount()
+    expect(setUserFields).toHaveBeenCalledWith('u1', { firstName: 'Amine' })
+  })
+
   it('prénom inchangé : rien n’est écrit ; vidé : prénom effacé', () => {
     setup(user({ firstName: 'Nadia' }))
     const input = screen.getByLabelText('Votre prénom (facultatif)')
@@ -116,6 +123,7 @@ describe('Réglages', () => {
       expect(dialog).toHaveTextContent('Les 3 dépenses de Sorties ne seront pas perdues')
       expect(dialog).toHaveTextContent('Le budget de Sorties sera supprimé.')
       expect(dialog).toHaveTextContent("Vous pourrez l'annuler juste après.")
+      expect(dialog).toHaveAccessibleDescription(/Le budget de Sorties sera supprimé\./)
       const select = within(dialog).getByLabelText('Déplacer les dépenses vers')
       expect(select).toHaveValue('autres')
       expect(within(select).getAllByRole('option').map((o) => o.textContent)).toEqual(['Autres', 'Repas', 'Courses', 'Transport', 'Santé', 'Logement', 'Études'])
