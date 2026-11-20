@@ -49,7 +49,7 @@ describe('Graphiques', () => {
     expect(within(picker()).getByText(formatMonthTitle(addMonths(M, -1)))).toBeInTheDocument()
     expect(norm(screen.getByTestId('donut-total').textContent)).toBe('46 000 DA dépensés')
     const items = within(legend()).getAllByRole('listitem').map((li) => norm(li.textContent))
-    expect(items).toEqual(['Courses30 000 DA65 %', 'Sorties7 000 DA15 %', 'Repas6 000 DA13 %', 'Transport3 000 DA7 %'])
+    expect(items).toEqual(['Courses 30 000 DA 65 %', 'Sorties 7 000 DA 15 %', 'Repas 6 000 DA 13 %', 'Transport 3 000 DA 7 %'])
     fireEvent.click(prev()); fireEvent.click(prev()); fireEvent.click(prev())
     expect(within(picker()).getByText(formatMonthTitle(addMonths(M, -4)))).toBeInTheDocument()
     expect(prev()).toBeDisabled()
@@ -96,6 +96,19 @@ describe('Graphiques', () => {
     const monthText = new Intl.DateTimeFormat('fr-FR', { month: 'long' }).format(new Date(Number(label.slice(0, 4)), Number(label.slice(5)) - 1, 1))
     expect(screen.getByText(`Aucune dépense en ${monthText} ${label.slice(0, 4)}`)).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Ajouter une dépense' })).not.toBeInTheDocument()
+  })
+
+  it('graphiques hors du parcours clavier (cachés aux lecteurs d’écran, rien à toucher)', () => {
+    setData(demo.expenses)
+    const { container } = renderPage()
+    expect(container.querySelector('.recharts-pie')).not.toBeNull()
+    expect(container.querySelector('[aria-hidden="true"] [tabindex="0"]')).toBeNull()
+  })
+
+  it('libellé du mois lisible d’un seul tenant : « Novembre 2026 en cours »', () => {
+    setData(demo.expenses)
+    renderPage()
+    expect(norm(screen.getByRole('group', { name: 'Mois détaillé' }).querySelector('.month-picker-label')!.textContent)).toBe(`${formatMonthTitle(M)} en cours`)
   })
 
   it('statistiques seulement : ni couleur de budget, ni ampoule', () => {

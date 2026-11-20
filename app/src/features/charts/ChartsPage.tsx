@@ -46,8 +46,9 @@ export function ChartsPage() {
                 <ChevronLeft aria-hidden size={22} />
               </button>
               <span className="month-picker-label" aria-live="polite">
-                {formatMonthTitle(month)}
-                {isCurrent && <span className="month-current">en cours</span>}
+                {formatMonthTitle(month)}{' '}
+                {/* Place toujours réservée : les flèches ne bougent pas d'un mois à l'autre. */}
+                <span className={isCurrent ? 'month-current' : 'month-current is-hidden'} aria-hidden={!isCurrent}>en cours</span>
               </span>
               <button type="button" className="month-arrow" aria-label="Mois suivant" disabled={index >= months.length - 1} onClick={() => setSelected(months[index + 1])}>
                 <ChevronRight aria-hidden size={22} />
@@ -86,6 +87,7 @@ export function ChartsPage() {
                       cornerRadius={6}
                       stroke="none"
                       isAnimationActive={false}
+                      rootTabIndex={-1}
                     >
                       {rows.map((r, i) => <Cell key={r.categoryId} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
                     </Pie>
@@ -96,12 +98,12 @@ export function ChartsPage() {
                   <span>DA dépensés</span>
                 </p>
               </div>
-              <ul className="chart-legend" aria-label="Répartition par catégorie">
+              <ul className="chart-legend" role="list" aria-label="Répartition par catégorie">
                 {rows.map((r, i) => (
-                  <li key={r.categoryId}>
+                  <li key={r.categoryId} role="listitem">
                     <span className="legend-dot" style={{ background: CHART_COLORS[i % CHART_COLORS.length] }} aria-hidden />
-                    <span className="legend-name">{r.name}</span>
-                    <span className="legend-amount">{formatDA(r.amount)}</span>
+                    <span className="legend-name">{r.name}</span>{' '}
+                    <span className="legend-amount">{formatDA(r.amount)}</span>{' '}
                     <span className="legend-percent">{r.percent}</span>
                   </li>
                 ))}
