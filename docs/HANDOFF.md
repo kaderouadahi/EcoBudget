@@ -10,7 +10,7 @@
 - Maquette :
 - Écarts constatés (rempli par Claude Code) :
 
-## Ordre de priorité (décidé le 18/11/2026)
+## Ordre de priorité (décidé le 18/11/2026, H8 avancée le 20/11/2026)
 Si le temps manque, les specs du bas sont les premières à tomber. Sources : `docs/DECISIONS.md` (prime en cas d'écart avec une maquette), `docs/01_analyse/scenarios.md`, `docs/03_conception/innovation.md`, `docs/02_maquettes/`.
 
 | Ordre | Spec | Fonctionnalité |
@@ -21,9 +21,9 @@ Si le temps manque, les specs du bas sont les premières à tomber. Sources : `d
 | 4 | H3 Alerte de dépense inhabituelle | INNOV |
 | 5 | H4 Objectifs d'épargne | F4 |
 | 6 | H5 Conseil d'épargne | INNOV |
-| 7 | H6 Graphiques | F3 |
-| 8 | H7 Réglages | Transversal |
-| 9 | H8 Données de démo | Démo (L2, L4) |
+| 7 | H8 Données de démo | Démo (L2, L4) |
+| 8 | H6 Graphiques | F3 |
+| 9 | H7 Réglages | Transversal |
 | 10 | H9 Compte e-mail facultatif | Transversal (première fonction retirée en cas de retard) |
 
 Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme le 19/11/2026.

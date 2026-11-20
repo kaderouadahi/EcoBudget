@@ -44,7 +44,7 @@ Traçabilité : `docs/03_conception/matrice_criteres.md`, tenue à jour en perma
 Technologies libres, à condition de permettre une application fonctionnelle et de qualité.
 
 ## 5. Livrables (sujet §5) — présentés en PowerPoint
-Rendu le **20 novembre 2026**. **Un seul diaporama** (`livrables/EcoBudget.pptx`) couvre L1, la démonstration de L2, L3 et L4 : pas de rapport écrit. Il doit contenir aussi le **cahier des charges** et **toutes les étapes du cycle de vie du projet**. Un PDF complémentaire est facultatif. Une base de données est préférable mais pas obligatoire. Code source remis en archive zip. La présentation compte plus que tout (voir `docs/QUESTIONS.md`).
+Rendu le **21 novembre 2026 à 23 h 59**. **Un seul diaporama** (`livrables/EcoBudget.pptx`) couvre L1, la démonstration de L2, L3 et L4 : pas de rapport écrit. Il doit contenir aussi le **cahier des charges** et **toutes les étapes du cycle de vie du projet**. Une base de données est préférable mais pas obligatoire. Le code ne s'envoie pas : il doit être disponible sur place pendant la présentation. Pas de capture d'écran de l'application dans le diaporama : l'application est montrée en direct, en 15 minutes démonstration comprise. La présentation compte plus que tout (voir `docs/QUESTIONS.md`).
 - **L1 Rapport de conception** : présentation du thème ; analyse des besoins ; utilisateurs cibles ; scénarios d'utilisation ; maquettes et prototype ; justification de l'application des huit critères.
 - **L2 Application réalisée** : code source ; application fonctionnelle ; démonstration de la fonctionnalité innovante.
 - **L3 Rapport d'évaluation ergonomique** : tests avec au moins trois utilisateurs représentatifs ; problèmes ergonomiques identifiés ; améliorations proposées.
