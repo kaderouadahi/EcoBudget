@@ -342,7 +342,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H7 Réglages — statut : fait (branche h7-reglages, à relire avant fusion)
+### H7 Réglages — statut : fait (fusionné dans main le 20/11, PR n°7)
 - **Scénario source** : S2 (Nadia crée la catégorie « Enfants », étape 1) ; S4 (« Gérer les alertes », étape 4) ; S3 (conseil désactivable) ; Accueil personnalisé par le prénom (DECISIONS.md, 17/11).
 - **Fonctionnalité du sujet** : transversal (les catégories servent F1, F2 et F3 ; les interrupteurs servent INNOV).
 - **Contenu et interactions** :
