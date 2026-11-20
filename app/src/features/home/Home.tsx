@@ -5,7 +5,7 @@ import { useData } from '../../data/DataProvider'
 import type { Budget, Category, Expense, UnusualAlert, UserDoc } from '../../data/model'
 import { useUid } from '../../auth/AuthGate'
 import { setUserFields } from '../../data/repo'
-import { visibleAlert } from '../../lib/alert'
+import { shownAlert } from '../../lib/settings'
 import { AlertCard } from '../alert/AlertCard'
 import { barRatio, budgetSummary, headline } from '../../lib/budget'
 import { latestExpenses } from '../../lib/expenses'
@@ -28,7 +28,7 @@ export function Home() {
       expenses={expenses}
       budgets={budgets}
       today={new Date()}
-      alert={visibleAlert(user?.alert, expenses)}
+      alert={shownAlert(user, expenses)}
       onDismissAlert={() => setUserFields(uid, { alert: undefined })}
     />
   )

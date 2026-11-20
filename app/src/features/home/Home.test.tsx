@@ -118,7 +118,7 @@ describe('Accueil', () => {
       const panel = screen.getByRole('dialog', { name: 'Dépense inhabituelle en Sorties' })
       expect(norm(panel.textContent)).toContain(WHY.replace(/\s/g, ' '))
       expect(norm(panel.textContent)).toContain('4 500 DA · Samedi')
-      expect(within(panel).getByRole('link', { name: 'Gérer les alertes' })).toHaveAttribute('href', '/reglages')
+      expect(within(panel).getByRole('link', { name: 'Gérer les alertes' })).toHaveAttribute('href', '/reglages#alertes')
       fireEvent.click(within(panel).getByRole('button', { name: 'Fermer' }))
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
       expect(screen.getByRole('region', { name: 'Dépense inhabituelle en Sorties' })).toBeInTheDocument()

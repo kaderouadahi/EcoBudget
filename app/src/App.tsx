@@ -6,6 +6,7 @@ import { AddSavings, EditGoal, GoalsPage, NewGoal } from './features/goals/GoalP
 import { ChartsPage } from './features/charts/ChartsPage'
 import { DemoPage } from './features/demo/DemoPage'
 import { Home } from './features/home/Home'
+import { SettingsPage } from './features/settings/SettingsPage'
 import { Placeholder } from './pages/Placeholder'
 import { AppShell, BareLayout } from './ui/AppShell'
 
@@ -23,7 +24,7 @@ export function AppRoutes() {
         <Route path="objectifs/nouveau" element={<NewGoal />} />
         <Route path="objectifs/:id" element={<EditGoal />} />
         <Route path="objectifs/:id/epargne" element={<AddSavings />} />
-        <Route path="reglages" element={<Placeholder title="Réglages" />} />
+        <Route path="reglages" element={<SettingsPage />} />
         <Route path="demo" element={<DemoPage />} />
         <Route path="depense/nouvelle" element={<NewExpense />} />
         <Route path="depense/:id" element={<EditExpense />} />
