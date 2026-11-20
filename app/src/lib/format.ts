@@ -5,12 +5,18 @@ import { parseISODate } from './month'
 const NBSP = ' '
 const MINUS = '−'
 
+/** « 44 000 » : montant sans unité (au-dessus des barres, avec « Montants en DA » une seule fois). */
+export function formatNumber(amount: number): string {
+  if (!Number.isFinite(amount)) return '\u2014'
+  const abs = Math.round(Math.abs(amount))
+  const digits = String(abs).replace(/\B(?=(\d{3})+(?!\d))/g, NBSP)
+  return `${amount < 0 && abs !== 0 ? MINUS : ''}${digits}`
+}
+
 /** « 34 000 DA », « −250 DA ». Montants entiers en dinars. */
 export function formatDA(amount: number): string {
   if (!Number.isFinite(amount)) return `\u2014${NBSP}DA`
-  const abs = Math.round(Math.abs(amount))
-  const digits = String(abs).replace(/\B(?=(\d{3})+(?!\d))/g, NBSP)
-  return `${amount < 0 && abs !== 0 ? MINUS : ''}${digits}${NBSP}DA`
+  return `${formatNumber(amount)}${NBSP}DA`
 }
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)

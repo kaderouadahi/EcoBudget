@@ -1,0 +1,84 @@
+/* Graphiques : une colonne sur téléphone, deux cartes côte à côte sur ordinateur (comme l'Accueil). */
+.charts-grid { display: flex; flex-direction: column; gap: 20px; }
+@media (min-width: 1100px) { .charts-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 28px; } }
+
+.chart-card { display: flex; flex-direction: column; gap: 16px; }
+.chart-card .card-title { margin: 0; }
+.chart-card-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.chart-unit { font-size: 14px; margin-top: 2px; }
+
+.month-picker { display: flex; align-items: center; gap: 4px; }
+.month-arrow {
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--navy);
+}
+.month-arrow:disabled { opacity: 0.35; cursor: default; }
+.month-arrow { flex: none; }
+.month-picker-label { display: inline-flex; align-items: center; gap: 8px; justify-content: center; font-weight: 700; color: var(--navy); white-space: nowrap; }
+.month-current.is-hidden { visibility: hidden; }
+/* Ordinateur : largeur fixe (« Septembre 2026 en cours ») pour que « ‹ » ne bouge pas sous la souris. */
+@media (min-width: 600px) { .month-picker-label { min-width: 13.5em; } }
+/* Téléphone : sélecteur sur toute la largeur, « en cours » sous le nom du mois (cibles de 44 px gardées). */
+@media (max-width: 599px) {
+  .month-picker { width: 100%; }
+  .month-picker-label { flex: 1; min-width: 0; flex-direction: column; gap: 2px; }
+}
+.month-current {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--blue-light);
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.donut { position: relative; width: 240px; height: 240px; margin: 0 auto; }
+.donut-svg { position: absolute; inset: 0; }
+/* Toucher un graphique ne fait rien (spec) : pas de survol, pas de surlignage au toucher. */
+.donut-svg, .bars { pointer-events: none; -webkit-tap-highlight-color: transparent; }
+.donut-total {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.donut-total strong { font-size: 32px; color: var(--navy); line-height: 1.1; }
+.donut-total span { color: var(--muted); }
+
+/* Une grille commune à toutes les lignes : colonnes alignées quelle que soit la largeur (rôles de liste explicites). */
+.chart-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 10px;
+}
+.chart-legend li { display: contents; }
+.legend-amount { text-align: right; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+.legend-name { font-weight: 500; }
+.legend-amount { color: var(--muted); white-space: nowrap; }
+.legend-percent { font-weight: 700; text-align: right; white-space: nowrap; min-width: 3.2em; }
+
+.chart-empty { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 40px 0; color: var(--muted); text-align: center; }
+.chart-empty p { margin: 0; font-weight: 600; }
+
+.chart-filter { width: auto; min-width: 12em; }
+.bars { width: 100%; }
+.bars .tick { fill: var(--muted); font-size: 13px; }
+.bars .tick-selected { fill: var(--navy); font-weight: 700; }
+.bars .tick-current { fill: var(--blue); font-size: 12px; font-weight: 600; }
+.bars .bar-label, .bars .recharts-label { fill: var(--text); font-size: 12px; font-weight: 700; }
