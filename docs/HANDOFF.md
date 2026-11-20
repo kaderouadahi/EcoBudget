@@ -293,7 +293,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H6 Graphiques — statut : à faire
+### H6 Graphiques — statut : fait (branche h6-graphiques, à relire avant fusion)
 - **Scénario source** : S3 (Yasmine fait le point le soir, étape 3) ; démo `docs/03_conception/innovation.md` §5.3 (hausse des sorties visible avant la carte Conseil).
 - **Fonctionnalité du sujet** : F3.
 - **Contenu et interactions** :
@@ -326,3 +326,12 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Parcours dans un navigateur, en local et en ligne : `/demo` → Graphiques → anneau sur le mois en cours, « › » grisée → « ‹ » jusqu'à M-4, puis grisée → barre du mois choisi en bleu nuit à chaque pas → menu sur Sorties → hausse de M-1 → ajout de 4 500 DA en Sorties → barre de M à 4 500 → retour sur Graphiques : menu revenu à « Toutes les dépenses », anneau sur le mois en cours.
 - **Maquette** : `telephone-05`, `ordinateur-05`. Écarts (DECISIONS.md prime) : onglets Répartition / Évolution retirés ; phrase de synthèse (fond orange clair, ampoule) retirée ; sélecteur de mois, menu de catégorie, montants au-dessus des barres, « en cours » et montants dans la légende non dessinés ; légende sur une colonne au lieu de deux ; la barre en bleu nuit est celle du mois choisi, pas toujours celle du mois en cours ; « Enfants » est une catégorie créée par l'utilisateur (S2), pas une catégorie par défaut.
 - **Écarts constatés (rempli par Claude Code)** :
+  - Tests Vitest : tous les cas demandés (totaux par mois et par catégorie, mois à 0, 6 mois au plus sans remonter avant la plus ancienne dépense, passage d'année novembre → avril et vers janvier, 1er et dernier jour, pourcentages, « moins de 1 % », 100 %, ordre de la légende) ; chiffres du jeu de démo vérifiés **pour chaque jour** du 1er au 31 janvier et du 1er au 28 février (5 barres ; 44 000, 43 800, 44 200, 46 000 ; Sorties 5 000, 4 800, 5 200, 7 000, 0 puis 4 500 ; M-1 : 46 000, Courses 65 %, Sorties 15 %, Repas 13 %, Transport 7 %).
+  - Vérifié dans un navigateur piloté, en local et en ligne (parcours de la spec, 10 étapes) : `/demo` → anneau sur le mois en cours, « › » grisée → « ‹ » jusqu'à M-4 puis grisée, barre du mois choisi en bleu nuit à chaque pas (couleur lue dans le graphique) → menu Sorties, hausse de M-1 → ajout de 4 500 DA → retour : menu « Toutes les dépenses », anneau sur le mois en cours → Sorties : barre du mois à 4 500.
+  - « Montants en DA » est toujours affiché sous le titre de la carte (téléphone et ordinateur, mêmes libellés) ; les montants au-dessus des barres sont écrits sans « DA » (« 44 000 »).
+  - Mois à 0 : Recharts ne dessine ni barre ni étiquette ; le « 0 » est écrit sur la ligne de base par l'axe des mois. Les montants au-dessus des barres sont en couleur de texte (Recharts les dessinait de la couleur de la barre, illisibles sur le bleu clair).
+  - Accessibilité : les graphiques eux-mêmes sont ignorés par les lecteurs d'écran ; l'information passe par la légende (texte) et par un tableau caché « Montants par mois » ; le sélecteur est un groupe nommé « Mois détaillé » ; le menu a un libellé caché « Barres pour ».
+  - Une dépense d'une catégorie supprimée (H7) compte dans « Autres », dans l'anneau comme dans les barres.
+  - Si les données changent pendant que l'écran est ouvert (chargement de démo) et que le mois choisi n'est plus couvert, l'anneau revient au mois en cours.
+  - Le titre de l'écran n'a pas de sous-titre de mois (le mois détaillé est dans le sélecteur).
+  - Plan : `app/docs/plans/2026-11-20-h6-graphiques.md`.
