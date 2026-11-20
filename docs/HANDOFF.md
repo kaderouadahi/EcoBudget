@@ -290,3 +290,39 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Les dépenses de démo ont des notes vides : la liste « Dernières dépenses » affiche le nom de la catégorie.
   - La page `/demo` s'affiche dans la coquille de l'application (barre de navigation visible) mais n'apparaît dans aucun menu.
   - Plan : `app/docs/plans/2026-11-20-h8-demo.md`.
+
+---
+
+### H6 Graphiques — statut : à faire
+- **Scénario source** : S3 (Yasmine fait le point le soir, étape 3) ; démo `docs/03_conception/innovation.md` §5.3 (hausse des sorties visible avant la carte Conseil).
+- **Fonctionnalité du sujet** : F3.
+- **Contenu et interactions** :
+  - ✱ **Principe** (DECISIONS.md, 20/11) : l'écran montre **seulement des statistiques des dépenses**. Pas de phrase de synthèse, pas d'ampoule, rien qui ressemble à une alerte ou à un conseil : Graphiques montre, l'innovation interprète.
+  - **Bibliothèque** : Recharts (DECISIONS.md, 20/11). Anneau segmenté et barres arrondies (charte, DECISIONS.md 17/11).
+  - ✱ **Une seule page, sans onglets** : titre « Graphiques ». Sur téléphone, la carte « Répartition du mois » puis la carte « D'un mois à l'autre », à la suite (l'écran défile). Sur ordinateur, les deux cartes côte à côte, comme `ordinateur-05`.
+  - ✱ **Mois couverts** : le mois en cours et jusqu'à 5 mois avant lui (6 au plus), sans remonter avant le mois de la plus ancienne dépense. Sans aucune dépense : le mois en cours seul. Mois du 1er au dernier jour (DECISIONS.md, 18/11). Un mois sans dépense vaut 0 DA (comme le conseil, H5).
+  - **Carte « Répartition du mois »** :
+    - ✱ En-tête : « Répartition du mois » et un sélecteur « ‹ Novembre 2026 › ». **À chaque ouverture de l'écran, le mois en cours.** « ‹ » recule d'un mois jusqu'au premier mois couvert, « › » avance jusqu'au mois en cours ; au bout, la flèche est grisée et inactive. Libellés accessibles « Mois précédent » / « Mois suivant », cibles d'au moins 44 px. Quand le mois choisi est le mois en cours, « en cours » s'affiche à côté de son nom.
+    - Anneau segmenté : une part par catégorie qui a au moins une dépense dans le mois choisi ; au centre, le total (« 29 000 ») et « DA dépensés ».
+    - ✱ Légende **sur une colonne**, de la plus grosse catégorie à la plus petite (à égalité, dans l'ordre des catégories) : pastille de couleur, nom, montant (« 22 500 DA »), pourcentage arrondi à l'unité ; « < 1 % » pour une part non nulle qui serait arrondie à 0 ; une catégorie seule = 100 %.
+    - Couleurs : nuances de bleu nuit et de bleu vif de la charte, comme la maquette ; **jamais vert, orange ou rouge** (réservés aux budgets). S'il y a plus de catégories que de nuances, les nuances se répètent : la légende en texte suffit à distinguer les parts (jamais la couleur seule).
+    - ✱ Mois choisi sans dépense : à la place de l'anneau, « Aucune dépense ce mois-ci » et un bouton « Ajouter une dépense » (formulaire H1) pour le mois en cours ; « Aucune dépense en [août 2026] », sans bouton, pour un mois passé.
+  - **Carte « D'un mois à l'autre »** :
+    - ✱ Menu « Toutes les dépenses ▾ » au-dessus des barres : « Toutes les dépenses », puis chaque catégorie dans l'ordre des catégories. Il revient à « Toutes les dépenses » à chaque ouverture de l'écran. Il change seulement les barres, pas l'anneau.
+    - Une barre arrondie par mois couvert : total du mois, pour toutes les dépenses ou pour la catégorie choisie.
+    - ✱ **Montant écrit au-dessus de chaque barre** (pas de survol sur téléphone ; rien à toucher pour lire). Mois à 0 : pas de barre, « 0 » écrit. Si la place manque sur téléphone pour « 44 000 DA », écrire « 44 000 » et indiquer une seule fois « Montants en DA » sous le titre de la carte.
+    - ✱ La barre du **mois choisi dans l'anneau** est en bleu nuit, les autres en bleu clair (comme la maquette) ; elle suit les flèches.
+    - ✱ Sous la barre du mois en cours : « en cours » (le mois n'est pas fini).
+    - Étiquettes de mois abrégées comme la maquette : « Janv. », « Févr. », « Mars », « Avr. », « Mai », « Juin », « Juil. », « Août », « Sept. », « Oct. », « Nov. », « Déc. ».
+  - ✱ Toucher l'anneau, une part ou une barre ne fait rien.
+  - Calcul sur l'appareil à partir des dépenses : fonctionne hors connexion ; l'écran se met à jour dès qu'une dépense est ajoutée, modifiée ou supprimée.
+  - Hors périmètre : phrase de synthèse, comparaison dans la légende, période autre que le mois, export.
+- **Critères visés et comment** : C1 (on sait toujours quel mois est détaillé : nom du mois, « en cours », barre du mois choisi en bleu nuit) ; C2 (une seule page, montants écrits, rien à toucher pour lire) ; C6 (anneau et barres sur les mêmes mois ; mêmes formats de montant et de date ; mois du 1er au dernier jour, comme les budgets et le conseil) ; C7 (légende en texte avec montant et pourcentage, jamais la couleur seule ; ni vert, orange, rouge, ni ampoule, réservés aux budgets et au conseil) ; C8 (consultation sur ordinateur dans S3, montants en DA).
+- **Critères d'acceptation** :
+  - Tests Vitest : totaux par mois, pour toutes les dépenses et par catégorie ; mois sans dépense = 0 ; 6 mois au plus, sans remonter avant le mois de la plus ancienne dépense ; passage d'année (de novembre à avril) ; dépenses du 1er et du dernier jour comptées dans le bon mois ; pourcentages arrondis, « < 1 % », catégorie seule = 100 % ; ordre de la légende (montant décroissant, puis ordre des catégories).
+  - Avec le jeu de démo (H8), quel que soit le jour : 5 barres, de M-4 à M ; « Toutes les dépenses » → 44 000, 43 800, 44 200 et 46 000 DA de M-4 à M-1 ; menu sur Sorties → 5 000, 4 800, 5 200 et 7 000 DA, et 0 en M (4 500 après la dépense de l'étape 2 du script) ; anneau reculé jusqu'à M-1 → 46 000 DA dépensés, Courses 30 000 DA 65 %, Sorties 7 000 DA 15 %, Repas 6 000 DA 13 %, Transport 3 000 DA 7 %.
+  - Aucune information portée par la couleur seule ; ni vert, orange, rouge, ni ampoule sur l'écran.
+  - Mêmes cartes et mêmes libellés sur téléphone et sur ordinateur.
+  - Parcours dans un navigateur, en local et en ligne : `/demo` → Graphiques → anneau sur le mois en cours, « › » grisée → « ‹ » jusqu'à M-4, puis grisée → barre du mois choisi en bleu nuit à chaque pas → menu sur Sorties → hausse de M-1 → ajout de 4 500 DA en Sorties → barre de M à 4 500 → retour sur Graphiques : menu revenu à « Toutes les dépenses », anneau sur le mois en cours.
+- **Maquette** : `telephone-05`, `ordinateur-05`. Écarts (DECISIONS.md prime) : onglets Répartition / Évolution retirés ; phrase de synthèse (fond orange clair, ampoule) retirée ; sélecteur de mois, menu de catégorie, montants au-dessus des barres, « en cours » et montants dans la légende non dessinés ; légende sur une colonne au lieu de deux ; la barre en bleu nuit est celle du mois choisi, pas toujours celle du mois en cours ; « Enfants » est une catégorie créée par l'utilisateur (S2), pas une catégorie par défaut.
+- **Écarts constatés (rempli par Claude Code)** :

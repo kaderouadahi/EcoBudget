@@ -12,6 +12,8 @@ Les montants sont des **données de démonstration** (voir `docs/01_analyse/scen
 
 **À compléter (décisions du 18/11/2026)** : écran Objectifs (bouton « Ajouter de l'épargne », formulaire avec l'aide « Il reste X DA », état Atteint) ; écrans Alerte et Objectifs (« Compris » au lieu des anciens boutons) ; Réglages (section « Alertes et conseils », deux interrupteurs ; retirer « Mois budgétaire » et l'interrupteur « Alerte de budget »).
 
+**Écart (décision du 20/11/2026)** : écran Graphiques sans onglets ni phrase de synthèse (fond orange clair, ampoule) ; sélecteur de mois, menu de catégorie et montants au-dessus des barres à ajouter (spec H6 de `docs/HANDOFF.md`).
+
 ## Parcourir les 4 scénarios dans le prototype
 
 | Scénario | Parcours au clic |
@@ -29,7 +31,7 @@ Les montants sont des **données de démonstration** (voir `docs/01_analyse/scen
 | Accueil | telephone-02, ordinateur-02 | S1, S2, S4 | B5, B6, B9, B12 | C1 reste à dépenser en tête ; C7 état du budget en couleur + icône + texte ; C2 l'essentiel sur un écran |
 | Nouvelle dépense | telephone-03, ordinateur-03 | S1, S2, S4 | B1, B2, B3 | C2 montant, catégorie proposée, date du jour par défaut ; C5 aide sous le champ ; C1 et C3 confirmation avec « Annuler » |
 | Budgets et détail | telephone-04, ordinateur-04 | S2 | B4, B5, B6 | C1 et C7 état du budget ; C4 budget modifiable, reconduit chaque mois |
-| Graphiques | telephone-05, ordinateur-05 | S3 | B7 | C7 légende en texte avec pourcentages ; C2 une phrase qui résume l'évolution |
+| Graphiques | telephone-05, ordinateur-05 | S3 | B7 | C7 légende en texte avec montants et pourcentages ; C2 une seule page, montants écrits sur les barres |
 | Objectifs d'épargne | telephone-06, ordinateur-06 | S3 | B8, B10 | C1 étape franchie valorisée ; C3 conseil qui ne modifie rien, « Compris » ; C2 objectif créé en trois champs |
 | Alerte et « Pourquoi ? » | telephone-07, ordinateur-07 | S4 | B9, B10 | C1 et C7 explication en une phrase ; C3 l'alerte informe sans rien déclencher, « Compris » la ferme ; C4 alertes désactivables |
 | Réglages et compte | telephone-08, ordinateur-08 | S2, S3, S4 | B2, B10, B11, B13 | C4 catégories, alertes, mois budgétaire, prénom ; C7 message clair sur l'enregistrement anonyme |
