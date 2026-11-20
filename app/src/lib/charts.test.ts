@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_CATEGORIES } from '../data/defaults'
 import type { Category, Expense } from '../data/model'
-import { breakdown, CHART_COLORS, coveredMonths, monthlyTotals, percentLabel, shortMonth } from './charts'
+import { breakdown, categoryColor, CHART_COLORS, coveredMonths, monthlyTotals, percentLabel, shortMonth } from './charts'
 import { buildDemoData } from './demo'
 import { formatNumber } from './format'
 import { addMonths, currentMonth, toISODate } from './month'
@@ -58,6 +58,11 @@ describe('breakdown et percentLabel', () => {
     expect(percentLabel(40, 10000)).toBe('moins de 1 %')
     expect(percentLabel(50, 10000)).toBe('1 %')
   })
+  it('jamais « 100 % » tant que la catégorie n’est pas seule (plafond 99 %, comme H2 et H4)', () => {
+    expect(percentLabel(9960, 10000)).toBe('99 %')
+    expect(percentLabel(9999, 10000)).toBe('99 %')
+    expect(percentLabel(10000, 10000)).toBe('100 %')
+  })
   it('ordre : montant décroissant, puis ordre des catégories ; catégorie inconnue dans Autres', () => {
     const b = breakdown([
       E(1000, 'transport', '2026-11-03'), E(3000, 'courses', '2026-11-04'), E(1000, 'repas', '2026-11-05'),
@@ -87,6 +92,19 @@ describe('libellés et couleurs', () => {
   it('montants sans « DA »', () => {
     expect(norm(formatNumber(44000))).toBe('44 000')
     expect(formatNumber(0)).toBe('0')
+  })
+  it('couleur fixe par catégorie, selon l’ordre des catégories (pas le rang dans le mois)', () => {
+    expect(categoryColor('repas', CATS)).toBe(CHART_COLORS[0])
+    expect(categoryColor('courses', CATS)).toBe(CHART_COLORS[1])
+    expect(categoryColor('sorties', CATS)).toBe(CHART_COLORS[3])
+    // les 6 premières catégories ont chacune leur nuance
+    const firstSix = ['repas', 'courses', 'transport', 'sorties', 'sante', 'logement'].map((id) => categoryColor(id, CATS))
+    expect(new Set(firstSix).size).toBe(6)
+    // au-delà, les nuances se répètent ; catégorie inconnue = couleur d'Autres
+    expect(categoryColor('etudes', CATS)).toBe(CHART_COLORS[6 % CHART_COLORS.length])
+    expect(categoryColor('supprimee', CATS)).toBe(categoryColor('autres', CATS))
+    // ordre fourni dans le désordre : même résultat
+    expect(categoryColor('sorties', [...CATS].reverse())).toBe(CHART_COLORS[3])
   })
   it('jamais les couleurs des budgets', () => {
     const budget = ['#2F7D5B', '#D9961A', '#8A5300', '#B83E27']

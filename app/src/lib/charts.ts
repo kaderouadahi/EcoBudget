@@ -55,12 +55,25 @@ export function monthlyTotals(
   return months.map((month) => ({ month, total: totals.get(month)! }))
 }
 
-/** Pourcentage arrondi à l'unité ; « moins de 1 % » pour une part non nulle qui serait arrondie à 0. */
+/**
+ * Pourcentage arrondi à l'unité ; « moins de 1 % » pour une part non nulle qui serait arrondie à 0 ;
+ * au plus 99 % tant que la catégorie n'est pas seule (jamais « 100 % » à côté d'une autre part, comme H2 et H4).
+ */
 export function percentLabel(amount: number, total: number): string {
   if (total <= 0) return '0 %'
   const p = Math.round((amount * 100) / total)
   if (p === 0 && amount > 0) return 'moins de 1 %'
-  return `${p} %`
+  return `${amount < total ? Math.min(p, 99) : p} %`
+}
+
+/**
+ * Couleur fixe d'une catégorie, selon l'ordre des catégories : une catégorie garde sa couleur
+ * d'un mois à l'autre (CLAUDE.md §8, code couleur constant). Catégorie inconnue = couleur d'« Autres ».
+ */
+export function categoryColor(categoryId: string, categories: Category[]): string {
+  const ordered = [...categories].sort((a, b) => a.order - b.order).map((c) => c.id)
+  const index = ordered.indexOf(ordered.includes(categoryId) ? categoryId : 'autres')
+  return CHART_COLORS[Math.max(0, index) % CHART_COLORS.length]
 }
 
 export interface BreakdownRow {

@@ -22,7 +22,7 @@ const prev = () => screen.getByRole('button', { name: 'Mois précédent' })
 const next = () => screen.getByRole('button', { name: 'Mois suivant' })
 const picker = () => screen.getByRole('group', { name: 'Mois détaillé' })
 const legend = () => screen.getByRole('list', { name: 'Répartition par catégorie' })
-const barsTable = () => screen.getByRole('table', { name: 'Montants par mois' })
+const barsTable = () => screen.getByRole('table', { name: /^Montants par mois/ })
 const barValues = () => within(barsTable()).getAllByRole('row').slice(1).map((r) => norm(r.lastElementChild!.textContent))
 
 describe('Graphiques', () => {
@@ -63,7 +63,9 @@ describe('Graphiques', () => {
     expect(select).toHaveValue('all')
     expect(barValues().slice(0, 4)).toEqual(['44 000 DA', '43 800 DA', '44 200 DA', '46 000 DA'])
     const before = norm(legend().textContent)
+    expect(barsTable()).toHaveAccessibleName('Montants par mois, toutes les dépenses')
     fireEvent.change(select, { target: { value: 'sorties' } })
+    expect(barsTable()).toHaveAccessibleName('Montants par mois, Sorties')
     expect(barValues()).toEqual(['5 000 DA', '4 800 DA', '5 200 DA', '7 000 DA', '0 DA'])
     expect(norm(legend().textContent)).toBe(before)
     expect(screen.getByText('Montants en DA')).toBeInTheDocument()
@@ -96,6 +98,17 @@ describe('Graphiques', () => {
     const monthText = new Intl.DateTimeFormat('fr-FR', { month: 'long' }).format(new Date(Number(label.slice(0, 4)), Number(label.slice(5)) - 1, 1))
     expect(screen.getByText(`Aucune dépense en ${monthText} ${label.slice(0, 4)}`)).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Ajouter une dépense' })).not.toBeInTheDocument()
+  })
+
+  it('une catégorie garde sa couleur d’un mois à l’autre', () => {
+    setData(demo.expenses)
+    renderPage()
+    const dot = (name: string) => within(legend()).getAllByRole('listitem').find((li) => li.textContent!.startsWith(name))!
+      .querySelector<HTMLElement>('.legend-dot')!.style.background
+    const inM = { repas: dot('Repas'), courses: dot('Courses'), transport: dot('Transport') }
+    fireEvent.click(prev())
+    expect({ repas: dot('Repas'), courses: dot('Courses'), transport: dot('Transport') }).toEqual(inM)
+    expect(new Set(Object.values(inM)).size).toBe(3)
   })
 
   it('graphiques hors du parcours clavier (cachés aux lecteurs d’écran, rien à toucher)', () => {

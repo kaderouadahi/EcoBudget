@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Bar, BarChart, Cell, LabelList, Pie, PieChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { useData } from '../../data/DataProvider'
-import { BAR_OTHER, BAR_SELECTED, breakdown, CHART_COLORS, coveredMonths, monthlyTotals, shortMonth } from '../../lib/charts'
+import { BAR_OTHER, BAR_SELECTED, breakdown, categoryColor, coveredMonths, monthlyTotals, shortMonth } from '../../lib/charts'
 import { formatDA, formatMonthTitle, formatNumber } from '../../lib/format'
 import { monthLabel } from '../../lib/goals'
 import { currentMonth } from '../../lib/month'
@@ -89,7 +89,7 @@ export function ChartsPage() {
                       isAnimationActive={false}
                       rootTabIndex={-1}
                     >
-                      {rows.map((r, i) => <Cell key={r.categoryId} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+                      {rows.map((r) => <Cell key={r.categoryId} fill={categoryColor(r.categoryId, categories)} />)}
                     </Pie>
                   </PieChart>
                 </div>
@@ -99,9 +99,9 @@ export function ChartsPage() {
                 </p>
               </div>
               <ul className="chart-legend" role="list" aria-label="Répartition par catégorie">
-                {rows.map((r, i) => (
+                {rows.map((r) => (
                   <li key={r.categoryId} role="listitem">
-                    <span className="legend-dot" style={{ background: CHART_COLORS[i % CHART_COLORS.length] }} aria-hidden />
+                    <span className="legend-dot" style={{ background: categoryColor(r.categoryId, categories) }} aria-hidden />
                     <span className="legend-name">{r.name}</span>{' '}
                     <span className="legend-amount">{formatDA(r.amount)}</span>{' '}
                     <span className="legend-percent">{r.percent}</span>
@@ -154,7 +154,7 @@ export function ChartsPage() {
             </ResponsiveContainer>
           </div>
 
-          <table className="sr-only" aria-label="Montants par mois">
+          <table className="sr-only" aria-label={`Montants par mois, ${filter === 'all' ? 'toutes les dépenses' : (sorted.find((c) => c.id === filter)?.name ?? 'Autres')}`}>
             <thead><tr><th>Mois</th><th>Montant</th></tr></thead>
             <tbody>
               {bars.map((b) => (
