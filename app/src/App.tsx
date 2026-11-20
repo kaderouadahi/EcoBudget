@@ -3,6 +3,7 @@ import { EditExpense } from './features/expenses/EditExpense'
 import { NewExpense } from './features/expenses/NewExpense'
 import { BudgetDetail, BudgetsPage, EditBudget, SetBudget } from './features/budgets/BudgetPages'
 import { AddSavings, EditGoal, GoalsPage, NewGoal } from './features/goals/GoalPages'
+import { DemoPage } from './features/demo/DemoPage'
 import { Home } from './features/home/Home'
 import { Placeholder } from './pages/Placeholder'
 import { AppShell, BareLayout } from './ui/AppShell'
@@ -22,6 +23,7 @@ export function AppRoutes() {
         <Route path="objectifs/:id" element={<EditGoal />} />
         <Route path="objectifs/:id/epargne" element={<AddSavings />} />
         <Route path="reglages" element={<Placeholder title="Réglages" />} />
+        <Route path="demo" element={<DemoPage />} />
         <Route path="depense/nouvelle" element={<NewExpense />} />
         <Route path="depense/:id" element={<EditExpense />} />
         <Route path="*" element={<Navigate to="/" replace />} />
