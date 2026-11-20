@@ -87,8 +87,8 @@ export type CurrentData = DemoData
 export interface BatchOps {
   deletes: { name: CollectionName; id: string }[]
   sets: { name: CollectionName; id: string; data: Record<string, unknown> }[]
-  /** Champs à `undefined` : supprimés du document utilisateur. */
-  user: Partial<UserDoc>
+  /** Champs à `undefined` : supprimés du document utilisateur. Absent : document utilisateur inchangé. */
+  user?: Partial<UserDoc>
 }
 
 const COLLECTIONS: (keyof DemoData & CollectionName)[] = ['categories', 'expenses', 'budgets', 'goals', 'contributions']

@@ -118,7 +118,7 @@ describe('Accueil', () => {
       const panel = screen.getByRole('dialog', { name: 'Dépense inhabituelle en Sorties' })
       expect(norm(panel.textContent)).toContain(WHY.replace(/\s/g, ' '))
       expect(norm(panel.textContent)).toContain('4 500 DA · Samedi')
-      expect(within(panel).getByRole('link', { name: 'Gérer les alertes' })).toHaveAttribute('href', '/reglages')
+      expect(within(panel).getByRole('link', { name: 'Gérer les alertes' })).toHaveAttribute('href', '/reglages#alertes')
       fireEvent.click(within(panel).getByRole('button', { name: 'Fermer' }))
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
       expect(screen.getByRole('region', { name: 'Dépense inhabituelle en Sorties' })).toBeInTheDocument()
@@ -136,6 +136,19 @@ describe('Accueil', () => {
       fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Compris' }))
       expect(onDismiss).toHaveBeenCalledTimes(1)
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
+    it('« Pourquoi ? » après un renommage : nom actuel de la catégorie, chiffres de l’ajout', () => {
+      const cats = DEFAULT_CATEGORIES.map((c) => (c.id === 'sorties' ? { ...c, name: 'Loisirs' } : c))
+      const stored: UnusualAlert = { ...alert, median: 1000, ratio: 4.5, count: 16, oldest: '2026-09-21' }
+      render(
+        <MemoryRouter>
+          <HomeView user={user()} categories={cats} expenses={[exp('x', { amount: 4500, categoryId: 'sorties', date: '2026-11-14' })]} budgets={[]} today={TODAY} alert={stored} />
+        </MemoryRouter>,
+      )
+      fireEvent.click(screen.getByRole('button', { name: 'Pourquoi ?' }))
+      const panel = screen.getByRole('dialog', { name: 'Dépense inhabituelle en Loisirs' })
+      expect(norm(panel.textContent)).toContain("D'habitude, une dépense en Loisirs est d'environ 1 000 DA. Celle-ci est 4,5 fois plus élevée. Calcul fait sur vos 16 dépenses en Loisirs depuis le 21 septembre.")
     })
 
     it('pas d’alerte : pas de carte', () => {

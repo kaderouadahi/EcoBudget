@@ -96,7 +96,7 @@ function InsightPanel({ Icon, title, subtitle, why, manageLabel, onClose, onDism
           <p>{why}</p>
         </div>
         <div className="alert-panel-actions">
-          <Link to="/reglages" className="alert-manage">{manageLabel}</Link>
+          <Link to="/reglages#alertes" className="alert-manage">{manageLabel}</Link>
           <button type="button" className="primary-button" onClick={onDismiss}>
             <Check aria-hidden size={22} />
             Compris

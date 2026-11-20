@@ -21,8 +21,13 @@ export interface UnusualAlert {
   amount: number
   categoryId: string
   date: string
-  /** Phrase « Pourquoi ? » calculée à l'ajout, gardée telle quelle. */
+  /** Phrase « Pourquoi ? » calculée à l'ajout (alertes enregistrées avant H7 : affichée telle quelle). */
   why: string
+  /** Chiffres figés à l'ajout ; la phrase est reconstruite avec le nom actuel de la catégorie (H7, renommage). */
+  median?: number
+  ratio?: number
+  count?: number
+  oldest?: string
 }
 
 export interface Category {

@@ -48,12 +48,12 @@ export function setUserFields(uid: string, patch: Partial<UserDoc>): void {
   setDoc(doc(db, 'users', uid), undefinedToDelete(patch), { merge: true }).catch(report)
 }
 
-/** Plusieurs écritures en un seul envoi atomique (données de démo, H8) ; non attendu, fonctionne hors connexion. */
+/** Plusieurs écritures en un seul envoi atomique (données de démo H8, suppression de catégorie H7) ; non attendu, fonctionne hors connexion. */
 export function applyBatch(uid: string, ops: BatchOps): void {
   const batch = writeBatch(db)
   for (const d of ops.deletes) batch.delete(doc(col(uid, d.name), d.id))
   for (const w of ops.sets) batch.set(doc(col(uid, w.name), w.id), stripUndefined(w.data))
-  batch.set(doc(db, 'users', uid), undefinedToDelete(ops.user), { merge: true })
+  if (ops.user) batch.set(doc(db, 'users', uid), undefinedToDelete(ops.user), { merge: true })
   batch.commit().catch(report)
 }
 

@@ -108,7 +108,7 @@ function storeFrom(current: CurrentData, user: Record<string, unknown>): Store {
 function apply(s: Store, ops: ReturnType<typeof demoOps>) {
   for (const d of ops.deletes) s[d.name].delete(d.id)
   for (const w of ops.sets) s[w.name].set(w.id, { ...w.data })
-  for (const [k, v] of Object.entries(ops.user)) { if (v === undefined) delete s.user[k]; else s.user[k] = v }
+  for (const [k, v] of Object.entries(ops.user ?? {})) { if (v === undefined) delete s.user[k]; else s.user[k] = v }
 }
 function current(s: Store): CurrentData {
   const out = {} as CurrentData

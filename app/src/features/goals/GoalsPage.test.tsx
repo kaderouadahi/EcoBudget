@@ -103,7 +103,7 @@ describe('carte Conseil (H5)', () => {
     const panel = screen.getByRole('dialog', { name: 'Conseil' })
     expect(norm(panel.textContent)).toContain('il faut mettre de côté environ 8 600 DA par mois. Avec 2 000 DA de plus, 6 mois suffiraient au lieu de 7.')
     expect(norm(panel.textContent)).toContain('vos dépenses en Sorties ont atteint 7 000 DA, contre environ 5 000 DA d\'habitude.')
-    expect(within(panel).getByRole('link', { name: 'Gérer les conseils' })).toHaveAttribute('href', '/reglages')
+    expect(within(panel).getByRole('link', { name: 'Gérer les conseils' })).toHaveAttribute('href', '/reglages#alertes')
     fireEvent.click(within(panel).getByRole('button', { name: 'Fermer' }))
     expect(screen.getByRole('region', { name: 'Conseil' })).toBeInTheDocument()
   })

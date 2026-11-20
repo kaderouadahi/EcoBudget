@@ -342,7 +342,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H7 Réglages — statut : à faire
+### H7 Réglages — statut : fait (branche h7-reglages, à relire avant fusion)
 - **Scénario source** : S2 (Nadia crée la catégorie « Enfants », étape 1) ; S4 (« Gérer les alertes », étape 4) ; S3 (conseil désactivable) ; Accueil personnalisé par le prénom (DECISIONS.md, 17/11).
 - **Fonctionnalité du sujet** : transversal (les catégories servent F1, F2 et F3 ; les interrupteurs servent INNOV).
 - **Contenu et interactions** :
@@ -385,3 +385,19 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Mêmes sections et libellés sur téléphone et sur ordinateur ; aucun état signalé par la couleur seule.
 - **Maquette** : `telephone-08`, `ordinateur-08` (Réglages), `telephone-09`, `ordinateur-11` (suppression). Écarts (DECISIONS.md prime) : boutons « Créer un compte » / « Se connecter » retirés jusqu'à H9, message changé ; « Alerte de budget », « Mois budgétaire » et « Données de démonstration » retirés ; section « Alertes » renommée « Alertes et conseils », cases à cocher remplacées par des interrupteurs avec texte, ligne « Conseils d'épargne » ajoutée ; corbeilles grises au lieu de rouges ; « Enfants » est une catégorie créée par l'utilisateur (S2).
 - **Écarts constatés (rempli par Claude Code)** :
+  - Livré en trois lots, chacun fusionnable seul : (1) interrupteurs et prénom, (2) ajouter / renommer une catégorie, (3) supprimer une catégorie avec « Annuler ».
+  - Tests Vitest : nom vide, 21 caractères, doublon (« sorties », «  Sorties  », « AUTRES »), propre nom accepté en modification ; icône présélectionnée (« Bébé » avec les catégories par défaut, puis « Cadeau ») ; « … » jamais proposée ; suppression → dépenses de tous les mois déplacées, budget supprimé, « Annuler » rétablit catégorie (id, nom, icône, place), budget et seulement les dépenses déplacées ; « Autres » ni modifiable ni supprimable ; prénom (espaces, vide, longueur) ; alertes désactivées → carte masquée, réactivées → carte revenue ; carte d'alerte qui disparaît à la suppression et revient avec « Annuler ».
+  - Vérifié dans un navigateur piloté, en local et en ligne (parcours de la spec, 16 étapes) : prénom « Yasmine » → « Bonjour Yasmine » et bulle « Y » ; « Gérer les alertes » → section à l'écran ; désactiver → plus de carte ; réactiver → carte revenue ; « Enfants » (bébé) en fin de liste, présente dans le formulaire Dépense, Budgets et Graphiques ; Sorties → « Loisirs », conseil « vos loisirs » ; suppression de « Loisirs » → « 23 dépenses déplacées vers Autres », budget retiré, carte disparue ; « Annuler » → catégorie à sa place, budget, dépenses et carte revenus ; `/demo` rechargé.
+  - Prénom : **30 caractères au plus** (choix). L'aide sous le champ montre l'aperçu en direct (« Bonjour Yasmine »).
+  - Nom de catégorie : le champ accepte quelques caractères de plus que 20 pour afficher l'erreur « 20 caractères au plus » plutôt que de couper sans prévenir.
+  - Noms accessibles des icônes : Couverts, Panier, Bus, Ticket, Cœur, Maison, Livre, Bébé, Cadeau, Vêtement, Téléphone, Voiture, Animal, Sport, Avion, Outil.
+  - Confirmation à une seule dépense : « La dépense de Sorties ne sera pas perdue : elle sera déplacée dans la catégorie choisie ci-dessous. »
+  - La fenêtre de confirmation commune ne remet plus le focus sur « Garder » à chaque changement : choisir la catégorie cible dans le menu garde le focus dans le menu.
+  - « Gérer les alertes » et « Gérer les conseils » mènent tous deux à `/reglages#alertes` (une seule section).
+  - Après un changement (interrupteur, liste), l'écran se met à jour quelques dizaines de millisecondes après le message (délai d'écriture déjà constaté en H3).
+  - **Validé le 20/11 (conflit H3 / H7, ligne dans DECISIONS.md)** : H3 dit que la phrase « Pourquoi ? » de l'alerte est « calculée à l'ajout et gardée telle quelle », H7 qu'elle utilise « le nom actuel ». Choix fait : les **chiffres** restent ceux de l'ajout (H3), seul le **nom de la catégorie** suit un renommage (H7) ; « Pourquoi ? » après Sorties → Loisirs dit « une dépense en Loisirs ». Les alertes enregistrées avant ce changement gardent leur phrase d'origine.
+  - Comptes créés avant le 19/11 (ancien nom d'icône de Repas) : l'icône est reconnue comme « Couverts » (présélection et modification justes).
+  - Doublon de nom reconnu aussi pour un nom collé avec des accents décomposés ; « Sante » à côté de « Santé » reste accepté (la spec ne parle que des majuscules).
+  - Prénom enregistré aussi si l'écran se ferme sans quitter le champ (geste retour Android). Prénom long : passe à la ligne sur l'Accueil, sans déborder (vérifié à 360 px avec 30 caractères).
+  - Fenêtre de confirmation : ses phrases (dépenses déplacées, budget supprimé) sont lues par les lecteurs d'écran (vaut pour toutes les confirmations).
+  - Plan : `app/docs/plans/2026-11-21-h7-reglages.md`.

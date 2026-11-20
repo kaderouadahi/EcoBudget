@@ -6,8 +6,14 @@ import { AppRoutes } from '../App'
 
 const LABELS = ['Accueil', 'Budgets', 'Graphiques', 'Objectifs', 'Réglages', 'Ajouter une dépense']
 
+// Coquille seule : les pages ont besoin des données, on les remplace par une page factice.
 function renderAt(path: string) {
-  return render(<MemoryRouter initialEntries={[path]}><AppRoutes /></MemoryRouter>)
+  if (path.startsWith('/compte')) return render(<MemoryRouter initialEntries={[path]}><AppRoutes /></MemoryRouter>)
+  return render(
+    <MemoryRouter initialEntries={[path]}>
+      <Routes><Route element={<AppShell />}><Route path="*" element={<p>page</p>} /></Route></Routes>
+    </MemoryRouter>,
+  )
 }
 
 describe('AppShell', () => {
