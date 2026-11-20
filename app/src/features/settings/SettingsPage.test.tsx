@@ -45,6 +45,13 @@ describe('Réglages', () => {
     expect(within(last).queryByRole('button')).not.toBeInTheDocument()
   })
 
+  it('crayon « Modifier [nom] » sur chaque catégorie sauf Autres, bouton « Ajouter une catégorie »', () => {
+    setup()
+    expect(screen.getByRole('link', { name: 'Modifier Courses' })).toHaveAttribute('href', '/reglages/categories/courses')
+    expect(screen.queryByRole('link', { name: 'Modifier Autres' })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Ajouter une catégorie' })).toHaveAttribute('href', '/reglages/categories/nouvelle')
+  })
+
   it('prénom : enregistré en quittant le champ, espaces retirés, message', () => {
     setup()
     const input = screen.getByLabelText('Votre prénom (facultatif)')

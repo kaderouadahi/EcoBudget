@@ -1,6 +1,6 @@
-import { Cloud, Lock } from 'lucide-react'
+import { Cloud, Lock, Pencil, Plus } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useUid } from '../../auth/AuthGate'
 import { categoryIcon } from '../../data/defaults'
 import { useData } from '../../data/DataProvider'
@@ -8,6 +8,7 @@ import { setUserFields } from '../../data/repo'
 import { cleanFirstName, FIRST_NAME_MAX } from '../../lib/settings'
 import { useToast } from '../../ui/Toast'
 import '../expenses/ExpenseForm.css'
+import '../budgets/budgets.css'
 import '../home/Home.css'
 import './settings.css'
 
@@ -75,13 +76,21 @@ export function SettingsPage() {
                     <li key={c.id} className="category-row">
                       <span className="round-icon small"><Icon aria-hidden size={20} /></span>
                       <span className="category-name">{c.name}</span>
-                      {c.locked && (
+                      {c.locked ? (
                         <span className="category-locked"><Lock aria-hidden size={16} />Toujours présente</span>
+                      ) : (
+                        <Link to={`/reglages/categories/${c.id}`} className="row-action" aria-label={`Modifier ${c.name}`}>
+                          <Pencil aria-hidden size={19} />
+                        </Link>
                       )}
                     </li>
                   )
                 })}
               </ul>
+              <Link to="/reglages/categories/nouvelle" className="outline-button">
+                <Plus aria-hidden size={20} />
+                Ajouter une catégorie
+              </Link>
             </div>
           </section>
 

@@ -35,3 +35,21 @@
 .switch-thumb { position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgb(22 26 36 / 25%); transition: transform 120ms; }
 .switch.is-on .switch-thumb { transform: translateX(20px); }
 @media (prefers-reduced-motion: reduce) { .switch-track, .switch-thumb { transition: none; } }
+
+.row-action {
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  flex: none;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--navy);
+}
+.row-action:hover { background: var(--blue-light); }
+/* Corbeille grise : le rouge reste réservé au bouton « Supprimer » de la confirmation (DECISIONS.md 20/11). */
+.row-action.is-delete { color: var(--muted); }
+.icon-grid { grid-template-columns: repeat(4, 1fr); }
+@media (min-width: 900px) { .icon-grid { grid-template-columns: repeat(8, 1fr); } }
+.icon-grid .category-tile { min-height: 56px; }
