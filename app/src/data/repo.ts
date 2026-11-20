@@ -1,6 +1,7 @@
-import { collection, deleteDoc, deleteField, doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
+import { collection, deleteDoc, deleteField, doc, onSnapshot, setDoc, updateDoc, writeBatch } from 'firebase/firestore'
 import { db } from '../firebase'
 import type { CollectionName, UserDoc } from './model'
+import type { BatchOps } from '../lib/demo'
 
 // Écritures « fire-and-forget » : la promesse Firestore ne se résout qu'à l'accusé du serveur,
 // donc l'interface ne l'attend jamais. Le cache local met à jour onSnapshot immédiatement,
@@ -45,6 +46,15 @@ export function removeDoc(uid: string, name: CollectionName, id: string): void {
 
 export function setUserFields(uid: string, patch: Partial<UserDoc>): void {
   setDoc(doc(db, 'users', uid), undefinedToDelete(patch), { merge: true }).catch(report)
+}
+
+/** Plusieurs écritures en un seul envoi atomique (données de démo, H8) ; non attendu, fonctionne hors connexion. */
+export function applyBatch(uid: string, ops: BatchOps): void {
+  const batch = writeBatch(db)
+  for (const d of ops.deletes) batch.delete(doc(col(uid, d.name), d.id))
+  for (const w of ops.sets) batch.set(doc(col(uid, w.name), w.id), stripUndefined(w.data))
+  batch.set(doc(db, 'users', uid), undefinedToDelete(ops.user), { merge: true })
+  batch.commit().catch(report)
 }
 
 // Modification : un champ remis à undefined (ex. note vidée) est supprimé du document.

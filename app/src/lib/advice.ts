@@ -95,7 +95,12 @@ export function computeAdvice(input: {
 }
 
 const hundred = (v: number) => Math.round(v / 100) * 100
-const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1)
+/** Minuscule initiale, sauf pour un sigle (2ᵉ lettre majuscule : « EDF » reste « EDF »). */
+const lowerFirst = (s: string) => {
+  const second = s.charAt(1)
+  if (second && second !== second.toLowerCase()) return s
+  return s.charAt(0).toLowerCase() + s.slice(1)
+}
 
 /** Phrase de la carte Conseil. */
 export function adviceText(a: Advice): string {
@@ -107,7 +112,7 @@ export function adviceText(a: Advice): string {
 export function adviceWhy(a: Advice): string {
   return (
     `Pour atteindre « ${a.goalName} » en ${monthLabel(a.targetMonth)}, il faut mettre de côté environ ${formatDA(hundred(a.pace))} par mois. ` +
-    `Avec ${formatDA(a.reduction)} de plus, ${a.needed} mois suffiraient au lieu de ${a.months}. ` +
+    `Avec ${formatDA(a.reduction)} de plus, ${a.needed} mois ${a.needed === 1 ? 'suffirait' : 'suffiraient'} au lieu de ${a.months}. ` +
     `Le mois dernier, vos dépenses en ${a.categoryName} ont atteint ${formatDA(hundred(a.lastMonth))}, contre environ ${formatDA(hundred(a.usual))} d'habitude.`
   )
 }

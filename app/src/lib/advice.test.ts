@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_CATEGORIES } from '../data/defaults'
 import type { Category, Contribution, Expense, Goal, UserDoc } from '../data/model'
-import { adviceText, adviceWhy, computeAdvice } from './advice'
+import { adviceText, adviceWhy, computeAdvice, type Advice } from './advice'
 import { addMonths, currentMonth } from './month'
 
 const norm = (s: string) => s.replace(/\s/g, ' ')
@@ -152,5 +152,24 @@ describe('catégorie visée', () => {
     const a = computeAdvice({ ...d, expenses: [...d.expenses, E(8000, 'sorties', M1(d))] })!
     expect(a.gain).toBeGreaterThanOrEqual(2)
     expect(adviceText(a)).toContain(`« Ordinateur portable » ${a.gain} mois plus tôt.`)
+  })
+})
+
+describe('corrections H8 des phrases du conseil', () => {
+  const base: Advice = {
+    goalId: 'g', goalName: 'Vélo', targetMonth: '2027-01', categoryId: 'sorties', categoryName: 'Sorties',
+    reduction: 5000, months: 2, needed: 1, gain: 1, pace: 6000, lastMonth: 9000, usual: 4000,
+  }
+  it('un seul mois : « 1 mois suffirait »', () => {
+    expect(norm(adviceWhy(base))).toContain('1 mois suffirait au lieu de 2.')
+  })
+  it('plusieurs mois : « suffiraient » (inchangé)', () => {
+    expect(norm(adviceWhy({ ...base, needed: 6, months: 7 }))).toContain('6 mois suffiraient au lieu de 7.')
+  })
+  it('sigle gardé tel quel sur la carte', () => {
+    expect(adviceText({ ...base, categoryName: 'EDF' })).toContain('vos EDF de')
+  })
+  it('nom ordinaire en minuscule (inchangé)', () => {
+    expect(adviceText(base)).toContain('vos sorties de')
   })
 })
