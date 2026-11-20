@@ -39,7 +39,8 @@ const pad = (n: number) => String(n).padStart(2, '0')
 const iso = (month: string, day: number) => `${month}-${pad(day)}`
 const stamp = (month: string, day: number, i: number) => {
   const [y, m] = month.split('-').map(Number)
-  return new Date(y, m - 1, day, 12).getTime() + i
+  // Minuit (+ i ms) : toujours avant une saisie réelle du jour (catégorie proposée, ordre des dernières dépenses).
+  return new Date(y, m - 1, day, 0).getTime() + i
 }
 
 export function buildDemoData(today: Date): DemoData {

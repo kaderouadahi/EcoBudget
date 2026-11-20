@@ -80,6 +80,13 @@ describe('contenu du jeu de démo', () => {
       .toEqual(['2026-07-28', '2026-08-28', '2026-09-28', '2026-10-28'])
   })
 
+  it('chargé le matin : aucune dépense de démo n’est « plus récente » qu’une saisie réelle du jour', () => {
+    const morning = new Date(2026, 10, 3, 8, 0)
+    const d = buildDemoData(morning)
+    expect(d.expenses.some((e) => e.date === '2026-11-03')).toBe(true)
+    expect(d.expenses.every((e) => e.createdAt < morning.getTime())).toBe(true)
+  })
+
   it('catégories par défaut, ids uniques, même résultat à chaque appel', () => {
     expect(demo.categories.map((c) => c.id)).toEqual(['repas', 'courses', 'transport', 'sorties', 'sante', 'logement', 'etudes', 'autres'])
     const ids = demo.expenses.map((e) => e.id)
