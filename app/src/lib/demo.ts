@@ -1,5 +1,5 @@
 import { DEFAULT_CATEGORIES } from '../data/defaults'
-import type { Budget, Category, Contribution, Expense, Goal } from '../data/model'
+import type { Budget, Category, CollectionName, Contribution, Expense, Goal, UserDoc } from '../data/model'
 import { addMonths, currentMonth } from './month'
 
 // Jeu de démo (innovation.md §5.2, HANDOFF H8, DECISIONS.md 20/11) : dates relatives au jour du chargement,
@@ -77,5 +77,41 @@ export function buildDemoData(today: Date): DemoData {
     budgets: BUDGETS.map((b) => ({ ...b })),
     goals,
     contributions,
+  }
+}
+
+/** Données actuelles du compte (celles de useData). */
+export type CurrentData = DemoData
+
+export interface BatchOps {
+  deletes: { name: CollectionName; id: string }[]
+  sets: { name: CollectionName; id: string; data: Record<string, unknown> }[]
+  /** Champs à `undefined` : supprimés du document utilisateur. */
+  user: Partial<UserDoc>
+}
+
+const COLLECTIONS: (keyof DemoData & CollectionName)[] = ['categories', 'expenses', 'budgets', 'goals', 'contributions']
+
+/** Écritures qui remplacent tout le compte par le jeu de démo (HANDOFF H8). */
+export function demoOps(current: CurrentData, demo: DemoData): BatchOps {
+  const deletes: BatchOps['deletes'] = []
+  const sets: BatchOps['sets'] = []
+  for (const name of COLLECTIONS) {
+    const keep = new Set(demo[name].map((d) => d.id))
+    for (const d of current[name]) if (!keep.has(d.id)) deletes.push({ name, id: d.id })
+    for (const { id, ...data } of demo[name] as { id: string }[]) sets.push({ name, id, data })
+  }
+  return {
+    deletes,
+    sets,
+    user: {
+      firstName: undefined,
+      alert: undefined,
+      adviceHiddenUntil: undefined,
+      alertsEnabled: true,
+      adviceEnabled: true,
+      onboardingDone: true,
+      seeded: true,
+    },
   }
 }

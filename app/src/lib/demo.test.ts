@@ -87,3 +87,63 @@ describe('contenu du jeu de démo', () => {
     expect(buildDemoData(today)).toEqual(demo)
   })
 })
+
+import { demoOps, type CurrentData } from './demo'
+
+type Store = Record<string, Map<string, Record<string, unknown>>> & { user: Record<string, unknown> }
+const NAMES = ['categories', 'expenses', 'budgets', 'goals', 'contributions'] as const
+
+function storeFrom(current: CurrentData, user: Record<string, unknown>): Store {
+  const s = { user: { ...user } } as Store
+  for (const n of NAMES) s[n] = new Map((current[n] as { id: string }[]).map(({ id, ...d }) => [id, d]))
+  return s
+}
+function apply(s: Store, ops: ReturnType<typeof demoOps>) {
+  for (const d of ops.deletes) s[d.name].delete(d.id)
+  for (const w of ops.sets) s[w.name].set(w.id, { ...w.data })
+  for (const [k, v] of Object.entries(ops.user)) { if (v === undefined) delete s.user[k]; else s.user[k] = v }
+}
+function current(s: Store): CurrentData {
+  const out = {} as CurrentData
+  for (const n of NAMES) (out as unknown as Record<string, unknown>)[n] = [...s[n].entries()].map(([id, d]) => ({ ...d, id }))
+  return out
+}
+const snapshot = (s: Store) => JSON.stringify({ ...Object.fromEntries(NAMES.map((n) => [n, [...s[n].entries()].sort()])), user: s.user })
+
+describe('chargement (demoOps)', () => {
+  const today = new Date(2026, 10, 20)
+  const demo = buildDemoData(today)
+  const empty: CurrentData = { categories: [], expenses: [], budgets: [], goals: [], contributions: [] }
+
+  it('remplace tout : dépense en trop et catégorie ajoutée supprimées, catégorie renommée remise par défaut', () => {
+    const before: CurrentData = {
+      ...empty,
+      categories: [{ id: 'sorties', name: 'Loisirs', icon: 'Ticket', order: 3, locked: false }, { id: 'perso', name: 'Enfants', icon: 'Baby', order: 8, locked: false }],
+      expenses: [{ id: 'old', amount: 4500, categoryId: 'sorties', date: '2026-11-20', createdAt: 1 }],
+      goals: [{ id: 'g-old', name: 'Vélo', target: 1, targetMonth: '2027-01', createdAt: 1 }],
+    }
+    const s = storeFrom(before, { firstName: 'Nadia', alert: { expenseId: 'old' }, adviceHiddenUntil: '2026-11', alertsEnabled: false })
+    apply(s, demoOps(before, demo))
+    expect(s.expenses.has('old')).toBe(false)
+    expect(s.categories.has('perso')).toBe(false)
+    expect(s.goals.has('g-old')).toBe(false)
+    expect(s.categories.get('sorties')!.name).toBe('Sorties')
+    expect(s.expenses.size).toBe(demo.expenses.length)
+    expect(s.user).toEqual({ alertsEnabled: true, adviceEnabled: true, onboardingDone: true, seeded: true })
+  })
+
+  it('chargement répété : même état', () => {
+    const s = storeFrom(empty, {})
+    apply(s, demoOps(empty, demo))
+    const first = snapshot(s)
+    apply(s, demoOps(current(s), demo))
+    expect(snapshot(s)).toBe(first)
+  })
+
+  it('patch utilisateur : prénom, alerte et masquage du conseil effacés, drapeaux activés', () => {
+    expect(demoOps(empty, demo).user).toEqual({
+      firstName: undefined, alert: undefined, adviceHiddenUntil: undefined,
+      alertsEnabled: true, adviceEnabled: true, onboardingDone: true, seeded: true,
+    })
+  })
+})
