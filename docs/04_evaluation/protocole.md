@@ -3,11 +3,13 @@
 Sujet : au moins trois utilisateurs représentatifs ; problèmes ergonomiques identifiés ; améliorations proposées.
 
 ## Participants (réels, jamais inventés)
-| Code | Persona correspondant | Pourquoi représentatif | Date | Animateur |
-|---|---|---|---|---|
-| P1 | | | | |
-| P2 | | | | |
-| P3 | | | | |
+| Code | Profil | Persona le plus proche |
+|---|---|---|
+| P1 | Étudiant de 22 ans, très à l'aise avec l'outil informatique | Amine (étudiant) |
+| P2 | Mère de famille de 50 ans | Nadia (mère de famille) |
+| P3 | Consultant de 34 ans dans une entreprise du secteur technologique | Yasmine (jeune active) ; plus expert qu'elle en numérique (limite de représentativité) |
+
+Deux tours de tests pendant la conception (notes : `resultats/tests-conception.md`), puis un tour sur l'application finale (résultats à venir).
 
 ## Tâches (dérivées des scénarios)
 | ID | Tâche | Critère de réussite | Critères observés |
