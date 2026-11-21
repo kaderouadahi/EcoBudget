@@ -182,6 +182,17 @@ describe('Se connecter', () => {
     expect(sendReset).not.toHaveBeenCalled()
   })
 
+  it('mot de passe oublié, double appui : un seul e-mail', async () => {
+    sendReset.mockReturnValue(new Promise(() => {}))
+    setup()
+    fireEvent.change(email(), { target: { value: 'yasmine@gmail.com' } })
+    await act(async () => {
+      fireEvent.click(forgot())
+      fireEvent.click(forgot())
+    })
+    expect(sendReset).toHaveBeenCalledTimes(1)
+  })
+
   it('mot de passe oublié : e-mail envoyé, message neutre', async () => {
     sendReset.mockResolvedValue(undefined)
     setup()

@@ -38,6 +38,8 @@ export function SignInPage() {
   const [resetSent, setResetSent] = useState(false)
   const [busy, setBusy] = useState(false)
   const sending = useRef(false)
+  const resetting = useRef(false)
+  const [resetBusy, setResetBusy] = useState(false)
   // Destination fixée la première fois que l'écran voit le compte connecté : la navigation de react-router
   // est différée (transition), l'écran remonté peut se rendre encore sur /compte/connexion après la fin de signIn.
   const redirect = useRef<string | null>(null)
@@ -98,16 +100,19 @@ export function SignInPage() {
       setFormProblem(authProblem('reset', NETWORK_CODE))
       return
     }
+    if (resetting.current) return
+    resetting.current = true
+    setResetBusy(true)
+    let problem: AuthProblem | null = null
     try {
       await sendReset(email)
     } catch (err) {
-      const p = authProblem('reset', codeOf(err))
-      if (p) {
-        showProblem(p)
-        return
-      }
+      problem = authProblem('reset', codeOf(err))
     }
-    setResetSent(true)
+    resetting.current = false
+    setResetBusy(false)
+    if (problem) showProblem(problem)
+    else setResetSent(true)
   }
 
   return (
@@ -140,7 +145,7 @@ export function SignInPage() {
         error={passwordError ?? undefined}
       />
 
-      <button type="button" className="text-link account-forgot" onClick={forgotPassword}>Mot de passe oublié ?</button>
+      <button type="button" className="text-link account-forgot" disabled={resetBusy} onClick={forgotPassword}>Mot de passe oublié ?</button>
       <p className="form-note" aria-live="polite" hidden={!resetSent}>{resetSent ? RESET_SENT : ''}</p>
 
       {formProblem && <FormProblem message={formProblem.message} onRetry={formProblem.kind === 'retry' ? () => submit() : undefined} />}
