@@ -16,11 +16,14 @@ import { OffBudgetList } from '../budgets/BudgetPages'
 import '../budgets/budgets.css'
 import { ExpenseList } from '../expenses/ExpenseList'
 import { BrandLogo } from '../../ui/Brand'
+import { useAccount } from '../../auth/AuthGate'
+import { AccountCard } from './AccountCard'
 import './Home.css'
 
 export function Home() {
   const uid = useUid()
   const { user, categories, expenses, budgets, ready } = useData()
+  const { isAnonymous } = useAccount()
   if (!ready) return null
   return (
     <HomeView
@@ -31,11 +34,12 @@ export function Home() {
       today={new Date()}
       alert={shownAlert(user, expenses)}
       onDismissAlert={() => setUserFields(uid, { alert: undefined })}
+      anonymous={isAnonymous}
     />
   )
 }
 
-export function HomeView({ user, categories, expenses, budgets, today, alert = null, onDismissAlert = () => {} }: {
+export function HomeView({ user, categories, expenses, budgets, today, alert = null, onDismissAlert = () => {}, anonymous = false }: {
   user: UserDoc | null
   categories: Category[]
   expenses: Expense[]
@@ -44,6 +48,8 @@ export function HomeView({ user, categories, expenses, budgets, today, alert = n
   /** Alerte de dépense inhabituelle à afficher (déjà filtrée par visibleAlert). */
   alert?: UnusualAlert | null
   onDismissAlert?: () => void
+  /** H14 : compte anonyme → carte « Compte » (créer un compte ou se connecter). */
+  anonymous?: boolean
 }) {
   const month = currentMonth(today)
   const summary = budgetSummary(budgets, categories, expenses, month)
@@ -76,6 +82,8 @@ export function HomeView({ user, categories, expenses, budgets, today, alert = n
               Noter ma première dépense
             </Link>
           </section>
+
+          {anonymous && <AccountCard />}
 
           <section className="card">
             <h2 className="card-title">Vos catégories sont prêtes</h2>
@@ -121,6 +129,8 @@ export function HomeView({ user, categories, expenses, budgets, today, alert = n
                 </>
               )}
             </section>
+
+            {anonymous && <AccountCard />}
 
             {alert && (
               <AlertCard

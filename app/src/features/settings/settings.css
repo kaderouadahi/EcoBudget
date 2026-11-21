@@ -60,3 +60,10 @@
 
 .dialog-field { margin: 12px 0; }
 .dialog-field label { color: var(--text); }
+
+/* H14 : carte « Compte » de l'Accueil ; sur téléphone étroit, les deux boutons passent l'un sous l'autre. */
+.account-card { display: flex; flex-direction: column; gap: 14px; }
+.account-card .account-row { align-items: center; }
+.account-card .account-row p { margin: 0; font-weight: 600; color: var(--text); }
+.account-card .account-actions { flex-wrap: wrap; }
+.account-card .account-actions > * { flex: 1 1 auto; white-space: nowrap; }

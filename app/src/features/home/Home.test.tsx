@@ -10,10 +10,10 @@ const TODAY = new Date(2026, 10, 19)
 const user = (p: Partial<UserDoc> = {}): UserDoc => ({ alertsEnabled: true, adviceEnabled: true, onboardingDone: true, ...p })
 const exp = (id: string, p: Partial<Expense>): Expense => ({ id, amount: 100, categoryId: 'repas', date: '2026-11-19', createdAt: 0, ...p })
 
-function renderHome(u: UserDoc, expenses: Expense[] = [], budgets: Budget[] = [], alert: UnusualAlert | null = null, onDismissAlert = () => {}) {
+function renderHome(u: UserDoc, expenses: Expense[] = [], budgets: Budget[] = [], alert: UnusualAlert | null = null, onDismissAlert = () => {}, anonymous = false) {
   return render(
     <MemoryRouter>
-      <HomeView user={u} categories={DEFAULT_CATEGORIES} expenses={expenses} budgets={budgets} today={TODAY} alert={alert} onDismissAlert={onDismissAlert} />
+      <HomeView user={u} categories={DEFAULT_CATEGORIES} expenses={expenses} budgets={budgets} today={TODAY} alert={alert} onDismissAlert={onDismissAlert} anonymous={anonymous} />
     </MemoryRouter>,
   )
 }
@@ -27,6 +27,27 @@ describe('Accueil', () => {
     expect(screen.getByText('Courses')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Fixer un budget/ })).toHaveAttribute('href', '/budgets')
     expect(screen.getByRole('link', { name: 'Se connecter' })).toHaveAttribute('href', '/compte/connexion')
+  })
+
+  it('H14 : carte « Compte » avec un compte anonyme (avec et sans dépenses), absente avec un compte e-mail', () => {
+    const card = () => screen.queryByRole('region', { name: 'Compte' })
+    const check = () => {
+      expect(card()).toHaveTextContent('Retrouvez vos dépenses sur tous vos appareils.')
+      expect(within(card()!).getByRole('link', { name: 'Créer un compte' })).toHaveAttribute('href', '/compte/creer')
+      expect(within(card()!).getByRole('link', { name: 'Se connecter' })).toHaveAttribute('href', '/compte/connexion')
+    }
+    let r = renderHome(user({ onboardingDone: false }), [], [], null, () => {}, true)
+    check()
+    // Première ouverture : juste sous « Bienvenue », avant « Vos catégories sont prêtes ».
+    expect(screen.getByRole('heading', { name: /Bienvenue sur EcoBudget/ }).closest('section')!.nextElementSibling).toBe(card())
+    r.unmount()
+    r = renderHome(user(), [exp('a', {})], [{ id: 'repas', amount: 8000 }], null, () => {}, true)
+    check()
+    // Ensuite : juste sous « Reste à dépenser ».
+    expect(screen.getByRole('region', { name: 'Reste à dépenser' }).nextElementSibling).toBe(card())
+    r.unmount()
+    renderHome(user(), [exp('a', {})], [], null, () => {}, false)
+    expect(card()).not.toBeInTheDocument()
   })
 
   it('ensuite : plus de bienvenue', () => {
