@@ -625,7 +625,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
   - Pas vérifié : l'installation réelle sur un téléphone Android (pas d'appareil disponible).
   - **Mise en production** le 21/11 à 20 h 33, en copiant le canal `h12` vers la production (code identique à `main` après la PR n°11). La nouvelle version et le nouveau favicon étaient servis dès le premier contrôle. Vérifié en production, sans compte : les mêmes contrôles que sur le canal, puis le parcours de démo (`innovation.md` §5.3).
 
-### H13 Icône neutre de catégorie — statut : fait (branche `h13-etiquette`, non fusionnée)
+### H13 Icône neutre de catégorie — statut : fait (fusionné dans main le 21/11, PR n°12)
 - **Scénario source** : S2 (créer « Enfants ») ; retour n° 4 de P2 (une icône est imposée même quand aucune ne correspond).
 - **Fonctionnalité du sujet** : transversal (catégories, H7).
 - **Contenu et interactions** :
@@ -645,6 +645,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
     - Réglages › Ajouter une catégorie → « Étiquette » en tête et sélectionnée, avec l'aide ;
     - « Enfants » créée : étiquette dans le formulaire Dépense et dans Budgets (Hors budget), présente dans Graphiques ;
     - `/demo` et parcours de démo sans compte : OK.
+  - **Mise en production** le 21/11 à 20 h 42, en copiant le canal `h13` vers la production (code identique à `main` après la PR n°12). La nouvelle version était servie au deuxième contrôle. Vérifié en production, sans compte : les mêmes contrôles que sur le canal, puis le parcours de démo (`innovation.md` §5.3).
 
 ### H14 Compte plus visible — statut : à faire
 - **Scénario source** : S3 (Yasmine crée un compte puis se connecte sur son PC) ; retour n° 6 de P3 (créer un compte ou se connecter n'est pas assez clair, surtout quand l'appareil contient déjà des dépenses).
