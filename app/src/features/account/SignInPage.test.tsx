@@ -19,18 +19,19 @@ vi.mock('../../data/DataProvider', () => ({ useData: () => ({ user: null, expens
 import { ToastProvider } from '../../ui/Toast'
 import { SignInPage } from './SignInPage'
 
+const tree = (state?: { email: string }) => (
+  <MemoryRouter initialEntries={[{ pathname: '/compte/connexion', state }]}>
+    <ToastProvider>
+      <Routes>
+        <Route path="/compte/connexion" element={<SignInPage />} />
+        <Route path="/" element={<p>écran accueil</p>} />
+        <Route path="/reglages" element={<p>écran réglages</p>} />
+      </Routes>
+    </ToastProvider>
+  </MemoryRouter>
+)
 function setup(state?: { email: string }) {
-  return render(
-    <MemoryRouter initialEntries={[{ pathname: '/compte/connexion', state }]}>
-      <ToastProvider>
-        <Routes>
-          <Route path="/compte/connexion" element={<SignInPage />} />
-          <Route path="/" element={<p>écran accueil</p>} />
-          <Route path="/reglages" element={<p>écran réglages</p>} />
-        </Routes>
-      </ToastProvider>
-    </MemoryRouter>,
-  )
+  return render(tree(state))
 }
 const email = () => screen.getByLabelText('Adresse e-mail')
 const password = () => screen.getByLabelText('Mot de passe')
@@ -129,6 +130,21 @@ describe('Se connecter', () => {
     expect(signIn).toHaveBeenCalledWith('yasmine@gmail.com', 'abcdefg1')
     expect(screen.getByText('écran accueil')).toBeInTheDocument()
     expect(screen.getByRole('status')).toHaveTextContent(SIGNED_IN_MESSAGE)
+  })
+
+  it('le compte change avant la fin de la connexion (application remontée) : Accueil, pas Réglages', async () => {
+    let finish: () => void = () => {}
+    signIn.mockImplementation(() => new Promise<void>((r) => {
+      account = { uid: 'u-mail', email: 'yasmine@gmail.com', isAnonymous: false, refresh: () => {} }
+      finish = r
+    }))
+    const { rerender } = setup()
+    fill('yasmine@gmail.com', 'abcdefg1')
+    await act(async () => { fireEvent.click(submit()) })
+    rerender(tree())
+    expect(screen.getByText('écran accueil')).toBeInTheDocument()
+    await act(async () => finish())
+    expect(screen.getByText('écran accueil')).toBeInTheDocument()
   })
 
   it('double appui : un seul envoi', async () => {

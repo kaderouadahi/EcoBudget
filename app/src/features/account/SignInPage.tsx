@@ -1,5 +1,5 @@
 import { Smartphone } from 'lucide-react'
-import { useId, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { sendReset, signIn } from '../../auth/actions'
 import { useAccount } from '../../auth/AuthGate'
@@ -14,6 +14,10 @@ import '../expenses/ExpenseForm.css'
 import './account.css'
 
 const codeOf = (err: unknown) => (err as { code?: string } | null)?.code
+
+// Connexion en cours : le changement de compte remonte toute l'application (AuthGate) avant la fin de signIn.
+// L'écran remonté, déjà connecté, doit alors mener à l'Accueil et non à Réglages.
+let signingIn = false
 
 /**
  * Se connecter (H9, maquettes telephone-11 / ordinateur-10) : rejoindre un compte existant.
@@ -34,8 +38,10 @@ export function SignInPage() {
   const [resetSent, setResetSent] = useState(false)
   const [busy, setBusy] = useState(false)
   const sending = useRef(false)
+  // Écran ouvert sans compte : aucune connexion n'est en cours (une connexion restée sans réponse ne compte plus).
+  useEffect(() => { if (isAnonymous) signingIn = false }, [isAnonymous])
 
-  if (!isAnonymous) return <Navigate to="/reglages" replace />
+  if (!isAnonymous) return <Navigate to={signingIn ? '/' : '/reglages'} replace />
 
   const warning = deviceWarning(expenses.length)
 
@@ -59,10 +65,12 @@ export function SignInPage() {
       return
     }
     sending.current = true
+    signingIn = true
     setBusy(true)
     try {
       await signIn(email, password)
     } catch (err) {
+      signingIn = false
       showProblem(authProblem('signin', codeOf(err)))
       sending.current = false
       setBusy(false)
@@ -71,6 +79,7 @@ export function SignInPage() {
     // Le compte change : AuthGate remonte l'application ; la navigation et le message restent (H9).
     navigate('/', { replace: true })
     show({ message: SIGNED_IN_MESSAGE })
+    signingIn = false
   }
 
   async function forgotPassword() {
