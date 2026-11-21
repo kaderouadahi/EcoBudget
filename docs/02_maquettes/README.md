@@ -16,7 +16,7 @@ Les montants sont des **données de démonstration** (voir `docs/01_analyse/scen
 
 **Écart (décisions du 20/11/2026)** : écran Réglages sans « Alerte de budget », « Mois budgétaire » ni « Données de démonstration » ; section « Alertes et conseils » avec deux interrupteurs et leur texte ; corbeilles grises, rouge seulement sur le bouton « Supprimer » de la confirmation (spec H7 de `docs/HANDOFF.md`).
 
-**Écart (décisions du 21/11/2026)** : Réglages › Compte avec deux états (« Sans compte pour l'instant » avec « Créer un compte » / « Se connecter », ou « Connecté » avec l'adresse et « Se déconnecter », bouton absent des maquettes) ; `telephone-10` / `ordinateur-09` : règles du mot de passe en liste de conditions qui passent au vert avec une coche pendant la saisie ; `telephone-11` / `ordinateur-10` : l'encadré « seront ajoutées à votre compte » (beige) est remplacé par l'avertissement « ne seront pas ajoutées » (bleu) ; aucun lien souligné dans l'application (spec H9 de `docs/HANDOFF.md`).
+**Écart (décisions du 21/11/2026)** : Réglages › Compte avec deux états (« Sans compte pour l'instant » avec « Créer un compte » / « Se connecter », ou « Connecté » avec l'adresse et « Se déconnecter », bouton absent des maquettes) ; `telephone-10` / `ordinateur-09` : règles du mot de passe en liste de conditions qui passent au vert avec une coche pendant la saisie ; `telephone-11` / `ordinateur-10` : l'encadré « seront ajoutées à votre compte » (beige) est remplacé par l'avertissement « ne seront pas ajoutées » (bleu), et une fenêtre de confirmation avec l'adresse précède l'envoi du lien « Mot de passe oublié ? » (absente des maquettes) ; aucun lien souligné dans l'application (spec H9 de `docs/HANDOFF.md`).
 
 ## Parcourir les 4 scénarios dans le prototype
 
