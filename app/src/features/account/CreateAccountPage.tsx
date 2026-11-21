@@ -20,6 +20,12 @@ import './account.css'
  * devient un compte e-mail ; ce qui est déjà noté est conservé (DECISIONS.md 21/11).
  */
 export function CreateAccountPage() {
+  // Écran ouvert directement (rechargement, application rouverte) : attendre les données pour préremplir le prénom.
+  const { ready } = useData()
+  return ready ? <CreateAccountForm /> : null
+}
+
+function CreateAccountForm() {
   const { uid, isAnonymous, refresh } = useAccount()
   const { user } = useData()
   const navigate = useNavigate()

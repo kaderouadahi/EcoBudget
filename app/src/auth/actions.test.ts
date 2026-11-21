@@ -60,6 +60,19 @@ describe('actions du compte', () => {
     expect(signOut).not.toHaveBeenCalled()
   })
 
+  it('écritures faites pendant l’attente (dépense notée pendant « Déconnexion… ») : attendues aussi avant de se déconnecter', async () => {
+    let second: () => void = () => {}
+    waitForPendingWrites
+      .mockImplementationOnce(() => Promise.resolve())
+      .mockImplementationOnce(() => new Promise<void>((r) => { second = r }))
+    const result = signOutSafely()
+    await vi.waitFor(() => expect(waitForPendingWrites).toHaveBeenCalledTimes(2))
+    expect(signOut).not.toHaveBeenCalled()
+    second()
+    expect(await result).toBe('ok')
+    expect(signOut).toHaveBeenCalledTimes(1)
+  })
+
   it('écritures envoyées : déconnexion', async () => {
     expect(await signOutSafely()).toBe('ok')
     expect(waitForPendingWrites).toHaveBeenCalled()

@@ -28,7 +28,9 @@ export async function signOutSafely(timeoutMs = 10_000): Promise<'ok' | 'offline
   if (!navigator.onLine) return 'offline'
   let timer: ReturnType<typeof setTimeout> | undefined
   const timeout = new Promise<'timeout'>((resolve) => { timer = setTimeout(() => resolve('timeout'), timeoutMs) })
-  const sent = await Promise.race([waitForPendingWrites(db).then(() => 'sent' as const), timeout])
+  // Deux attentes : la seconde couvre une écriture faite pendant la première (dépense notée pendant « Déconnexion… »).
+  const pending = waitForPendingWrites(db).then(() => waitForPendingWrites(db))
+  const sent = await Promise.race([pending.then(() => 'sent' as const), timeout])
   clearTimeout(timer)
   if (sent === 'timeout') return 'offline'
   await signOut(auth)

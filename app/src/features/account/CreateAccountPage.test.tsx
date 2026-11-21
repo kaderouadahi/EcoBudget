@@ -10,9 +10,9 @@ const createAccount = vi.fn()
 vi.mock('../../auth/actions', () => ({ createAccount: (...a: unknown[]) => createAccount(...a) }))
 const setUserFields = vi.fn()
 vi.mock('../../data/repo', () => ({ setUserFields: (...a: unknown[]) => setUserFields(...a) }))
-vi.mock('../../data/DataProvider', () => ({
-  useData: () => ({ user: { firstName: 'Nadia', alertsEnabled: true, adviceEnabled: true, onboardingDone: true }, expenses: [], ready: true }),
-}))
+const loaded = { user: { firstName: 'Nadia', alertsEnabled: true, adviceEnabled: true, onboardingDone: true }, expenses: [], ready: true }
+let data: Record<string, unknown> = loaded
+vi.mock('../../data/DataProvider', () => ({ useData: () => data }))
 
 import { ToastProvider } from '../../ui/Toast'
 import { CreateAccountPage } from './CreateAccountPage'
@@ -22,18 +22,19 @@ function Probe({ name }: { name: string }) {
   return <p>{`écran ${name} ${(state as { email?: string } | null)?.email ?? ''}`.trim()}</p>
 }
 
+const tree = () => (
+  <MemoryRouter initialEntries={['/compte/creer']}>
+    <ToastProvider>
+      <Routes>
+        <Route path="/compte/creer" element={<CreateAccountPage />} />
+        <Route path="/compte/connexion" element={<Probe name="connexion" />} />
+        <Route path="/reglages" element={<Probe name="réglages" />} />
+      </Routes>
+    </ToastProvider>
+  </MemoryRouter>
+)
 function setup() {
-  return render(
-    <MemoryRouter initialEntries={['/compte/creer']}>
-      <ToastProvider>
-        <Routes>
-          <Route path="/compte/creer" element={<CreateAccountPage />} />
-          <Route path="/compte/connexion" element={<Probe name="connexion" />} />
-          <Route path="/reglages" element={<Probe name="réglages" />} />
-        </Routes>
-      </ToastProvider>
-    </MemoryRouter>,
-  )
+  return render(tree())
 }
 const email = () => screen.getByLabelText('Adresse e-mail')
 const password = () => screen.getByLabelText('Mot de passe')
@@ -49,9 +50,22 @@ describe('Créer un compte', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     account = { uid: 'u1', email: null, isAnonymous: true, refresh }
+    data = loaded
     vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(true)
   })
   afterEach(() => vi.restoreAllMocks())
+
+  it('écran ouvert directement (données pas encore chargées) : prénom prérempli quand elles arrivent, jamais effacé', async () => {
+    data = { user: null, expenses: [], ready: false }
+    createAccount.mockResolvedValue(undefined)
+    const { rerender } = setup()
+    data = loaded
+    rerender(tree())
+    expect(screen.getByLabelText('Prénom (facultatif)')).toHaveValue('Nadia')
+    fill('yasmine@gmail.com', 'abcdefg1')
+    await act(async () => { fireEvent.click(submit()) })
+    expect(setUserFields).not.toHaveBeenCalled()
+  })
 
   it('titre, bandeau, prénom prérempli avec son aide', () => {
     setup()
