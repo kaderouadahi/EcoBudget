@@ -508,7 +508,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECISIONS.md` (21/11). Les détails marqués ✱ sont proposés par Cowork le 21/11 ; Kader a validé le lot et peut les corriger. Faire dans l'ordre H10 → H14 ; si le temps manque, les dernières tombent. `/demo` et le parcours de démo (`innovation.md` §5.3) doivent toujours passer sans compte.
 
-### H10 Liste des dépenses du mois — statut : à faire
+### H10 Liste des dépenses du mois — statut : fait (branche `h10-depenses`, non fusionnée)
 - **Scénario source** : S2 (Nadia vérifie les dépenses du mois) ; retour n° 7 de P3 (impossible de voir plus que les 4 dernières dépenses, ni les mois passés, donc de corriger une dépense ancienne).
 - **Fonctionnalité du sujet** : F1.
 - **Contenu et interactions** :
@@ -528,6 +528,44 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
   - Mêmes libellés sur téléphone et ordinateur ; rien n'est porté par la couleur seule ; aucun texte souligné.
 - **Maquette** : aucune (écran ajouté après les tests finaux ; maquettes gardées à l'état du 17/11, DECISIONS.md).
 - **Écarts constatés (rempli par Claude Code)** :
+  - **Vérifié** :
+    - 568 tests Vitest. Ceux de H10 couvrent :
+      - les mois couverts : sans limite de 6 mois, passage d'année, dépense future ignorée, mois de l'adresse gardé ou ignoré ;
+      - les dépenses du 1er et du dernier jour dans le bon mois, y compris le 29 février ;
+      - le groupement par jour et l'ordre ; le total et le nombre (« 1 dépense ») ; le mois sans dépense ;
+      - les intertitres ;
+      - l'écran : ouverture, flèches, retour vers l'Accueil, lignes sans le jour, `?mois=` faux ou futur, mois vide ;
+      - la barre du bas sur `/depenses` et le lien « Tout voir » ;
+      - le retour sur la liste après « Enregistrer » et « Supprimer », et l'historique.
+    - Graphiques est inchangé : ses tests passent sans modification (même calcul des mois, toujours limité à 6), et son parcours E2E repasse.
+    - Parcours de la spec passé dans un navigateur piloté, en local puis sur le canal `h10` (https://ecobudget-3b3a4--h10-kyq5toyh.web.app, expire le 28/11) :
+      - `/demo` → « Tout voir » → mois en cours, « › » grisée → « ‹ » jusqu'à M-4, puis grisée → M-2 ;
+      - montant modifié → retour sur M-2, avec le message et « Annuler » ;
+      - dépense supprimée → retour sur M-2 → « Annuler » → la dépense revient ;
+      - geste retour → Accueil ;
+      - aucun débordement à 360 px ; mêmes libellés sur ordinateur ; aucun texte souligné.
+    - Sur le canal, le premier passage, lancé juste après le déploiement, a échoué à l'étape du geste retour. Les trois suivants ont réussi, avec le même fichier servi que la version locale. Cause probable : la version précédente encore servie par le CDN.
+    - `/demo` et le parcours de démo (`innovation.md` §5.3) passent sans compte, en local et sur le canal. `live` n'a pas changé.
+  - **Choix (non fixés par la spec)** :
+    - Le mois affiché est gardé dans l'adresse (`/depenses?mois=2026-09`) : le formulaire de modification revient dessus. « Tout voir » ouvre toujours le mois en cours.
+    - Intertitres : « Aujourd'hui », « Hier », puis toujours « jeudi 19 novembre » (avec l'année si elle diffère, « 1er » pour le premier du mois), même dans la semaine en cours (validé par Kader le 21/11). « Dernières dépenses » garde « Jeudi » de 2 à 6 jours.
+    - Mois sans dépense : pas de ligne « Total ».
+    - Après la suppression de la seule dépense du plus ancien mois, l'écran reste sur ce mois (« Aucune dépense en … »). « Annuler » la fait revenir au même endroit.
+    - **Différent de Graphiques** (validé par Kader le 21/11) : si les données changent pendant que l'écran est ouvert (chargement de démo), l'écran reste sur le mois affiché au lieu de revenir au mois en cours.
+    - Sous-titre d'une ligne = la catégorie seule, puisque le jour est dans l'intertitre. Sans note, le titre et le sous-titre donnent tous les deux le nom de la catégorie (cas du jeu de démo).
+    - Le bouton retour mène à l'Accueil (« Retour à l'Accueil »).
+    - Sur l'Accueil, le nouveau « Tout voir » est lu « Tout voir les dépenses » par les lecteurs d'écran, pour le distinguer de celui des budgets.
+    - Si la date d'une dépense passe dans un autre mois, le retour se fait sur l'ancien mois (« même mois », comme le dit la spec) : la dépense n'y apparaît plus.
+    - « Ajouter une dépense » depuis un mois vide ramène à l'Accueil (comportement de H1, inchangé).
+    - Aucune entrée de la barre du bas n'est en surbrillance sur `/depenses`.
+  - **Corrigé en passant** :
+    - `/depenses` était traité comme un formulaire plein écran (tout chemin commençant par `/depense`), donc sans barre du bas.
+    - Deux appuis rapides sur une flèche n'avançaient que d'un mois (constaté en E2E) : le mois est maintenant tenu par l'écran, comme dans Graphiques.
+    - Après une modification depuis la liste, la liste était empilée deux fois dans l'historique, et le geste retour semblait sans effet. C'est maintenant un vrai retour arrière (constaté à la relecture finale).
+  - Le sélecteur de mois est un composant commun, `ui/MonthPicker.tsx` : groupe « Mois détaillé » dans Graphiques, « Mois affiché » dans Dépenses.
+  - **Points mineurs de la relecture, non corrigés** :
+    - « Tout voir » (le nouveau, et celui des budgets dont il reprend le style) fait environ 20 px de haut, sous les 44 px de la charte.
+  - Plan : `app/docs/plans/2026-11-21-h10-depenses.md`.
 
 ### H11 Lien « Gérer les catégories » — statut : à faire
 - **Scénario source** : S2 (Nadia crée la catégorie « Enfants ») ; retour n° 1 de P1 (gestion des catégories difficile à trouver dans Réglages).

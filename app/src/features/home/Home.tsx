@@ -142,7 +142,11 @@ export function HomeView({ user, categories, expenses, budgets, today, alert = n
             )}
 
             <section className="home-section home-latest">
-              <h2 className="section-title">Dernières dépenses</h2>
+              <div className="section-head">
+                <h2 className="section-title">Dernières dépenses</h2>
+                {/* H10 : même style que « Tout voir » des budgets ; nom complet pour les lecteurs d'écran. */}
+                {latest.length > 0 && <Link to="/depenses" aria-label="Tout voir les dépenses">Tout voir</Link>}
+              </div>
               {latest.length > 0 ? (
                 <ExpenseList label="Dernières dépenses" expenses={latest} categories={categories} today={today} />
               ) : (

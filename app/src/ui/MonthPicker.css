@@ -1,0 +1,31 @@
+/* Sélecteur de mois commun (Graphiques H6, Dépenses H10). */
+.month-picker { display: flex; align-items: center; gap: 4px; }
+.month-arrow {
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--navy);
+}
+.month-arrow:disabled { opacity: 0.35; cursor: default; }
+.month-arrow { flex: none; }
+.month-picker-label { display: inline-flex; align-items: center; gap: 8px; justify-content: center; font-weight: 700; color: var(--navy); white-space: nowrap; }
+.month-current.is-hidden { visibility: hidden; }
+/* Ordinateur : largeur fixe (« Septembre 2026 en cours ») pour que « ‹ » ne bouge pas sous la souris. */
+@media (min-width: 600px) { .month-picker-label { min-width: 13.5em; } }
+/* Téléphone : sélecteur sur toute la largeur, « en cours » sous le nom du mois (cibles de 44 px gardées). */
+@media (max-width: 599px) {
+  .month-picker { width: 100%; }
+  .month-picker-label { flex: 1; min-width: 0; flex-direction: column; gap: 2px; }
+}
+.month-current {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--blue-light);
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 600;
+}

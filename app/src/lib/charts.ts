@@ -1,5 +1,6 @@
 import type { Category, Expense } from '../data/model'
-import { addMonths, currentMonth, monthOf } from './month'
+import { listMonths } from './expenseList'
+import { monthOf } from './month'
 
 // Graphiques (HANDOFF H6, DECISIONS.md 20/11) : statistiques des dépenses seulement.
 // Mois du 1er au dernier jour (DECISIONS.md 18/11) ; un mois sans dépense vaut 0 DA.
@@ -20,16 +21,7 @@ export function shortMonth(month: string): string {
 
 /** Mois en cours et jusqu'à 5 avant, sans remonter avant le mois de la plus ancienne dépense ; ordre croissant. */
 export function coveredMonths(expenses: Expense[], today: Date): string[] {
-  const M = currentMonth(today)
-  const oldest = expenses.reduce<string | null>((min, e) => {
-    const m = monthOf(e.date)
-    return min === null || m < min ? m : min
-  }, null)
-  const earliest = addMonths(M, -(MAX_MONTHS - 1))
-  const start = oldest === null || oldest > M ? M : oldest > earliest ? oldest : earliest
-  const months: string[] = []
-  for (let m = start; m <= M; m = addMonths(m, 1)) months.push(m)
-  return months
+  return listMonths(expenses, today).slice(-MAX_MONTHS)
 }
 
 /** Catégorie d'une dépense ; une catégorie inconnue (supprimée) compte dans « Autres ». */

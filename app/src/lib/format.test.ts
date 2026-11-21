@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatDA, formatDay, formatMonthTitle, monthName } from './format'
+import { formatDA, formatDay, formatDayHeading, formatMonthTitle, monthName } from './format'
 
 describe('formatDA', () => {
   it('sépare les milliers et ajoute DA', () => {
@@ -51,5 +51,23 @@ describe('mois', () => {
   it('nom du mois', () => {
     expect(monthName('2026-11')).toBe('novembre')
     expect(monthName('2026-08')).toBe('août')
+  })
+})
+
+describe('formatDayHeading (intertitres de la liste des dépenses, H10)', () => {
+  const today = new Date(2026, 10, 21) // samedi 21 novembre 2026
+  it('« Aujourd’hui » et « Hier »', () => {
+    expect(formatDayHeading('2026-11-21', today)).toBe("Aujourd'hui")
+    expect(formatDayHeading('2026-11-20', today)).toBe('Hier')
+  })
+  it('dans la semaine en cours : jour et date, jamais le jour seul', () => {
+    expect(formatDayHeading('2026-11-19', today)).toBe('jeudi 19 novembre')
+    expect(formatDayHeading('2026-11-15', today)).toBe('dimanche 15 novembre')
+  })
+  it('« 1er » pour le premier jour du mois', () => {
+    expect(formatDayHeading('2026-11-01', today)).toBe('dimanche 1er novembre')
+  })
+  it('année ajoutée si elle diffère', () => {
+    expect(formatDayHeading('2025-12-31', today)).toBe('mercredi 31 décembre 2025')
   })
 })
