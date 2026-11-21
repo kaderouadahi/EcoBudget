@@ -8,13 +8,13 @@ Gravité non notée pendant les tests, estimée par l'équipe, avec la même éc
 
 | N° | Testeur | Problème | Critère(s) | Gravité estimée | Amélioration proposée | Statut |
 |---|---|---|---|---|---|---|
-| 1 | P1 | Difficile de trouver où ajouter ou modifier une catégorie : la gestion est dans Réglages, ce qui n'est pas assez clair | C1, C2 | 2 | Lien « Gérer les catégories » sous la grille des catégories du formulaire Dépense et dans Budgets, vers Réglages › Catégories | Correction avant le rendu (spec H11) |
-| 2 | P1 | Pas de logo dans l'application | C6, C7 | 1 | Logo à gauche du titre « EcoBudget » et icône de l'application (décision du 21/11) | Correction avant le rendu (spec H12) |
+| 1 | P1 | Difficile de trouver où ajouter ou modifier une catégorie : la gestion est dans Réglages, ce qui n'est pas assez clair | C1, C2 | 2 | Lien « Gérer les catégories » sous la grille des catégories du formulaire Dépense et dans Budgets, vers Réglages › Catégories | Corrigé avant le rendu (H11, PR n°10) |
+| 2 | P1 | Pas de logo dans l'application | C6, C7 | 1 | Logo à gauche du titre « EcoBudget » et icône de l'application (décision du 21/11) | Corrigé avant le rendu (H12, PR n°11) |
 | 3 | P1 | Pas de mode sombre | C4 | 1 | Mode sombre | Proposée, après le rendu |
-| 4 | P2 | Une icône est imposée à toute nouvelle catégorie, même quand aucune ne correspond | C4, C7 | 1 | Icône neutre « Étiquette », présélectionnée pour une nouvelle catégorie | Correction avant le rendu (spec H13) |
+| 4 | P2 | Une icône est imposée à toute nouvelle catégorie, même quand aucune ne correspond | C4, C7 | 1 | Icône neutre « Étiquette », présélectionnée pour une nouvelle catégorie | Corrigé avant le rendu (H13, PR n°12) |
 | 5 | P3 | Pas d'historique des alertes et des conseils : une fois fermés, on ne peut plus les relire | C1, C3 | 2 | Historique prévu le 18/11 « si le besoin est confirmé » (une bulle sur l'Accueil qui ouvre une page unique) | Proposée, après le rendu (besoin confirmé) |
-| 6 | P3 | Créer un compte ou se connecter n'est pas assez clair ni mis en valeur, surtout quand l'appareil contient déjà des dépenses | C1, C5 | 2 | Carte sur l'Accueil, sous « Reste à dépenser » : « Retrouvez vos dépenses sur tous vos appareils. » avec « Créer un compte » et « Se connecter », affichée tant qu'on est sans compte | Correction avant le rendu (spec H14) |
-| 7 | P3 | Aucun moyen de voir les dépenses au-delà des 4 dernières, ni celles des mois passés, donc de corriger une dépense plus ancienne | C2, C5, C6 | 3 | Lien « Tout voir » sous « Dernières dépenses » : liste du mois avec les mêmes flèches de mois que Graphiques ; toucher une dépense ouvre le formulaire de modification | Correction avant le rendu (spec H10) |
+| 6 | P3 | Créer un compte ou se connecter n'est pas assez clair ni mis en valeur, surtout quand l'appareil contient déjà des dépenses | C1, C5 | 2 | Carte sur l'Accueil, sous « Reste à dépenser » : « Retrouvez vos dépenses sur tous vos appareils. » avec « Créer un compte » et « Se connecter », affichée tant qu'on est sans compte | Corrigé avant le rendu (H14) |
+| 7 | P3 | Aucun moyen de voir les dépenses au-delà des 4 dernières, ni celles des mois passés, donc de corriger une dépense plus ancienne | C2, C5, C6 | 3 | Lien « Tout voir » sous « Dernières dépenses » : liste du mois avec les mêmes flèches de mois que Graphiques ; toucher une dépense ouvre le formulaire de modification | Corrigé avant le rendu (H10, PR n°9) |
 
 ## Ce que disent ces retours
 
@@ -23,6 +23,7 @@ Gravité non notée pendant les tests, estimée par l'équipe, avec la même éc
 - **L'innovation** : aucun retour ne porte sur la compréhension de l'alerte ou du conseil. Le seul retour qui la concerne demande de pouvoir les relire (n° 5), ce qui confirme le besoin d'historique prévu le 18/11.
 - **Après les tests sur le MVP** : aucun retour ne revient sur les 14 points corrigés à l'issue des deux premiers tours (`resultats/tests-conception.md`).
 - **Ce qui attend** : le mode sombre (n° 3) change toutes les couleurs, dont le code vert, orange et rouge des budgets ; l'historique (n° 5) demande de nouvelles données. Les faire le soir du rendu mettrait la démonstration en danger.
+- **Diaporama** : diapositives 56 (« Tests finaux : sept problèmes relevés ») et 57 (« Tests finaux : ce que nous avons corrigé »).
 
 ## Pour le diaporama (partie 10)
 
