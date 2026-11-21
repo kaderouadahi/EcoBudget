@@ -39,7 +39,8 @@ export function AccountSection() {
   async function signOutNow() {
     setConfirming(false)
     setPending(true)
-    const result = await signOutSafely()
+    // Toute erreur est traitée comme hors connexion : le bouton ne reste jamais bloqué sur « Déconnexion… ».
+    const result = await signOutSafely().catch(() => 'offline' as const)
     if (result === 'ok') {
       navigate('/', { replace: true })
       show({ message: SIGNED_OUT_MESSAGE })

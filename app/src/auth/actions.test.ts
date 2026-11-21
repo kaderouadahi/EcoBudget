@@ -73,6 +73,12 @@ describe('actions du compte', () => {
     expect(signOut).toHaveBeenCalledTimes(1)
   })
 
+  it('attente qui échoue : refusée comme hors connexion, pas de déconnexion', async () => {
+    waitForPendingWrites.mockImplementationOnce(() => Promise.reject(new Error('changement d’utilisateur')))
+    expect(await signOutSafely()).toBe('offline')
+    expect(signOut).not.toHaveBeenCalled()
+  })
+
   it('écritures envoyées : déconnexion', async () => {
     expect(await signOutSafely()).toBe('ok')
     expect(waitForPendingWrites).toHaveBeenCalled()

@@ -232,6 +232,16 @@ describe('Réglages › Compte (H9)', () => {
     expect(status()).toHaveTextContent('Vous êtes déconnecté')
   })
 
+  it('attente qui échoue : bouton de nouveau « Se déconnecter », actif, avec le message hors connexion', async () => {
+    connected()
+    signOutSafely.mockRejectedValue(new Error('échec'))
+    setup()
+    fireEvent.click(screen.getByRole('button', { name: 'Se déconnecter' }))
+    await act(async () => { fireEvent.click(within(screen.getByRole('alertdialog')).getByRole('button', { name: 'Se déconnecter' })) })
+    expect(screen.getByRole('button', { name: 'Se déconnecter' })).toBeEnabled()
+    expect(status()).toHaveTextContent(SIGNOUT_OFFLINE)
+  })
+
   it('écritures pas encore envoyées : refus avec le message, bouton de nouveau actif', async () => {
     connected()
     signOutSafely.mockResolvedValue('offline')

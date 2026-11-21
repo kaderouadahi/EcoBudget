@@ -30,9 +30,10 @@ export async function signOutSafely(timeoutMs = 10_000): Promise<'ok' | 'offline
   const timeout = new Promise<'timeout'>((resolve) => { timer = setTimeout(() => resolve('timeout'), timeoutMs) })
   // Deux attentes : la seconde couvre une écriture faite pendant la première (dépense notée pendant « Déconnexion… »).
   const pending = waitForPendingWrites(db).then(() => waitForPendingWrites(db))
-  const sent = await Promise.race([pending.then(() => 'sent' as const), timeout])
+  // Attente qui échoue (ex. changement d'utilisateur dans un autre onglet) : traitée comme hors connexion.
+  const sent = await Promise.race([pending.then(() => 'sent' as const, () => 'failed' as const), timeout])
   clearTimeout(timer)
-  if (sent === 'timeout') return 'offline'
+  if (sent !== 'sent') return 'offline'
   await signOut(auth)
   return 'ok'
 }
