@@ -647,7 +647,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
     - `/demo` et parcours de démo sans compte : OK.
   - **Mise en production** le 21/11 à 20 h 42, en copiant le canal `h13` vers la production (code identique à `main` après la PR n°12). La nouvelle version était servie au deuxième contrôle. Vérifié en production, sans compte : les mêmes contrôles que sur le canal, puis le parcours de démo (`innovation.md` §5.3).
 
-### H14 Compte plus visible — statut : fait (branche `h14-compte`, non fusionnée)
+### H14 Compte plus visible — statut : fait (fusionné dans main le 21/11, PR n°13)
 - **Scénario source** : S3 (Yasmine crée un compte sur son téléphone puis se connecte sur son PC) ; retour n° 6 de P3 (créer un compte ou se connecter n'est pas assez clair ni mis en valeur, surtout quand l'appareil contient déjà des dépenses). Spec revue par Kader le 21/11.
 - **Fonctionnalité du sujet** : transversal (H9).
 - **Contenu et interactions** :
@@ -673,3 +673,4 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
     - les deux boutons mènent aux bons écrans ;
     - compte e-mail créé (adresse de test `…@example.com`) → plus de carte ; déconnexion → la carte revient ;
     - `/demo` et parcours de démo sans compte : OK, en attendant la fin du message avant « Pourquoi ? ».
+  - **Mise en production** le 21/11 à 22 h 51, en copiant le canal `h14` vers la production (code identique à `main` après la PR n°13). La nouvelle version était servie dès le premier contrôle. Vérifié en production : les mêmes contrôles que sur le canal (dont la création d'un compte de test et la déconnexion), puis le parcours de démo sans compte (`innovation.md` §5.3), en attendant la fin du message avant « Pourquoi ? ».
