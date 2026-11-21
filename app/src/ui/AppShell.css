@@ -136,6 +136,11 @@
 }
 
 /* Écrans de compte, sans navigation */
+/* Double classe : l'emporte sur .brand (display: flex) quel que soit l'ordre des feuilles de style. */
+.bare-brand.brand { display: none; }
+@media (min-width: 900px) {
+  .bare-brand.brand { display: flex; padding: 32px 40px 0; font-size: 22px; font-weight: 700; color: var(--navy); }
+}
 .bare {
   min-height: 100%;
   max-width: 480px;
