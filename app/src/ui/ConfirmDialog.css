@@ -21,3 +21,5 @@
 .dialog-actions button { flex: 1; min-height: 52px; border-radius: 12px; font-weight: 700; font-size: 17px; }
 .dialog-cancel { border: 1px solid var(--border); background: var(--surface); color: var(--navy); }
 .dialog-confirm { border: 0; background: var(--danger); color: #fff; }
+/* Rien n'est perdu (ex. se déconnecter, H9) : bleu, le rouge garde son sens. */
+.dialog-confirm.is-primary { background: var(--blue); }

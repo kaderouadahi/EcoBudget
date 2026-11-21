@@ -2,7 +2,7 @@ import { act, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { fireEvent } from '@testing-library/react'
 
-type Listener = (user: { uid: string } | null) => void
+type Listener = (user: { uid: string; email?: string | null; isAnonymous?: boolean } | null) => void
 let listener: Listener | null = null
 const signInAnonymously = vi.fn()
 
@@ -13,18 +13,70 @@ vi.mock('firebase/auth', () => ({
   },
   signInAnonymously: (...args: unknown[]) => signInAnonymously(...args),
 }))
-vi.mock('../firebase', () => ({ auth: {} }))
+const { mockAuth } = vi.hoisted(() => ({ mockAuth: { currentUser: null as null | { uid: string; email: string | null; isAnonymous: boolean } } }))
+vi.mock('../firebase', () => ({ auth: mockAuth }))
 
-import { AuthGate, useUid } from './AuthGate'
+import { useState } from 'react'
+import { AuthGate, useAccount, useUid } from './AuthGate'
 
 function ShowUid() {
   return <p>uid={useUid()}</p>
+}
+
+function ShowAccount() {
+  const { uid, email, isAnonymous, refresh } = useAccount()
+  const [clicks, setClicks] = useState(0)
+  return (
+    <>
+      <p>{`compte=${uid} ${email ?? '-'} ${isAnonymous ? 'anonyme' : 'e-mail'}`}</p>
+      <button type="button" onClick={() => setClicks(clicks + 1)}>clics={clicks}</button>
+      <button type="button" onClick={refresh}>relire</button>
+    </>
+  )
 }
 
 describe('AuthGate', () => {
   beforeEach(() => {
     signInAnonymously.mockReset()
     listener = null
+    mockAuth.currentUser = null
+  })
+
+  it('compte e-mail : useAccount donne l’adresse et « non anonyme »', async () => {
+    render(<AuthGate><ShowAccount /></AuthGate>)
+    await act(async () => listener?.({ uid: 'u-mail', email: 'y@g.co', isAnonymous: false }))
+    expect(screen.getByText('compte=u-mail y@g.co e-mail')).toBeInTheDocument()
+  })
+
+  it('déconnexion : écran de chargement, puis nouveau compte anonyme vide', async () => {
+    let resolveAnon: () => void = () => {}
+    signInAnonymously.mockImplementation(() => new Promise<void>((r) => { resolveAnon = () => { listener?.({ uid: 'anon-neuf', isAnonymous: true, email: null }); r() } }))
+    render(<AuthGate><ShowAccount /></AuthGate>)
+    await act(async () => listener?.({ uid: 'u-mail', email: 'y@g.co', isAnonymous: false }))
+    await act(async () => listener?.(null))
+    expect(screen.queryByText(/compte=/)).not.toBeInTheDocument()
+    expect(signInAnonymously).toHaveBeenCalledTimes(1)
+    await act(async () => resolveAnon())
+    expect(screen.getByText('compte=anon-neuf - anonyme')).toBeInTheDocument()
+  })
+
+  it('changement de compte : l’application repart de zéro (rien de l’ancien compte ne reste)', async () => {
+    render(<AuthGate><ShowAccount /></AuthGate>)
+    await act(async () => listener?.({ uid: 'anon-1', isAnonymous: true, email: null }))
+    fireEvent.click(screen.getByRole('button', { name: 'clics=0' }))
+    expect(screen.getByRole('button', { name: 'clics=1' })).toBeInTheDocument()
+    await act(async () => listener?.({ uid: 'u-mail', email: 'y@g.co', isAnonymous: false }))
+    expect(screen.getByRole('button', { name: 'clics=0' })).toBeInTheDocument()
+  })
+
+  it('compte créé (lien, même uid) : refresh() relit l’adresse sans remonter l’application', async () => {
+    render(<AuthGate><ShowAccount /></AuthGate>)
+    await act(async () => listener?.({ uid: 'anon-1', isAnonymous: true, email: null }))
+    fireEvent.click(screen.getByRole('button', { name: 'clics=0' }))
+    mockAuth.currentUser = { uid: 'anon-1', email: 'y@g.co', isAnonymous: false }
+    fireEvent.click(screen.getByRole('button', { name: 'relire' }))
+    expect(screen.getByText('compte=anon-1 y@g.co e-mail')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'clics=1' })).toBeInTheDocument()
   })
 
   it('crée un compte anonyme sans écran et transmet l’uid', async () => {
