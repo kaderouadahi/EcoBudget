@@ -73,7 +73,7 @@
   text-decoration: none;
 }
 .section-head { display: flex; align-items: baseline; justify-content: space-between; }
-.section-head a { font-weight: 600; }
+.section-head a { font-weight: 700; }
 .small-button {
   display: inline-flex;
   align-items: center;
