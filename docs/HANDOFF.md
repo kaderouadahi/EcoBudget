@@ -574,7 +574,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
       - parcours de démo (`innovation.md` §5.3) : alerte « 4,5 fois » et conseil Sorties 2 000 DA.
   - Plan : `app/docs/plans/2026-11-21-h10-depenses.md`.
 
-### H11 Lien « Gérer les catégories » — statut : fait (branche `h11-categories`, non fusionnée)
+### H11 Lien « Gérer les catégories » — statut : fait (fusionné dans main le 21/11, PR n°10)
 - **Scénario source** : S2 (Nadia crée la catégorie « Enfants ») ; retour n° 1 de P1 (gestion des catégories difficile à trouver dans Réglages).
 - **Fonctionnalité du sujet** : transversal (F1, F2).
 - **Contenu et interactions** :
@@ -599,6 +599,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
     - Budgets → lien → section Catégories ;
     - Accueil défilé → « Tout voir » → `/depenses` en haut ;
     - `/demo` et parcours de démo sans compte : OK.
+  - **Mise en production** le 21/11 à 20 h 19, en copiant le canal `h11` vers la production (code identique à `main` après la PR n°10). La nouvelle version était servie dès le premier contrôle, sur `/` et sur `/demo`. Vérifié en production, sans compte : parcours de H11 (« Tout voir » à 44 px, `/depenses` en haut, « Gérer les catégories » depuis le formulaire vide, avec montant, et depuis Budgets), parcours complet de H10, parcours de démo (`innovation.md` §5.3).
 
 ### H12 Logo et icône de l'application — statut : à faire
 - **Scénario source** : tous (identité de l'application) ; retour n° 2 de P1 ; décision du logo (DECISIONS.md, 21/11).
