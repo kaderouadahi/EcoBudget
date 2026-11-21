@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { signOutSafely } from '../../auth/actions'
 import { useAccount } from '../../auth/AuthGate'
-import { SIGNED_OUT_MESSAGE, SIGNOUT_OFFLINE } from '../../lib/account'
+import { SIGNED_OUT_MESSAGE, SIGNOUT_OFFLINE, SIGNOUT_OFFLINE_MS } from '../../lib/account'
 import { ConfirmDialog } from '../../ui/ConfirmDialog'
 import { useToast } from '../../ui/Toast'
 
@@ -47,7 +47,7 @@ export function AccountSection() {
       return
     }
     setPending(false)
-    show({ message: SIGNOUT_OFFLINE })
+    show({ message: SIGNOUT_OFFLINE, duration: SIGNOUT_OFFLINE_MS })
   }
 
   return (
@@ -64,7 +64,7 @@ export function AccountSection() {
         type="button"
         className="outline-button"
         disabled={pending}
-        onClick={() => (navigator.onLine ? setConfirming(true) : show({ message: SIGNOUT_OFFLINE }))}
+        onClick={() => (navigator.onLine ? setConfirming(true) : show({ message: SIGNOUT_OFFLINE, duration: SIGNOUT_OFFLINE_MS }))}
       >
         {pending ? 'Déconnexion…' : 'Se déconnecter'}
       </button>

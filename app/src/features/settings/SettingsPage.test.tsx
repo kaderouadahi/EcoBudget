@@ -232,6 +232,17 @@ describe('Réglages › Compte (H9)', () => {
     expect(status()).toHaveTextContent('Vous êtes déconnecté')
   })
 
+  it('hors connexion : le message (long) reste au moins 8 s', () => {
+    vi.useFakeTimers()
+    connected()
+    setOnline(false)
+    setup()
+    fireEvent.click(screen.getByRole('button', { name: 'Se déconnecter' }))
+    act(() => { vi.advanceTimersByTime(7900) })
+    expect(status()).toHaveTextContent(SIGNOUT_OFFLINE)
+    vi.useRealTimers()
+  })
+
   it('attente qui échoue : bouton de nouveau « Se déconnecter », actif, avec le message hors connexion', async () => {
     connected()
     signOutSafely.mockRejectedValue(new Error('échec'))

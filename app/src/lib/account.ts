@@ -11,6 +11,8 @@ export const RESET_EMAIL_MISSING = 'Saisissez votre adresse e-mail pour recevoir
 export const RESET_SENT = "Si un compte existe pour cette adresse, un e-mail vient d'être envoyé pour choisir un nouveau mot de passe."
 export const PASSWORD_MISSING = 'Saisissez votre mot de passe.'
 export const SIGNOUT_OFFLINE = "Connectez-vous à internet pour vous déconnecter : vos dernières dépenses doivent d'abord être enregistrées dans votre compte."
+/** Message long (environ 125 caractères) : affiché au moins 8 s pour avoir le temps de le lire. */
+export const SIGNOUT_OFFLINE_MS = 8000
 export const CREATED_MESSAGE = 'Compte créé : vos données sont enregistrées dans votre compte.'
 export const SIGNED_IN_MESSAGE = 'Vous êtes connecté'
 export const SIGNED_OUT_MESSAGE = 'Vous êtes déconnecté'
