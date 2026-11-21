@@ -24,10 +24,12 @@ export function ExpensesPage() {
   const { expenses, categories, ready } = useData()
   const [today] = useState(() => new Date())
   const [params, setParams] = useSearchParams()
+  // Mois tenu dans l'état, comme Graphiques : deux appuis rapides sur une flèche avancent de deux mois
+  // (l'URL est mise à jour dans une transition, trop tard pour le second appui). L'URL sert au retour.
+  const [requested, setRequested] = useState<string | null>(() => params.get('mois'))
   if (!ready) return null
 
   const M = currentMonth(today)
-  const requested = params.get('mois')
   const months = listMonths(expenses, today, requested)
   const month = requested !== null && months.includes(requested) ? requested : M
   const groups = groupByDay(expenses, month)
@@ -43,7 +45,7 @@ export function ExpensesPage() {
         <h1>Dépenses</h1>
       </header>
 
-      <MonthPicker months={months} value={month} current={M} label="Mois affiché" onChange={(m) => setParams({ mois: m }, { replace: true })} />
+      <MonthPicker months={months} value={month} current={M} label="Mois affiché" onChange={(m) => { setRequested(m); setParams({ mois: m }, { replace: true }) }} />
 
       {count > 0 ? (
         <>
