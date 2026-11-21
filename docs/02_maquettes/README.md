@@ -4,7 +4,7 @@ Mis à jour le 17/11/2026. Décisions : voir `docs/DECISIONS.md` (17/11/2026).
 
 ## Ce qui se trouve ici
 
-- **`prototype/index.html`** : le prototype interactif (E3). Une seule page autonome qui contient tous les écrans, reliés entre eux. Elle s'ouvre dans n'importe quel navigateur, sans compte ni connexion internet (la police est incluse). Sur ordinateur, l'écran s'affiche dans un cadre de téléphone, avec un bouton pour passer à la version ordinateur ; sur un téléphone, en plein écran. Elle sera mise en ligne sur Firebase Hosting pour les tests.
+- **`prototype/index.html`** : le prototype interactif (E3). Une seule page autonome qui contient tous les écrans, reliés entre eux. Elle s'ouvre dans n'importe quel navigateur, sans compte ni connexion internet (la police est incluse). Sur ordinateur, l'écran s'affiche dans un cadre de téléphone, avec un bouton pour passer à la version ordinateur ; sur un téléphone, en plein écran. Les tests de conception ont porté sur une première version de l'application (MVP), pas sur ce prototype.
 - **`ecrans/`** : les images des 22 écrans (11 sur téléphone, 11 sur ordinateur), pour le diaporama et la matrice des critères.
 - **Source des maquettes** : le canevas Claude Design « EcoBudget — Maquettes ». Toute modification se fait là, puis le prototype et les images sont régénérés.
 
@@ -12,7 +12,7 @@ Les montants sont des **données de démonstration** (voir `docs/01_analyse/scen
 
 **Maquettes gardées à l'état du 17/11 (décision du 21/11/2026)** : les maquettes et le prototype représentent la première version, à l'étape de conception ; ils ne sont pas mis à jour vers l'application finale. Les écarts ci-dessous documentent ce qui a changé ensuite (voir aussi `docs/DECISIONS.md` et les lignes « Après revue » du diaporama). Écarts des décisions du 18/11/2026 : écran Objectifs (bouton « Ajouter de l'épargne », formulaire avec l'aide « Il reste X DA », état Atteint) ; écrans Alerte et Objectifs (« Compris » au lieu des anciens boutons) ; Réglages (section « Alertes et conseils », deux interrupteurs ; « Mois budgétaire » et l'interrupteur « Alerte de budget » retirés).
 
-**Écart (décision du 20/11/2026)** : écran Graphiques sans onglets ni phrase de synthèse (fond orange clair, ampoule) ; sélecteur de mois, menu de catégorie et montants au-dessus des barres à ajouter (spec H6 de `docs/HANDOFF.md`).
+**Écart (décision du 20/11/2026)** : écran Graphiques sans onglets ni phrase de synthèse (fond orange clair, ampoule) ; sélecteur de mois, menu de catégorie et montants au-dessus des barres ajoutés dans l'application (spec H6 de `docs/HANDOFF.md`).
 
 **Écart (décisions du 20/11/2026)** : écran Réglages sans « Alerte de budget », « Mois budgétaire » ni « Données de démonstration » ; section « Alertes et conseils » avec deux interrupteurs et leur texte ; corbeilles grises, rouge seulement sur le bouton « Supprimer » de la confirmation (spec H7 de `docs/HANDOFF.md`).
 

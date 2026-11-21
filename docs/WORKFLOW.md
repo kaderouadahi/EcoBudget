@@ -7,7 +7,7 @@
 | Notion | Todo du projet (seule liste de tâches) | Tâches |
 | Projet Claude, mode Conversation | Réfléchir, brainstormer, décider | Rien : propose les lignes pour DECISIONS.md |
 | Projet Claude, mode Cowork | Produire les documents, l'évaluation et le PowerPoint | `docs/`, `livrables/` |
-| Claude Code | Produire l'application (une fois la stack décidée) | `app/` |
+| Claude Code | Produire l'application | `app/` |
 
 ## Phases
 | Phase | Espace | Exigence |

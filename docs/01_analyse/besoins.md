@@ -10,7 +10,7 @@ Ni entretiens ni questionnaire (décisions du binôme). L'analyse s'appuie sur t
 - **Recherche** : IHM sur la gestion de l'argent et les applications de budget (Kaye et al. 2014 ; Alenazi & Sas 2023 et leur étude des fonctionnalités ; Herlocker et al. 2000 ; Fröhlich et al. 2021) et psychologie de la motivation (Kivetz et al. 2006).
 - **Avis d'utilisateurs** : une analyse publiée d'avis négatifs sur des applications de budget. Source secondaire, utilisée seulement en appui.
 
-**Statut « établi »** : le besoin est appuyé par au moins une source publiée. Il n'a pas été vérifié directement auprès de nos utilisateurs cibles : la confirmation se fait lors des tests L3, sur le prototype puis sur l'application finale.
+**Statut « établi »** : le besoin est appuyé par au moins une source publiée. Il n'a pas été vérifié directement auprès de nos utilisateurs cibles : la confirmation se fait lors des tests L3, sur une première version de l'application (MVP), puis sur l'application finale.
 
 ## 2. Contexte d'usage : l'argent en Algérie
 
@@ -81,7 +81,7 @@ Limites : l'article ne donne ni le nombre d'avis, ni la période, ni la méthode
 | B7 | Voir où part l'argent grâce à des graphiques simples : répartition par catégorie, évolution d'un mois à l'autre | F3 | C2, C7 | Alenazi & Sas, fonctionnalités (graphiques) ; sujet §2 (F3) | Établi |
 | B8 | Suivre un objectif d'épargne, et que les progrès soient valorisés | F4 | C1 | Kivetz et al. 2006 ; Alenazi & Sas, fonctionnalités (réussites) | Établi |
 | B9 | Repérer une dépense inhabituelle et comprendre pourquoi elle est signalée | INNOV | C1, C7 | Herlocker et al. 2000 ; sujet §2 (INNOV) | Établi |
-| B10 | Recevoir un conseil concret tout en gardant la main : accepter, ignorer, désactiver | INNOV | C3, C4 | Alenazi & Sas 2023 (manque de contrôle) ; Herlocker et al. 2000 | Établi |
+| B10 | Recevoir un conseil concret tout en gardant la main : fermer (« Compris »), désactiver | INNOV | C3, C4 | Alenazi & Sas 2023 (manque de contrôle) ; Herlocker et al. 2000 | Établi |
 | B11 | Une prise en main immédiate, sans configuration lourde | Transversal | C2, C1 | Fröhlich et al. 2021 ; Unstar (prise en main) | Établi |
 | B12 | Un ton qui ne culpabilise pas | Transversal | C7, C8 | Kaye et al. 2014 (dimension émotionnelle) | Établi |
 | B13 | Des montants en DA, des formats locaux, aucun lien bancaire exigé | Transversal | C8 | Findex ; DataReportal | Établi |
@@ -109,7 +109,7 @@ Proposition du binôme, déduite des besoins :
 - Une partie des études IHM a été menée hors d'Algérie : au Royaume-Uni, aux États-Unis, ou sur des applications distribuées au Royaume-Uni.
 - L'analyse d'avis (Unstar) est une source secondaire sans méthode publiée.
 - Kivetz et al. portent sur des programmes de fidélité, pas sur l'épargne.
-- **Réponse** : les besoins sont confirmés ou corrigés lors des tests L3, avec au moins 3 vrais participants, sur le prototype puis sur l'application finale.
+- **Réponse** : les besoins sont confirmés ou corrigés lors des tests L3, avec au moins 3 vrais participants, sur une première version de l'application (MVP), puis sur l'application finale.
 
 ## 10. Pistes pour les personas
 

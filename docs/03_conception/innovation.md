@@ -7,7 +7,7 @@
 Voir `docs/01_analyse/besoins.md` §7.
 - **B6** Être prévenu avant de dépasser le budget : seules 18 % des 45 applications étudiées par Alenazi & Sas le font.
 - **B9** Comprendre pourquoi une dépense est signalée : expliquer une recommandation améliore son acceptation (Herlocker et al., CSCW 2000).
-- **B10** Garder la main (accepter, ignorer, désactiver) : le manque de contrôle freine l'usage des applications de budget (études citées par Alenazi & Sas 2023).
+- **B10** Garder la main (fermer avec « Compris », désactiver) : le manque de contrôle freine l'usage des applications de budget (études citées par Alenazi & Sas 2023).
 
 ## 2. Comportement attendu
 - **Alerte** : quand une dépense sort des habitudes (§2.1 à §2.3, décidé le 18/11/2026).
@@ -130,7 +130,7 @@ Sources : voir `docs/01_analyse/besoins.md`. Rien n'est affirmé sur les applica
 - Pas d'alerte dans une catégorie rare tant qu'elle n'a pas 5 dépenses sur 6 mois.
 - Les besoins viennent de la recherche publiée et restent à confirmer en L3.
 
-**Dans le diaporama** (tâche 15) : la pertinence est déjà sur la diapositive 21 ; originalité, intégration et règle de calcul à ajouter dans la partie 09, avant la démo ; limites dans les notes de l'orateur.
+**Dans le diaporama** : pertinence et originalité sur la diapositive 21 ; règle de calcul sur la diapositive 51, avant la démo, avec les limites (seuils à ajuster) dans ses notes ; intégration dans le parcours montrée pendant la démonstration (diapositive 52).
 
 ## 5. Démonstration
 
