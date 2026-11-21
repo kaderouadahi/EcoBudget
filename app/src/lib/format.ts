@@ -36,6 +36,24 @@ export function formatDay(iso: string, today: Date): string {
   if (diff === 0) return "Aujourd'hui"
   if (diff === 1) return 'Hier'
   if (diff >= 2 && diff <= 6) return capitalize(weekday.format(date))
+  return longDay(date, today)
+}
+
+/**
+ * Intertitre de jour de la liste des dépenses (H10) : « Aujourd'hui », « Hier », puis toujours
+ * « samedi 14 novembre », même dans la semaine en cours (« Dernières dépenses » garde formatDay).
+ */
+export function formatDayHeading(iso: string, today: Date): string {
+  const date = parseISODate(iso)
+  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+  const diff = Math.round((start.getTime() - date.getTime()) / DAY_MS)
+  if (diff === 0) return "Aujourd'hui"
+  if (diff === 1) return 'Hier'
+  return longDay(date, today)
+}
+
+/** « samedi 14 novembre », avec l'année si elle diffère de celle d'aujourd'hui. */
+function longDay(date: Date, today: Date): string {
   const text = (date.getFullYear() === today.getFullYear() ? longDate : longDateYear).format(date)
   // « 1er novembre » : usage français pour le premier jour du mois.
   return date.getDate() === 1 ? text.replace(/(^|\s)1(\s)/, '$11er$2') : text
