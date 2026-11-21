@@ -565,6 +565,13 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
   - Le sélecteur de mois est un composant commun, `ui/MonthPicker.tsx` : groupe « Mois détaillé » dans Graphiques, « Mois affiché » dans Dépenses.
   - **Points mineurs de la relecture, non corrigés** :
     - « Tout voir » (le nouveau, et celui des budgets dont il reprend le style) fait environ 20 px de haut, sous les 44 px de la charte.
+  - **Mise en production** le 21/11 à 20 h 00, en copiant le canal `h10` vers la production (`firebase hosting:clone ecobudget-3b3a4:h10 ecobudget-3b3a4:live`). Le code de l'application est identique à `main` : les commits faits après le déploiement du canal ne touchent que les tests et la documentation.
+    - Le CDN a servi l'ancienne version pendant quelques minutes. Les essais n'ont été lancés qu'une fois le nouveau fichier servi sur `/` et `/demo`.
+    - Vérifié en production, sans compte, dans un navigateur neuf :
+      - `/demo` → « Tout voir » → mois en cours → « ‹ » jusqu'à M-4 → retour sur M-2 ;
+      - montant modifié puis « Annuler » ; dépense supprimée puis « Annuler » ;
+      - geste retour → Accueil ;
+      - parcours de démo (`innovation.md` §5.3) : alerte « 4,5 fois » et conseil Sorties 2 000 DA.
   - Plan : `app/docs/plans/2026-11-21-h10-depenses.md`.
 
 ### H11 Lien « Gérer les catégories » — statut : à faire
