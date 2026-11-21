@@ -86,13 +86,14 @@ describe('Dépenses du mois', () => {
     expect(norm(screen.getByText(/^Total/).textContent)).toBe('Total : 250 DA · 1 dépense')
   })
 
+  // Le 27 du mois précédent n'est jamais « Hier » (le 28 l'est le 1er mars d'une année non bissextile).
   it('groupées par jour, du plus récent au plus ancien ; lignes sans le jour', () => {
     const P = addMonths(M, -1)
-    setData([E(1000, `${P}-01`), E(2500, `${P}-28`, 'courses'), E(250, `${P}-12`, 'repas', 'Cafétéria'), E(300, `${P}-12`)])
+    setData([E(1000, `${P}-01`), E(2500, `${P}-27`, 'courses'), E(250, `${P}-12`, 'repas', 'Cafétéria'), E(300, `${P}-12`)])
     renderPage(`/depenses?mois=${P}`)
     const heads = dayHeadings()
     expect(heads).toHaveLength(3)
-    expect(heads[0]).toMatch(/ 28 /)
+    expect(heads[0]).toMatch(/ 27 /)
     expect(heads[1]).toMatch(/ 12 /)
     expect(heads[2]).toMatch(/ 1er /)
     const day12 = screen.getByRole('list', { name: heads[1] })
