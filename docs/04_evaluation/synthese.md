@@ -13,7 +13,7 @@ Gravité non notée pendant les tests, estimée par l'équipe, avec la même éc
 | 3 | P1 | Pas de mode sombre | C4 | 1 | Mode sombre | Proposée, après le rendu |
 | 4 | P2 | Une icône est imposée à toute nouvelle catégorie, même quand aucune ne correspond | C4, C7 | 1 | Icône neutre « Étiquette », présélectionnée pour une nouvelle catégorie | Correction avant le rendu (spec H13) |
 | 5 | P3 | Pas d'historique des alertes et des conseils : une fois fermés, on ne peut plus les relire | C1, C3 | 2 | Historique prévu le 18/11 « si le besoin est confirmé » (une bulle sur l'Accueil qui ouvre une page unique) | Proposée, après le rendu (besoin confirmé) |
-| 6 | P3 | Créer un compte ou se connecter n'est pas assez clair ni mis en valeur, surtout quand l'appareil contient déjà des dépenses | C1, C5 | 2 | Réglages › Compte : « Vos N dépenses seront conservées si vous créez un compte » ; Se connecter : lien « Les garder : créer un compte » sous l'avertissement | Correction avant le rendu (spec H14) |
+| 6 | P3 | Créer un compte ou se connecter n'est pas assez clair ni mis en valeur, surtout quand l'appareil contient déjà des dépenses | C1, C5 | 2 | Carte sur l'Accueil, sous « Reste à dépenser » : « Retrouvez vos dépenses sur tous vos appareils. » avec « Créer un compte » et « Se connecter », affichée tant qu'on est sans compte | Correction avant le rendu (spec H14) |
 | 7 | P3 | Aucun moyen de voir les dépenses au-delà des 4 dernières, ni celles des mois passés, donc de corriger une dépense plus ancienne | C2, C5, C6 | 3 | Lien « Tout voir » sous « Dernières dépenses » : liste du mois avec les mêmes flèches de mois que Graphiques ; toucher une dépense ouvre le formulaire de modification | Correction avant le rendu (spec H10) |
 
 ## Ce que disent ces retours

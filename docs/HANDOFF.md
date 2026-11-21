@@ -648,13 +648,20 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
   - **Mise en production** le 21/11 à 20 h 42, en copiant le canal `h13` vers la production (code identique à `main` après la PR n°12). La nouvelle version était servie au deuxième contrôle. Vérifié en production, sans compte : les mêmes contrôles que sur le canal, puis le parcours de démo (`innovation.md` §5.3).
 
 ### H14 Compte plus visible — statut : à faire
-- **Scénario source** : S3 (Yasmine crée un compte puis se connecte sur son PC) ; retour n° 6 de P3 (créer un compte ou se connecter n'est pas assez clair, surtout quand l'appareil contient déjà des dépenses).
+- **Scénario source** : S3 (Yasmine crée un compte sur son téléphone puis se connecte sur son PC) ; retour n° 6 de P3 (créer un compte ou se connecter n'est pas assez clair ni mis en valeur, surtout quand l'appareil contient déjà des dépenses). Spec revue par Kader le 21/11.
 - **Fonctionnalité du sujet** : transversal (H9).
 - **Contenu et interactions** :
-  - **Réglages › Compte, sans compte, si l'appareil a au moins une dépense** : ✱ sous le texte actuel, une ligne en gras « Vos 12 dépenses seront conservées si vous créez un compte. » (« Votre dépense sera conservée… » pour une seule). Sans dépense : texte de H9 inchangé. Boutons inchangés (« Créer un compte » en bleu, « Se connecter » en contour).
-  - **Se connecter**, quand l'avertissement « Cet appareil contient N dépenses… » est affiché : ✱ juste sous l'avertissement, lien « Les garder : créer un compte » (bleu vif, gras, non souligné), qui ouvre Créer un compte avec l'adresse déjà saisie.
-  - Rien d'autre ne change dans H9 (pas de fusion des données).
-- **Critères visés et comment** : C1 (le bon choix est indiqué au bon moment) ; C5 (on évite de perdre ses dépenses en se connectant par erreur) ; C2 (le compte reste facultatif, rien n'est ajouté à l'Accueil).
-- **Critères d'acceptation** : tests Vitest (ligne absente sans dépense, singulier pour une, lien seulement avec l'avertissement) ; parcours : `/demo` → Réglages › Compte → ligne avec le nombre de dépenses du jeu de démo → « Se connecter » → avertissement et lien → lien → Créer un compte avec l'adresse remplie.
+  - **Carte « Compte »** sur l'Accueil, minimaliste :
+    - icône nuage (comme Réglages › Compte) ;
+    - phrase « Retrouvez vos dépenses sur tous vos appareils. » (mêmes mots que l'écran Créer un compte) ;
+    - deux boutons côte à côte : « Créer un compte » (bleu, ouvre `/compte/creer`) et « Se connecter » (contour, ouvre `/compte/connexion`), comme dans Réglages › Compte.
+  - **Où** : juste sous toute la carte « Reste à dépenser », avant le reste de l'Accueil (carte d'alerte, « Vos budgets »…). À la Première ouverture : juste sous la carte « Bienvenue sur EcoBudget », avant « Vos catégories sont prêtes ».
+  - **Quand** : **tout le temps tant qu'on est sur un compte anonyme**, quel que soit le nombre de dépenses ou de budgets. Pas de bouton pour la fermer. Elle disparaît dès qu'un compte e-mail est connecté (création ou connexion) et revient après une déconnexion.
+  - Style sobre : carte blanche comme les autres, sans vert, orange ni rouge ; aucun texte souligné ; boutons de 44 px au moins ; sur téléphone, les deux boutons passent l'un sous l'autre si la place manque.
+  - Rien d'autre ne change dans H9 (Réglages › Compte, Créer un compte, Se connecter, pas de fusion des données).
+- **Critères visés et comment** : C1 (le compte est proposé là où l'on regarde en premier) ; C2 (une phrase, deux boutons ; le compte reste facultatif) ; C6 (mêmes mots et mêmes boutons que Réglages et Créer un compte) ; C8 (retrouver ses dépenses sur son PC, S3).
+- **Critères d'acceptation** :
+  - Un test : carte affichée avec un compte anonyme (avec et sans dépenses), absente avec un compte e-mail.
+  - Vérification rapide sur un canal h14 : carte sous « Reste à dépenser » (et sous « Bienvenue » à la Première ouverture) ; les deux boutons mènent aux bons écrans ; carte absente une fois connecté ; `/demo` et le parcours de démo (`innovation.md` §5.3) passent sans compte, carte visible.
 - **Maquette** : aucune (maquettes gardées à l'état du 17/11).
 - **Écarts constatés (rempli par Claude Code)** :
