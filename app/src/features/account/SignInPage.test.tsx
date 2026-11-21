@@ -210,6 +210,26 @@ describe('Se connecter', () => {
     expect(screen.getByText(RESET_SENT)).toBeInTheDocument()
   })
 
+  describe('focus sur la première erreur (comme le formulaire Dépense)', () => {
+    it('adresse et mot de passe vides : focus sur l’adresse', () => {
+      setup()
+      fireEvent.click(submit())
+      expect(email()).toHaveFocus()
+    })
+    it('adresse ou mot de passe faux (Firebase) : focus sur le mot de passe', async () => {
+      signIn.mockRejectedValue({ code: 'auth/invalid-credential' })
+      setup()
+      fill('yasmine@gmail.com', 'mauvais1')
+      await act(async () => { fireEvent.click(submit()) })
+      expect(password()).toHaveFocus()
+    })
+    it('mot de passe oublié sans adresse : focus sur l’adresse', () => {
+      setup()
+      fireEvent.click(forgot())
+      expect(email()).toHaveFocus()
+    })
+  })
+
   it('déjà connecté avec un compte e-mail : retour à Réglages', () => {
     account = { uid: 'u-mail', email: 'y@g.co', isAnonymous: false, refresh: () => {} }
     setup()

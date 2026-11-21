@@ -12,6 +12,7 @@ import {
 import { cleanFirstName, FIRST_NAME_MAX } from '../../lib/settings'
 import { useToast } from '../../ui/Toast'
 import { AccountHeader, FormProblem, PasswordField } from './parts'
+import { useFocusFirstError } from './useFocusFirstError'
 import '../expenses/ExpenseForm.css'
 import './account.css'
 
@@ -40,6 +41,7 @@ function CreateAccountForm() {
   const [formProblem, setFormProblem] = useState<AuthProblem | null>(null)
   const [busy, setBusy] = useState(false)
   const sending = useRef(false)
+  const { formRef, focusFirstError } = useFocusFirstError()
 
   if (!isAnonymous) return <Navigate to="/reglages" replace />
 
@@ -54,7 +56,10 @@ function CreateAccountForm() {
     setEmailProblem(emailOk ? null : { field: 'email', message: EMAIL_INCOMPLETE })
     setPasswordProblem(allMet ? null : PASSWORD_RULE)
     setFormProblem(null)
-    if (!emailOk || !allMet) return
+    if (!emailOk || !allMet) {
+      focusFirstError()
+      return
+    }
     if (!navigator.onLine) {
       setFormProblem(authProblem('create', NETWORK_CODE))
       return
@@ -68,6 +73,7 @@ function CreateAccountForm() {
       if (p?.field === 'email') setEmailProblem(p)
       else if (p?.field === 'password') setPasswordProblem(p.message)
       else setFormProblem(p)
+      focusFirstError()
       sending.current = false
       setBusy(false)
       return
@@ -80,7 +86,7 @@ function CreateAccountForm() {
   }
 
   return (
-    <form className="account-page" onSubmit={submit} noValidate>
+    <form ref={formRef} className="account-page" onSubmit={submit} noValidate>
       <AccountHeader title="Créer un compte" subtitle="Facultatif" />
 
       <div className="account-banner">

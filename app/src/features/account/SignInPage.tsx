@@ -10,6 +10,7 @@ import {
 } from '../../lib/account'
 import { useToast } from '../../ui/Toast'
 import { AccountHeader, FormProblem, PasswordField } from './parts'
+import { useFocusFirstError } from './useFocusFirstError'
 import '../expenses/ExpenseForm.css'
 import './account.css'
 
@@ -39,6 +40,7 @@ export function SignInPage() {
   const [busy, setBusy] = useState(false)
   const sending = useRef(false)
   const resetting = useRef(false)
+  const { formRef, focusFirstError } = useFocusFirstError()
   const [resetBusy, setResetBusy] = useState(false)
   // Destination fixée la première fois que l'écran voit le compte connecté : la navigation de react-router
   // est différée (transition), l'écran remonté peut se rendre encore sur /compte/connexion après la fin de signIn.
@@ -55,6 +57,7 @@ export function SignInPage() {
     if (p?.field === 'email') setEmailError(p.message)
     else if (p?.field === 'password') setPasswordError(p.message)
     else setFormProblem(p)
+    focusFirstError()
   }
 
   async function submit(e?: FormEvent) {
@@ -65,7 +68,10 @@ export function SignInPage() {
     setPasswordError(password ? null : PASSWORD_MISSING)
     setFormProblem(null)
     setResetSent(false)
-    if (!emailOk || !password) return
+    if (!emailOk || !password) {
+      focusFirstError()
+      return
+    }
     if (!navigator.onLine) {
       setFormProblem(authProblem('signin', NETWORK_CODE))
       return
@@ -93,6 +99,7 @@ export function SignInPage() {
     setResetSent(false)
     if (!isEmailComplete(email)) {
       setEmailError(RESET_EMAIL_MISSING)
+      focusFirstError()
       return
     }
     setEmailError(null)
@@ -116,7 +123,7 @@ export function SignInPage() {
   }
 
   return (
-    <form className="account-page" onSubmit={submit} noValidate>
+    <form ref={formRef} className="account-page" onSubmit={submit} noValidate>
       <AccountHeader title="Se connecter" subtitle="Retrouvez vos données" />
 
       <div className="field">

@@ -178,6 +178,28 @@ describe('Créer un compte', () => {
     expect(createAccount).toHaveBeenCalledTimes(1)
   })
 
+  describe('focus sur la première erreur (comme le formulaire Dépense)', () => {
+    it('adresse incomplète : focus sur l’adresse', () => {
+      setup()
+      fill('yasmine@', 'abcdef1')
+      fireEvent.click(submit())
+      expect(email()).toHaveFocus()
+    })
+    it('adresse correcte, condition non remplie : focus sur le mot de passe', () => {
+      setup()
+      fill('yasmine@gmail.com', 'abcdef1')
+      fireEvent.click(submit())
+      expect(password()).toHaveFocus()
+    })
+    it('adresse déjà utilisée (Firebase) : focus sur l’adresse', async () => {
+      createAccount.mockRejectedValue({ code: 'auth/email-already-in-use' })
+      setup()
+      fill('yasmine@gmail.com', 'abcdefg1')
+      await act(async () => { fireEvent.click(submit()) })
+      expect(email()).toHaveFocus()
+    })
+  })
+
   it('déjà connecté avec un compte e-mail : retour à Réglages', () => {
     account = { uid: 'u1', email: 'y@g.co', isAnonymous: false, refresh }
     setup()
