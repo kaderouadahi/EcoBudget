@@ -15,6 +15,7 @@ import { BudgetCard } from '../budgets/BudgetCard'
 import { OffBudgetList } from '../budgets/BudgetPages'
 import '../budgets/budgets.css'
 import { ExpenseList } from '../expenses/ExpenseList'
+import { BrandLogo } from '../../ui/Brand'
 import './Home.css'
 
 export function Home() {
@@ -68,7 +69,7 @@ export function HomeView({ user, categories, expenses, budgets, today, alert = n
       {welcome && (
         <>
           <section className="welcome-card">
-            <h2>Bienvenue sur EcoBudget</h2>
+            <h2 className="brand"><BrandLogo tone="blanc" />Bienvenue sur EcoBudget</h2>
             <p>Notez vos dépenses en quelques secondes et voyez où part votre argent. Aucune inscription nécessaire.</p>
             <Link to="/depense/nouvelle" className="welcome-cta">
               <Plus aria-hidden size={22} />

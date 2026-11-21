@@ -1,0 +1,3 @@
+/* Logo : environ deux fois la hauteur des lettres (32 px pour un titre de 22 px), centré, écart de 10 px. */
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-logo { width: 32px; height: 32px; flex: none; display: block; }

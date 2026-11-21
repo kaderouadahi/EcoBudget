@@ -601,7 +601,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
     - `/demo` et parcours de démo sans compte : OK.
   - **Mise en production** le 21/11 à 20 h 19, en copiant le canal `h11` vers la production (code identique à `main` après la PR n°10). La nouvelle version était servie dès le premier contrôle, sur `/` et sur `/demo`. Vérifié en production, sans compte : parcours de H11 (« Tout voir » à 44 px, `/depenses` en haut, « Gérer les catégories » depuis le formulaire vide, avec montant, et depuis Budgets), parcours complet de H10, parcours de démo (`innovation.md` §5.3).
 
-### H12 Logo et icône de l'application — statut : à faire
+### H12 Logo et icône de l'application — statut : fait (branche `h12-logo`, non fusionnée)
 - **Scénario source** : tous (identité de l'application) ; retour n° 2 de P1 ; décision du logo (DECISIONS.md, 21/11).
 - **Fonctionnalité du sujet** : transversal.
 - **Contenu et interactions** :
@@ -613,6 +613,16 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
 - **Critères d'acceptation** : logo visible et net (écran 2×) partout où le titre apparaît, sur téléphone et ordinateur ; icône correcte dans l'onglet et après installation sur Android ; aucun écran décalé.
 - **Maquette** : aucune (logo non ajouté aux maquettes, DECISIONS.md 21/11).
 - **Écarts constatés (rempli par Claude Code)** :
+  - SVG de `docs/02_maquettes/logo/` copiés tels quels dans `app/src/assets/` (composant `ui/Brand.tsx`, 32 px, `alt=""`).
+  - **En-tête de Créer un compte et Se connecter** : il n'existait pas dans l'application. Il est ajouté sur ordinateur seulement, comme les maquettes `ordinateur-09` et `10` (logo bleu nuit et « EcoBudget » en haut à gauche). Sur téléphone, rien ne change.
+  - **Carte « Bienvenue sur EcoBudget »** : le titre de 26 px garde sa taille ; le logo de 32 px est centré sur ses deux lignes.
+  - **Icônes** : `public/favicon.svg` est le logo blanc posé sur un carré bleu nuit arrondi (dessin du logo inchangé, métadonnées retirées). Les PNG (64, 192 et 512 px, Apple 180 px, favicon.ico, masquable 512 px avec 30 % de marge sur fond bleu nuit) sont générés par `@vite-pwa/assets-generator` (`app/pwa-assets.config.ts`). Le manifeste est inchangé (mêmes noms de fichiers).
+  - **Vérifié** : 569 tests (aucun cassé, aucun ajouté). Contrôles dans un navigateur sur le canal `h12` (https://ecobudget-3b3a4--h12-ezts3iao.web.app, expire le 28/11) :
+    - logo blanc dans la barre latérale et dans la carte de bienvenue ;
+    - logo bleu nuit dans l'en-tête de Créer un compte et de Se connecter (ordinateur), absent sur téléphone ;
+    - favicon de l'onglet et 4 icônes du manifeste servies ;
+    - `/demo` et parcours de démo sans compte : OK.
+  - Pas vérifié : l'installation réelle sur un téléphone Android (pas d'appareil disponible).
 
 ### H13 Icône neutre de catégorie — statut : à faire
 - **Scénario source** : S2 (créer « Enfants ») ; retour n° 4 de P2 (une icône est imposée même quand aucune ne correspond).

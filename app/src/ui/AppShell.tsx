@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { ADD_EXPENSE, NAV_ITEMS, SETTINGS_ITEM, type NavItem } from './nav'
 import './AppShell.css'
+import { BrandLogo } from './Brand'
 import { useScrollTopOnNavigate } from './useScrollTopOnNavigate'
 
 function SideLink({ item }: { item: NavItem }) {
@@ -40,7 +41,7 @@ export function AppShell() {
   return (
     <div className="shell">
       <nav className="sidebar" aria-label="Navigation principale (ordinateur)">
-        <p className="sidebar-brand">EcoBudget</p>
+        <p className="sidebar-brand brand"><BrandLogo tone="blanc" />EcoBudget</p>
         <NavLink to={ADD_EXPENSE.to} className="sidebar-add">
           <AddIcon aria-hidden size={22} />
           <span>{ADD_EXPENSE.label}</span>
@@ -80,8 +81,12 @@ export function AppShell() {
 export function BareLayout() {
   useScrollTopOnNavigate()
   return (
-    <main className="bare">
-      <Outlet />
-    </main>
+    <>
+      {/* Ordinateur (maquettes ordinateur-09 et 10) : EcoBudget en haut à gauche, logo bleu nuit sur fond clair. */}
+      <header className="bare-brand brand"><BrandLogo tone="bleu-nuit" />EcoBudget</header>
+      <main className="bare">
+        <Outlet />
+      </main>
+    </>
   )
 }
