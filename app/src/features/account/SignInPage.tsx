@@ -38,10 +38,14 @@ export function SignInPage() {
   const [resetSent, setResetSent] = useState(false)
   const [busy, setBusy] = useState(false)
   const sending = useRef(false)
-  // Écran ouvert sans compte : aucune connexion n'est en cours (une connexion restée sans réponse ne compte plus).
-  useEffect(() => { if (isAnonymous) signingIn = false }, [isAnonymous])
+  // Destination fixée la première fois que l'écran voit le compte connecté : la navigation de react-router
+  // est différée (transition), l'écran remonté peut se rendre encore sur /compte/connexion après la fin de signIn.
+  const redirect = useRef<string | null>(null)
+  if (!isAnonymous && redirect.current === null) redirect.current = signingIn ? '/' : '/reglages'
+  // Le drapeau est consommé une fois la destination fixée ; un écran ouvert sans compte n'a aucune connexion en cours.
+  useEffect(() => { signingIn = false }, [isAnonymous])
 
-  if (!isAnonymous) return <Navigate to={signingIn ? '/' : '/reglages'} replace />
+  if (!isAnonymous) return <Navigate to={redirect.current ?? '/reglages'} replace />
 
   const warning = deviceWarning(expenses.length)
 
@@ -79,7 +83,6 @@ export function SignInPage() {
     // Le compte change : AuthGate remonte l'application ; la navigation et le message restent (H9).
     navigate('/', { replace: true })
     show({ message: SIGNED_IN_MESSAGE })
-    signingIn = false
   }
 
   async function forgotPassword() {

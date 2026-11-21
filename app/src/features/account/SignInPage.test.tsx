@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
@@ -145,6 +145,21 @@ describe('Se connecter', () => {
     expect(screen.getByText('écran accueil')).toBeInTheDocument()
     await act(async () => finish())
     expect(screen.getByText('écran accueil')).toBeInTheDocument()
+  })
+
+  it('connexion finie, puis écran remonté encore sur /compte/connexion (navigation différée) : Accueil', async () => {
+    // Dans l'application, l'ancien écran n'est jamais rendu « connecté » : le nouvel uid le remonte.
+    let finish: () => void = () => {}
+    signIn.mockImplementation(() => new Promise<void>((r) => { finish = r }))
+    setup()
+    fill('yasmine@gmail.com', 'abcdefg1')
+    await act(async () => { fireEvent.click(submit()) })
+    await act(async () => {
+      account = { uid: 'u-mail', email: 'yasmine@gmail.com', isAnonymous: false, refresh: () => {} }
+      finish()
+    })
+    const remounted = render(tree())
+    expect(within(remounted.container).getByText('écran accueil')).toBeInTheDocument()
   })
 
   it('double appui : un seul envoi', async () => {
