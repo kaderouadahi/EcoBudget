@@ -73,7 +73,7 @@ Un scénario par persona (`docs/01_analyse/personas.md`), plus un scénario cons
 | Alerte / conseil | Message, « Pourquoi ? », « Compris », lien vers Réglages (« Gérer les alertes » ou « Gérer les conseils ») | S3, S4 |
 | Réglages | Catégories, activation des alertes, compte facultatif (créer un compte, se connecter, message sur l'enregistrement anonyme) | S2, S3, S4 |
 | Créer un compte | Prénom (facultatif), e-mail, mot de passe avec règles affichées, erreurs au bon champ ; « ce que vous avez déjà noté est conservé » | S3 |
-| Se connecter | E-mail, mot de passe, mot de passe oublié ; message si des dépenses notées sans compte vont être ajoutées au compte | S3 |
+| Se connecter | E-mail, mot de passe, mot de passe oublié ; message si des dépenses notées sans compte sur cet appareil ne seront pas ajoutées au compte (DECISIONS.md, 21/11) | S3 |
 
 ## Cas d'utilisation (diagramme UML, en complément des scénarios)
 

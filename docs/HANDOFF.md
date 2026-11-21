@@ -24,7 +24,7 @@ Si le temps manque, les specs du bas sont les premières à tomber. Sources : `d
 | 7 | H8 Données de démo | Démo (L2, L4) |
 | 8 | H6 Graphiques | F3 |
 | 9 | H7 Réglages | Transversal |
-| 10 | H9 Compte e-mail facultatif | Transversal (première fonction retirée en cas de retard) |
+| 10 | H9 Compte e-mail facultatif | Transversal (version réduite, décidée le 21/11) |
 
 Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme le 19/11/2026.
 
@@ -401,3 +401,60 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Prénom enregistré aussi si l'écran se ferme sans quitter le champ (geste retour Android). Prénom long : passe à la ligne sur l'Accueil, sans déborder (vérifié à 360 px avec 30 caractères).
   - Fenêtre de confirmation : ses phrases (dépenses déplacées, budget supprimé) sont lues par les lecteurs d'écran (vaut pour toutes les confirmations).
   - Plan : `app/docs/plans/2026-11-21-h7-reglages.md`.
+
+---
+
+### H9 Compte e-mail facultatif — statut : à faire
+- **Scénario source** : S3 (Yasmine a créé un compte sur son téléphone ; le soir, sur son PC, elle se connecte et retrouve ses dépenses, étapes 1 et 2). Choix proposés par Cowork et validés par le binôme le 21/11 (DECISIONS.md, 21/11).
+- **Fonctionnalité du sujet** : transversal (retrouver F1 à F4 et INNOV sur un autre appareil).
+- **Prérequis (Kader, console Firebase)** : connexion « Adresse e-mail/Mot de passe » activée (Authentication › Méthodes de connexion) ; langue des modèles d'e-mail en français (fait le 21/11).
+- **Contenu et interactions** :
+  - **Principe (version réduite)** :
+    - **Créer un compte** = le compte anonyme de l'appareil devient un compte e-mail : même compte, même identifiant, rien n'est copié, rien n'est perdu.
+    - **Se connecter** = rejoindre un compte qui existe déjà. Les données notées sans compte sur cet appareil **ne sont pas ajoutées** au compte rejoint (pas de fusion) ; elles restent dans l'ancien compte anonyme, qu'on ne peut plus rouvrir.
+    - Règles de sécurité Firestore inchangées (chacun ses données, `users/{uid}`).
+    - `auth.languageCode = 'fr'` dans le code (e-mail et page de réinitialisation en français, en plus du réglage de la console).
+  - **Écran « Créer un compte »** (`/compte/creer`, remplace l'écran provisoire ; sans barre de navigation, bouton retour ; maquettes `telephone-10`, `ordinateur-09`) :
+    - Titre « Créer un compte », sous-titre « Facultatif ». Bandeau avec icône nuage : « Retrouvez vos dépenses sur tous vos appareils. **Ce que vous avez déjà noté est conservé.** »
+    - Champs : « Prénom (facultatif) », prérempli avec le prénom de Réglages, aide « Affiché sur l'accueil », mêmes règles qu'en H7 (30 caractères au plus, espaces de début et de fin retirés) ; « Adresse e-mail » ; « Mot de passe » avec « Afficher » / « Masquer ».
+    - **Conditions du mot de passe**, en liste sous le champ, visibles dès l'ouverture : « Au moins 8 caractères », « Au moins un chiffre ». Chacune est grise avec un rond vide, puis **verte avec une coche** dès qu'elle est remplie pendant la saisie, et redevient grise si elle ne l'est plus. Annoncée aux lecteurs d'écran (« Condition remplie »). Le vert est admis ici, toujours avec la coche (DECISIONS.md, 21/11).
+    - Bouton « Créer mon compte » ; lien « J'ai déjà un compte. Se connecter ».
+    - Erreurs au champ concerné, au moment de « Créer mon compte » :
+      - adresse vide ou incomplète : « Adresse incomplète : ajoutez la fin, par exemple yasmine@gmail.com » ;
+      - adresse déjà utilisée : « Un compte existe déjà avec cette adresse. » avec un lien « Se connecter » ;
+      - condition non remplie : la ligne concernée passe en erreur (rouge avec icône) et le message « Le mot de passe doit contenir au moins 8 caractères, dont un chiffre. » s'affiche sous le champ ;
+      - pas de réseau : « Connectez-vous à internet pour créer votre compte. » ; autre échec : message général avec « Réessayer ».
+    - Succès : retour à Réglages, message « Compte créé : vos données sont enregistrées dans votre compte. » ; prénom enregistré s'il a changé.
+  - **Écran « Se connecter »** (`/compte/connexion`, remplace l'écran provisoire ; maquettes `telephone-11`, `ordinateur-10`) :
+    - Accès : « Déjà un compte ? Se connecter » de la Première ouverture (déjà en place) ; bouton « Se connecter » de Réglages › Compte ; lien de l'écran Créer un compte.
+    - Titre « Se connecter », sous-titre « Retrouvez vos données ». Champs « Adresse e-mail » et « Mot de passe » (« Afficher »), sans liste de conditions. Lien « Mot de passe oublié ? ». Bouton « Se connecter ». Lien « Pas encore de compte ? Créer un compte ».
+    - **Avertissement**, seulement si l'appareil a au moins une dépense : encadré juste au-dessus du bouton, en bleu avec une icône (pas en orange, réservé aux budgets) : « Cet appareil contient **N dépenses** notées sans compte. Elles **ne seront pas ajoutées** à votre compte et ne seront plus visibles ici. » Au singulier : « Cet appareil contient **1 dépense** notée sans compte. Elle **ne sera pas ajoutée** à votre compte et ne sera plus visible ici. » Pas d'« Annuler » après la connexion (exception à CLAUDE.md §8, DECISIONS.md 21/11).
+    - Erreurs au champ : adresse incomplète (même message qu'à la création) ; adresse ou mot de passe faux : « Adresse e-mail ou mot de passe incorrect. » sous le mot de passe (un seul message, Firebase ne dit pas lequel est faux) ; trop d'essais : « Trop d'essais. Réessayez dans quelques minutes, ou utilisez « Mot de passe oublié ? ». » ; pas de réseau : « Connectez-vous à internet pour vous connecter. »
+    - Succès : Accueil avec les données du compte, message « Vous êtes connecté ». La Première ouverture ne s'affiche pas si le compte l'a déjà passée.
+    - **Mot de passe oublié ?** : utilise l'adresse saisie ; vide ou incomplète → erreur au champ e-mail (« Saisissez votre adresse e-mail pour recevoir le lien. ») ; sinon, e-mail de réinitialisation de Firebase et message neutre « Si un compte existe pour cette adresse, un e-mail vient d'être envoyé pour choisir un nouveau mot de passe. », que l'adresse ait un compte ou non. Le nouveau mot de passe se choisit sur la page de Firebase : pas d'écran dans l'application.
+  - **Se déconnecter** :
+    - Bouton « Se déconnecter » (contour, pas rouge) dans Réglages › Compte, quand on est connecté.
+    - Fenêtre de confirmation commune : titre « Se déconnecter ? », texte « Vos données restent dans votre compte : vous les retrouverez en vous reconnectant. Cet appareil repartira sans données. », boutons « Rester connecté » / « Se déconnecter » (bleu, pas rouge : rien n'est perdu).
+    - Après : nouveau compte anonyme vide (comme une toute première ouverture, H0), écran Première ouverture, message « Vous êtes déconnecté ». Pas d'« Annuler » : on se reconnecte.
+    - Sans réseau : pas de fenêtre, message « Connectez-vous à internet pour vous déconnecter : vos dernières dépenses doivent d'abord être enregistrées dans votre compte. » La déconnexion ne doit jamais faire perdre une écriture encore en attente d'envoi.
+  - **Réglages › Compte** (remplace le texte provisoire de H7 ; maquettes `telephone-08`, `ordinateur-08`) :
+    - Sans compte : icône nuage, « Sans compte pour l'instant », « Vos données sont enregistrées de façon anonyme. Créez un compte pour les retrouver sur un autre appareil. » ; boutons côte à côte « Créer un compte » (bleu, icône personne) et « Se connecter » (contour).
+    - Connecté : icône nuage avec une coche, « Connecté », adresse e-mail du compte, « Vos données sont enregistrées dans votre compte : vous les retrouvez sur tous vos appareils. » ; bouton « Se déconnecter » (contour).
+    - Champ prénom en dessous, inchangé (H7). Sur ordinateur, même section dans la colonne de gauche.
+  - **Aucun texte souligné** (demande de Kader, DECISIONS.md 21/11), dans **toute l'application** et pas seulement les écrans de H9 : liens et boutons texte en bleu vif et en gras (par exemple « Créer un objectif », « Annuler » des messages, « Déjà un compte ? Se connecter », « Mot de passe oublié ? »). Repéré : la règle globale `a` de `ui/theme.css` laisse le soulignement par défaut ; `ui/Toast.css` souligne « Annuler ». Le contour de focus au clavier reste visible.
+  - `/demo` inchangé : il remplace les données **du compte en cours**, y compris un compte e-mail connecté. La démo se fait donc sans compte (à rappeler dans le script de démo).
+  - Hors périmètre : ajouter au compte les dépenses notées sans compte (fusion) ; e-mail de confirmation de l'adresse ; changer d'adresse ou de mot de passe depuis l'application ; supprimer le compte ; connexion avec Google.
+- **Critères visés et comment** : C1 (conditions du mot de passe validées en direct ; état du compte écrit ; message après chaque action) ; C2 (aucun compte exigé ; Réglages ne propose que les actions possibles dans l'état courant) ; C3 (déconnexion confirmée et réversible en se reconnectant ; « Mot de passe oublié ? ») ; C5 (erreurs au bon champ avec la correction ; perte annoncée avant de se connecter ; création, connexion et déconnexion refusées sans réseau) ; C6 (mêmes champs, messages et fenêtre de confirmation que le reste ; aucun texte souligné, partout) ; C7 (état du compte en icône et texte ; vert avec coche ; liens en gras, pas seulement en couleur) ; C8 (données retrouvées sur un autre appareil, S3).
+- **Critères d'acceptation** :
+  - Tests Vitest : conditions du mot de passe (7 caractères ; 8 sans chiffre ; 8 avec un chiffre) ; messages selon les erreurs Firebase (adresse déjà utilisée, identifiants incorrects, trop d'essais, réseau) ; avertissement affiché seulement s'il y a des dépenses, au singulier pour une ; Réglages : bons boutons et textes dans les deux états ; déconnexion refusée hors connexion.
+  - Parcours en ligne, dans deux navigateurs (ou une fenêtre normale et une fenêtre privée) :
+    1. Navigateur A : `/demo` → Réglages → « Créer un compte » → conditions qui passent au vert → compte créé → mêmes données qu'avant ; Réglages affiche « Connecté » et l'adresse.
+    2. Navigateur B, première ouverture : « Déjà un compte ? Se connecter » → pas d'avertissement → Accueil avec les données de A.
+    3. Dans B, ajouter une dépense → visible dans A sans recharger.
+    4. Dans B : « Se déconnecter » → confirmation → Première ouverture, appareil vide → noter 2 dépenses → Réglages › « Se connecter » → avertissement « 2 dépenses » → connexion → données du compte, sans les 2 dépenses.
+    5. Mauvais mot de passe → message unique ; « Mot de passe oublié ? » → e-mail reçu, en français.
+    6. Hors connexion : création, connexion et déconnexion refusées avec leur message.
+  - Aucun texte souligné dans l'application ; mêmes écrans et libellés sur téléphone et ordinateur.
+  - Avant la fusion : `/demo` et le parcours de démo (`innovation.md` §5.3) fonctionnent toujours **sans compte**.
+- **Maquette** : `telephone-10`, `ordinateur-09` (Créer un compte) ; `telephone-11`, `ordinateur-10` (Se connecter) ; `telephone-08`, `ordinateur-08` (Réglages › Compte). Écarts (DECISIONS.md prime) : liste de conditions qui passent au vert au lieu d'une ligne de règles ; encadré « seront ajoutées à votre compte » (beige) remplacé par l'avertissement « ne seront pas ajoutées » (bleu) ; liens non soulignés ; bouton « Se déconnecter » ajouté (absent des maquettes).
+- **Écarts constatés (rempli par Claude Code)** :
