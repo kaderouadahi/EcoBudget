@@ -574,7 +574,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
       - parcours de démo (`innovation.md` §5.3) : alerte « 4,5 fois » et conseil Sorties 2 000 DA.
   - Plan : `app/docs/plans/2026-11-21-h10-depenses.md`.
 
-### H11 Lien « Gérer les catégories » — statut : à faire
+### H11 Lien « Gérer les catégories » — statut : fait (branche `h11-categories`, non fusionnée)
 - **Scénario source** : S2 (Nadia crée la catégorie « Enfants ») ; retour n° 1 de P1 (gestion des catégories difficile à trouver dans Réglages).
 - **Fonctionnalité du sujet** : transversal (F1, F2).
 - **Contenu et interactions** :
@@ -588,6 +588,17 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
   - Parcours dans un navigateur : formulaire vide → « Gérer les catégories » → section Catégories à l'écran ; formulaire avec un montant → fenêtre → « Rester » → montant conservé ; Budgets → lien → section Catégories.
 - **Maquette** : aucune (maquettes gardées à l'état du 17/11).
 - **Écarts constatés (rempli par Claude Code)** :
+  - **Ajouté à la demande de Kader (21/11)** :
+    - les deux « Tout voir » de l'Accueil ont une cible de 44 px, sans changement d'apparence : marges négatives, la ligne du titre garde sa hauteur ;
+    - arriver sur un écran par un lien remet la page en haut (avant, `/depenses` s'ouvrait défilé comme l'Accueil). Le retour arrière garde la position, et une ancre (`#categories`, `#alertes`) défile vers sa section.
+  - « Gérer les catégories » : icône réglages devant le texte ; sur Budgets, le lien est placé sous le bouton « Fixer un budget pour une catégorie ». La fenêtre n'a pas de phrase sous le titre (la spec n'en donne pas).
+  - Saisie non enregistrée = montant, catégorie, date ou note différents des valeurs à l'ouverture du formulaire.
+  - Vérifié : 569 tests, dont le test de la fenêtre (seulement s'il y a une saisie non enregistrée). Parcours dans un navigateur sur le canal `h11` (https://ecobudget-3b3a4--h11-3orn5787.web.app, expire le 28/11) :
+    - formulaire vide → section Catégories à l'écran ;
+    - montant saisi → fenêtre → « Rester » → montant conservé ;
+    - Budgets → lien → section Catégories ;
+    - Accueil défilé → « Tout voir » → `/depenses` en haut ;
+    - `/demo` et parcours de démo sans compte : OK.
 
 ### H12 Logo et icône de l'application — statut : à faire
 - **Scénario source** : tous (identité de l'application) ; retour n° 2 de P1 ; décision du logo (DECISIONS.md, 21/11).
