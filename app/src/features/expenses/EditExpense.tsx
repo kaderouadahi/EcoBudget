@@ -72,6 +72,7 @@ export function EditExpense() {
         onSubmit={save}
         onDelete={() => setConfirming(true)}
         onClose={close}
+        onManageCategories={() => navigate('/reglages#categories')}
       />
       {confirming && (
         <ConfirmDialog

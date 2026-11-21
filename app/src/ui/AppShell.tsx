@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { ADD_EXPENSE, NAV_ITEMS, SETTINGS_ITEM, type NavItem } from './nav'
 import './AppShell.css'
+import { useScrollTopOnNavigate } from './useScrollTopOnNavigate'
 
 function SideLink({ item }: { item: NavItem }) {
   const Icon = item.icon
@@ -27,6 +28,7 @@ function BottomLink({ item }: { item: NavItem }) {
  * Les deux sont rendues à partir de NAV_ITEMS ; seule la CSS choisit la disposition (C6).
  */
 export function AppShell() {
+  useScrollTopOnNavigate()
   const AddIcon = ADD_EXPENSE.icon
   const SettingsIcon = SETTINGS_ITEM.icon
   const [home, budgets, charts, goals] = NAV_ITEMS
@@ -76,6 +78,7 @@ export function AppShell() {
 
 /** Écrans de compte : sans barre latérale ni barre du bas (DECISIONS.md 17/11). */
 export function BareLayout() {
+  useScrollTopOnNavigate()
   return (
     <main className="bare">
       <Outlet />

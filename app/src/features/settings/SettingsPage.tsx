@@ -65,7 +65,7 @@ export function SettingsPage() {
         </div>
 
         <div className="settings-col">
-          <section className="settings-section" aria-labelledby="categories-title">
+          <section className="settings-section" id="categories" aria-labelledby="categories-title">
             <h2 id="categories-title" className="section-title">Catégories</h2>
             <div className="card settings-card">
               <ul className="category-list" aria-label="Catégories">

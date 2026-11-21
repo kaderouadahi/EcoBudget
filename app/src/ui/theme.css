@@ -56,3 +56,15 @@ h1, h2, h3 { color: var(--navy); margin: 0; }
   white-space: nowrap;
   border: 0;
 }
+
+/* H11 : « Gérer les catégories », lien bleu vif en gras, cible de 44 px. */
+.manage-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap);
+  color: var(--blue);
+  font-weight: 700;
+  align-self: flex-start;
+  text-decoration: none;
+}

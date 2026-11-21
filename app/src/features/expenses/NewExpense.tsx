@@ -59,6 +59,7 @@ export function NewExpense() {
       submitLabel="Enregistrer la dépense"
       onSubmit={save}
       onClose={close}
+      onManageCategories={() => navigate('/reglages#categories')}
     />
   )
 }

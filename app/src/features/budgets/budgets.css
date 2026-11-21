@@ -74,6 +74,8 @@
 }
 .section-head { display: flex; align-items: baseline; justify-content: space-between; }
 .section-head a { font-weight: 700; }
+/* H11 : « Tout voir » à 44 px de haut sans changer l'apparence (marges négatives : la ligne garde sa hauteur). */
+.section-head a { display: inline-flex; align-items: center; min-height: var(--tap); margin: -12px 0; }
 .small-button {
   display: inline-flex;
   align-items: center;

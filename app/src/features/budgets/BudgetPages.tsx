@@ -1,4 +1,4 @@
-import { Pencil, Plus } from 'lucide-react'
+import { Pencil, Plus, Settings2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useUid } from '../../auth/AuthGate'
@@ -71,6 +71,11 @@ export function BudgetsPage() {
           Fixer un budget pour une catégorie
         </Link>
       )}
+      {/* H11 : même lien que dans le formulaire Dépense. */}
+      <Link to="/reglages#categories" className="manage-link">
+        <Settings2 aria-hidden size={18} />
+        Gérer les catégories
+      </Link>
     </div>
   )
 }
