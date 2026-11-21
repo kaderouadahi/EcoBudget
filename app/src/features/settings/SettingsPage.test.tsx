@@ -1,13 +1,17 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { DEFAULT_CATEGORIES } from '../../data/defaults'
 import type { UserDoc } from '../../data/model'
+import { SIGNOUT_OFFLINE } from '../../lib/account'
 
 const setUserFields = vi.fn()
 const applyBatch = vi.fn()
 let data: Record<string, unknown> = {}
-vi.mock('../../auth/AuthGate', () => ({ useUid: () => 'u1' }))
+let account = { uid: 'u1', email: null as string | null, isAnonymous: true, refresh: () => {} }
+vi.mock('../../auth/AuthGate', () => ({ useUid: () => 'u1', useAccount: () => account }))
+const signOutSafely = vi.fn()
+vi.mock('../../auth/actions', () => ({ signOutSafely: () => signOutSafely() }))
 vi.mock('../../data/repo', () => ({
   setUserFields: (...a: unknown[]) => setUserFields(...a),
   createDoc: vi.fn(), updateDocFields: vi.fn(), removeDoc: vi.fn(), applyBatch: (...a: unknown[]) => applyBatch(...a),
@@ -25,14 +29,15 @@ function setup(u: UserDoc = user(), expenses: unknown[] = [], budgets: unknown[]
 const status = () => screen.getByRole('status')
 
 describe('Réglages', () => {
-  beforeEach(() => setUserFields.mockClear())
+  beforeEach(() => {
+    setUserFields.mockClear()
+    signOutSafely.mockReset()
+    account = { uid: 'u1', email: null, isAnonymous: true, refresh: () => {} }
+  })
 
-  it('trois sections dans l’ordre, compte anonyme sans boutons de compte', () => {
+  it('trois sections dans l’ordre', () => {
     setup()
     expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual(['Compte', 'Catégories', 'Alertes et conseils'])
-    expect(screen.getByText('Sans compte')).toBeInTheDocument()
-    expect(screen.getByText('Vos données sont enregistrées de façon anonyme sur cet appareil.')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /Créer un compte|Se connecter/ })).not.toBeInTheDocument()
   })
 
   it('« Autres » en dernier, verrouillée, sans crayon ni corbeille', () => {
@@ -160,5 +165,80 @@ describe('Réglages', () => {
       const undo = applyBatch.mock.calls[1][1] as { sets: { name: string }[] }
       expect(undo.sets.map((w) => w.name).sort()).toEqual(['budgets', 'categories', 'expenses', 'expenses', 'expenses'])
     })
+  })
+})
+
+describe('Réglages › Compte (H9)', () => {
+  const connected = () => { account = { uid: 'u1', email: 'yasmine@gmail.com', isAnonymous: false, refresh: () => {} } }
+  const setOnline = (on: boolean) => vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(on)
+
+  beforeEach(() => {
+    signOutSafely.mockReset()
+    account = { uid: 'u1', email: null, isAnonymous: true, refresh: () => {} }
+    setOnline(true)
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  it('sans compte : état écrit, « Créer un compte » et « Se connecter », pas de déconnexion', () => {
+    setup()
+    expect(screen.getByText('Sans compte pour l’instant'.replace('’', "'"))).toBeInTheDocument()
+    expect(screen.getByText('Vos données sont enregistrées de façon anonyme. Créez un compte pour les retrouver sur un autre appareil.')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Créer un compte' })).toHaveAttribute('href', '/compte/creer')
+    expect(screen.getByRole('link', { name: 'Se connecter' })).toHaveAttribute('href', '/compte/connexion')
+    expect(screen.queryByRole('button', { name: 'Se déconnecter' })).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Votre prénom (facultatif)')).toBeInTheDocument()
+  })
+
+  it('connecté : « Connecté », adresse, texte, « Se déconnecter » seulement', () => {
+    connected()
+    setup()
+    expect(screen.getByText('Connecté')).toBeInTheDocument()
+    expect(screen.getByText('yasmine@gmail.com')).toBeInTheDocument()
+    expect(screen.getByText('Vos données sont enregistrées dans votre compte : vous les retrouvez sur tous vos appareils.')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Se déconnecter' })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Créer un compte' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Se connecter' })).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Votre prénom (facultatif)')).toBeInTheDocument()
+  })
+
+  it('hors connexion : pas de fenêtre, message, aucune déconnexion', () => {
+    connected()
+    setOnline(false)
+    setup()
+    fireEvent.click(screen.getByRole('button', { name: 'Se déconnecter' }))
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
+    expect(status()).toHaveTextContent(SIGNOUT_OFFLINE)
+    expect(signOutSafely).not.toHaveBeenCalled()
+  })
+
+  it('en ligne : confirmation (bleue), « Déconnexion… » pendant l’attente, puis message', async () => {
+    connected()
+    let finish: (r: 'ok' | 'offline') => void = () => {}
+    signOutSafely.mockImplementation(() => new Promise((r) => { finish = r }))
+    setup()
+    fireEvent.click(screen.getByRole('button', { name: 'Se déconnecter' }))
+    const dialog = screen.getByRole('alertdialog')
+    expect(within(dialog).getByRole('heading')).toHaveTextContent('Se déconnecter ?')
+    expect(dialog).toHaveTextContent('Vos données restent dans votre compte : vous les retrouverez en vous reconnectant. Cet appareil repartira sans données.')
+    expect(within(dialog).getByRole('button', { name: 'Rester connecté' })).toBeInTheDocument()
+    const confirm = within(dialog).getByRole('button', { name: 'Se déconnecter' })
+    expect(confirm).toHaveClass('is-primary')
+    fireEvent.click(confirm)
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
+    expect(signOutSafely).toHaveBeenCalledTimes(1)
+    const pending = screen.getByRole('button', { name: 'Déconnexion…' })
+    expect(pending).toBeDisabled()
+    await act(async () => finish('ok'))
+    expect(status()).toHaveTextContent('Vous êtes déconnecté')
+  })
+
+  it('écritures pas encore envoyées : refus avec le message, bouton de nouveau actif', async () => {
+    connected()
+    signOutSafely.mockResolvedValue('offline')
+    setup()
+    fireEvent.click(screen.getByRole('button', { name: 'Se déconnecter' }))
+    await act(async () => { fireEvent.click(within(screen.getByRole('alertdialog')).getByRole('button', { name: 'Se déconnecter' })) })
+    expect(status()).toHaveTextContent(SIGNOUT_OFFLINE)
+    expect(screen.getByRole('button', { name: 'Se déconnecter' })).toBeEnabled()
   })
 })
