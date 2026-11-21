@@ -8,6 +8,7 @@ import {
   authProblem, deviceWarning, EMAIL_INCOMPLETE, isEmailComplete, NETWORK_CODE, PASSWORD_MISSING, RESET_EMAIL_MISSING,
   RESET_SENT, SIGNED_IN_MESSAGE, type AuthProblem,
 } from '../../lib/account'
+import { ConfirmDialog } from '../../ui/ConfirmDialog'
 import { useToast } from '../../ui/Toast'
 import { AccountHeader, FormProblem, PasswordField } from './parts'
 import { useFocusFirstError } from './useFocusFirstError'
@@ -42,6 +43,7 @@ export function SignInPage() {
   const resetting = useRef(false)
   const { formRef, focusFirstError } = useFocusFirstError()
   const [resetBusy, setResetBusy] = useState(false)
+  const [confirmingReset, setConfirmingReset] = useState(false)
   // Destination fixée la première fois que l'écran voit le compte connecté : la navigation de react-router
   // est différée (transition), l'écran remonté peut se rendre encore sur /compte/connexion après la fin de signIn.
   const redirect = useRef<string | null>(null)
@@ -107,6 +109,12 @@ export function SignInPage() {
       setFormProblem(authProblem('reset', NETWORK_CODE))
       return
     }
+    // Confirmation avant l'envoi (DECISIONS.md 21/11) : rattrape un appui par erreur, montre l'adresse (C3, C5).
+    setConfirmingReset(true)
+  }
+
+  async function sendResetNow() {
+    setConfirmingReset(false)
     if (resetting.current) return
     resetting.current = true
     setResetBusy(true)
@@ -157,6 +165,22 @@ export function SignInPage() {
         {/* Zone présente dès l'ouverture : la confirmation ajoutée ensuite est annoncée par les lecteurs d'écran. */}
         <div role="status" className="reset-status">{resetSent && <p className="form-note">{RESET_SENT}</p>}</div>
       </div>
+
+      {confirmingReset && (
+        <ConfirmDialog
+          title="Recevoir un lien pour choisir un nouveau mot de passe ?"
+          cancelLabel="Annuler"
+          confirmLabel="Envoyer le lien"
+          tone="primary"
+          onCancel={() => setConfirmingReset(false)}
+          onConfirm={sendResetNow}
+        >
+          <p>
+            Un e-mail sera envoyé à <strong>{email.trim()}</strong>. Votre mot de passe actuel reste valable tant que vous
+            n'en choisissez pas un nouveau.
+          </p>
+        </ConfirmDialog>
+      )}
 
       {formProblem && <FormProblem message={formProblem.message} onRetry={formProblem.kind === 'retry' ? () => submit() : undefined} />}
 

@@ -173,44 +173,86 @@ describe('Se connecter', () => {
     expect(signIn).toHaveBeenCalledTimes(1)
   })
 
-  it.each(['', 'yasmine@'])('mot de passe oublié avec l’adresse « %s » : erreur au champ adresse, rien n’est envoyé', (value) => {
+  it.each(['', 'yasmine@'])('mot de passe oublié avec l’adresse « %s » : erreur au champ adresse, sans fenêtre, rien n’est envoyé', (value) => {
     setup()
     fireEvent.change(email(), { target: { value } })
     fireEvent.click(forgot())
     expect(screen.getByText(RESET_EMAIL_MISSING)).toBeInTheDocument()
     expect(email()).toHaveAttribute('aria-invalid', 'true')
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
     expect(sendReset).not.toHaveBeenCalled()
   })
 
-  it('mot de passe oublié, double appui : un seul e-mail', async () => {
+  const dialog = () => screen.getByRole('alertdialog')
+  const sendLink = () => within(dialog()).getByRole('button', { name: 'Envoyer le lien' })
+
+  it('mot de passe oublié : fenêtre de confirmation avec l’adresse saisie (sans espaces), rien n’est encore envoyé', () => {
+    setup()
+    fireEvent.change(email(), { target: { value: '  yasmine@gmail.com ' } })
+    fireEvent.click(forgot())
+    expect(within(dialog()).getByRole('heading')).toHaveTextContent('Recevoir un lien pour choisir un nouveau mot de passe ?')
+    expect(dialog()).toHaveTextContent("Un e-mail sera envoyé à yasmine@gmail.com. Votre mot de passe actuel reste valable tant que vous n'en choisissez pas un nouveau.")
+    expect(within(dialog()).getByText('yasmine@gmail.com').tagName).toBe('STRONG')
+    expect(within(dialog()).getByRole('button', { name: 'Annuler' })).toBeInTheDocument()
+    expect(sendLink()).toHaveClass('is-primary')
+    expect(sendReset).not.toHaveBeenCalled()
+  })
+
+  it('mot de passe oublié, « Annuler » : fenêtre fermée, aucun envoi, aucun message', () => {
+    setup()
+    fireEvent.change(email(), { target: { value: 'yasmine@gmail.com' } })
+    fireEvent.click(forgot())
+    fireEvent.click(within(dialog()).getByRole('button', { name: 'Annuler' }))
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
+    expect(sendReset).not.toHaveBeenCalled()
+    expect(screen.queryByText(RESET_SENT)).not.toBeInTheDocument()
+  })
+
+  it('mot de passe oublié, double appui sur « Envoyer le lien » : un seul e-mail', async () => {
     sendReset.mockReturnValue(new Promise(() => {}))
     setup()
     fireEvent.change(email(), { target: { value: 'yasmine@gmail.com' } })
+    fireEvent.click(forgot())
+    const button = sendLink()
     await act(async () => {
-      fireEvent.click(forgot())
-      fireEvent.click(forgot())
+      fireEvent.click(button)
+      fireEvent.click(button)
     })
     expect(sendReset).toHaveBeenCalledTimes(1)
   })
 
-  it('mot de passe oublié : e-mail envoyé, message neutre annoncé (zone role="status" présente dès l’ouverture)', async () => {
+  it('« Envoyer le lien » : un seul envoi, puis message neutre annoncé (zone role="status" présente dès l’ouverture)', async () => {
     sendReset.mockResolvedValue(undefined)
     setup()
     const zone = screen.getAllByRole('status').find((z) => !z.classList.contains('toast-region'))
     expect(zone).toBeDefined()
     expect(zone).toBeEmptyDOMElement()
-    fireEvent.change(email(), { target: { value: 'yasmine@gmail.com' } })
-    await act(async () => { fireEvent.click(forgot()) })
+    fireEvent.change(email(), { target: { value: ' yasmine@gmail.com ' } })
+    fireEvent.click(forgot())
+    await act(async () => { fireEvent.click(sendLink()) })
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
+    expect(sendReset).toHaveBeenCalledTimes(1)
     expect(sendReset).toHaveBeenCalledWith('yasmine@gmail.com')
     expect(zone).toHaveTextContent(RESET_SENT)
   })
 
-  it('mot de passe oublié pour une adresse sans compte : même message neutre', async () => {
+  it('« Envoyer le lien » pour une adresse sans compte : même message neutre', async () => {
     sendReset.mockRejectedValue({ code: 'auth/user-not-found' })
     setup()
     fireEvent.change(email(), { target: { value: 'inconnu@gmail.com' } })
-    await act(async () => { fireEvent.click(forgot()) })
+    fireEvent.click(forgot())
+    await act(async () => { fireEvent.click(sendLink()) })
     expect(screen.getByText(RESET_SENT)).toBeInTheDocument()
+  })
+
+  it('mot de passe oublié hors connexion : message tout de suite, sans fenêtre', () => {
+    vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false)
+    setup()
+    fireEvent.change(email(), { target: { value: 'yasmine@gmail.com' } })
+    fireEvent.click(forgot())
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent('Connectez-vous à internet pour recevoir le lien.')
+    expect(sendReset).not.toHaveBeenCalled()
   })
 
   describe('focus sur la première erreur (comme le formulaire Dépense)', () => {
