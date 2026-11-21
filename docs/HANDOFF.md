@@ -625,7 +625,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
   - Pas vérifié : l'installation réelle sur un téléphone Android (pas d'appareil disponible).
   - **Mise en production** le 21/11 à 20 h 33, en copiant le canal `h12` vers la production (code identique à `main` après la PR n°11). La nouvelle version et le nouveau favicon étaient servis dès le premier contrôle. Vérifié en production, sans compte : les mêmes contrôles que sur le canal, puis le parcours de démo (`innovation.md` §5.3).
 
-### H13 Icône neutre de catégorie — statut : à faire
+### H13 Icône neutre de catégorie — statut : fait (branche `h13-etiquette`, non fusionnée)
 - **Scénario source** : S2 (créer « Enfants ») ; retour n° 4 de P2 (une icône est imposée même quand aucune ne correspond).
 - **Fonctionnalité du sujet** : transversal (catégories, H7).
 - **Contenu et interactions** :
@@ -637,6 +637,14 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
 - **Critères d'acceptation** : tests Vitest de la présélection (nouvelle catégorie → « Étiquette » ; modification → icône actuelle) ; « Étiquette » affichée partout où l'icône d'une catégorie apparaît (listes, formulaire Dépense, Budgets, Graphiques) ; mettre à jour les tests de H7 qui attendaient « Bébé ».
 - **Maquette** : aucune.
 - **Écarts constatés (rempli par Claude Code)** :
+  - Icône `Tag` de lucide (même style de trait que les autres), en tête de `PICKABLE_ICONS`, nom accessible « Étiquette ». Toujours présélectionnée pour une nouvelle catégorie, même si une autre l'utilise déjà : `defaultIcon` ne cherche plus « la première non utilisée ». En modification, l'icône actuelle est gardée.
+  - Aide « Aucune ne correspond ? Gardez l'étiquette. » sous la grille d'icônes.
+  - Tests : ceux de H7 qui attendaient « Bébé » attendent maintenant « Étiquette ». Un test ajouté : nouvelle catégorie → « Étiquette » en tête et présélectionnée ; modification → icône actuelle gardée. 570 tests au total.
+  - Graphiques n'affiche pas d'icône (pastille de couleur et nom) : « Enfants » y est vérifiée dans la légende et dans le menu.
+  - Vérifié dans un navigateur sur le canal `h13` (https://ecobudget-3b3a4--h13-ljv1kino.web.app, expire le 28/11) :
+    - Réglages › Ajouter une catégorie → « Étiquette » en tête et sélectionnée, avec l'aide ;
+    - « Enfants » créée : étiquette dans le formulaire Dépense et dans Budgets (Hors budget), présente dans Graphiques ;
+    - `/demo` et parcours de démo sans compte : OK.
 
 ### H14 Compte plus visible — statut : à faire
 - **Scénario source** : S3 (Yasmine crée un compte puis se connecte sur son PC) ; retour n° 6 de P3 (créer un compte ou se connecter n'est pas assez clair, surtout quand l'appareil contient déjà des dépenses).
