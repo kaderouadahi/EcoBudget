@@ -1,10 +1,11 @@
-import { Check, Trash2, X } from 'lucide-react'
+import { Check, Settings2, Trash2, X } from 'lucide-react'
 import { useId, useRef, useState, type FormEvent } from 'react'
 import { categoryIcon } from '../../data/defaults'
 import type { Category } from '../../data/model'
 import { AMOUNT_HELP, parseAmount, validateDate } from '../../lib/expenses'
 import { formatDay } from '../../lib/format'
 import { toISODate } from '../../lib/month'
+import { ConfirmDialog } from '../../ui/ConfirmDialog'
 import './ExpenseForm.css'
 
 export interface ExpenseValues {
@@ -25,10 +26,12 @@ interface Props {
   onSubmit: (v: ExpenseValues) => void
   onDelete?: () => void
   onClose: () => void
+  /** H11 : ouvre Réglages › Catégories ; appelé tout de suite, ou après « Quitter » s'il y a une saisie non enregistrée. */
+  onManageCategories?: () => void
 }
 
 /** Formulaire Dépense, partagé par l'ajout et la modification (C6). Aucune lecture de données ici. */
-export function ExpenseForm({ categories, proposedId, initial, today, title, submitLabel, onSubmit, onDelete, onClose }: Props) {
+export function ExpenseForm({ categories, proposedId, initial, today, title, submitLabel, onSubmit, onDelete, onClose, onManageCategories }: Props) {
   const ids = useId()
   const todayIso = toISODate(today)
   const [amountText, setAmountText] = useState(initial ? String(initial.amount) : '')
@@ -38,6 +41,10 @@ export function ExpenseForm({ categories, proposedId, initial, today, title, sub
   const [errors, setErrors] = useState<{ amount?: string; date?: string }>({})
   const sent = useRef(false)
   const amountRef = useRef<HTMLInputElement>(null)
+  // Valeurs d'ouverture : une saisie non enregistrée est un écart avec elles (H11, C5).
+  const [start] = useState(() => ({ amountText, categoryId, date, note }))
+  const dirty = amountText !== start.amountText || categoryId !== start.categoryId || date !== start.date || note !== start.note
+  const [leaving, setLeaving] = useState(false)
 
   const proposedName = categories.find((c) => c.id === proposedId)?.name
 
@@ -115,6 +122,20 @@ export function ExpenseForm({ categories, proposedId, initial, today, title, sub
             )
           })}
         </div>
+        {onManageCategories && (
+          <a
+            href="/reglages#categories"
+            className="manage-link"
+            onClick={(e) => {
+              e.preventDefault()
+              if (dirty) setLeaving(true)
+              else onManageCategories()
+            }}
+          >
+            <Settings2 aria-hidden size={18} />
+            Gérer les catégories
+          </a>
+        )}
       </fieldset>
 
       <div className="expense-form-row">
@@ -158,6 +179,16 @@ export function ExpenseForm({ categories, proposedId, initial, today, title, sub
           <Trash2 aria-hidden size={20} />
           Supprimer la dépense
         </button>
+      )}
+      {leaving && onManageCategories && (
+        <ConfirmDialog
+          title="Quitter sans enregistrer la dépense ?"
+          confirmLabel="Quitter"
+          cancelLabel="Rester"
+          tone="primary"
+          onConfirm={() => { setLeaving(false); onManageCategories() }}
+          onCancel={() => setLeaving(false)}
+        />
       )}
     </form>
   )

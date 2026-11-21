@@ -106,3 +106,5 @@
   background: var(--surface);
   color: var(--navy);
 }
+
+.category-field .manage-link { margin-top: 6px; }
