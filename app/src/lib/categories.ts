@@ -8,6 +8,7 @@ export const OTHER_ID = 'autres'
 
 /** Icônes proposées : la liste prête, sans « … » (réservée à Autres) ni l'ancien nom UtensilsCrossed ; nom accessible pour chacune. */
 export const PICKABLE_ICONS: { key: string; label: string }[] = [
+  { key: 'Tag', label: 'Étiquette' }, // H13 : icône neutre, en tête, présélectionnée
   { key: 'Utensils', label: 'Couverts' },
   { key: 'ShoppingCart', label: 'Panier' },
   { key: 'BusFront', label: 'Bus' },
@@ -37,14 +38,15 @@ export function validateCategoryName(name: string, categories: Category[], ownId
   return null
 }
 
-/** Icône présélectionnée : l'actuelle en modification, sinon la première non utilisée par une autre catégorie. */
 /** Ancien nom d'icône (comptes d'avant le 19/11) ramené à l'icône proposée. */
 const canonicalIcon = (k: string) => (k === 'UtensilsCrossed' ? 'Utensils' : k)
 
-export function defaultIcon(categories: Category[], current?: string): string {
-  if (current) return canonicalIcon(current)
-  const used = new Set(categories.map((c) => canonicalIcon(c.icon)))
-  return (PICKABLE_ICONS.find((i) => !used.has(i.key)) ?? PICKABLE_ICONS[0]).key
+/**
+ * Icône présélectionnée : l'actuelle en modification, sinon l'étiquette neutre (H13, remplace « la première
+ * non utilisée » de H7) : on n'est pas forcé de choisir une image qui ne correspond pas. Elle peut servir à plusieurs catégories.
+ */
+export function defaultIcon(_categories: Category[], current?: string): string {
+  return current ? canonicalIcon(current) : 'Tag'
 }
 
 /** Place d'une nouvelle catégorie : en fin de liste, juste avant « Autres ». */

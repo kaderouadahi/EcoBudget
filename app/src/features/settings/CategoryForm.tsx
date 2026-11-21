@@ -71,6 +71,7 @@ export function CategoryForm({ categories, initial, onSubmit, onClose }: Props) 
             )
           })}
         </div>
+        <p className="field-help">Aucune ne correspond ? Gardez l'étiquette.</p>
       </fieldset>
 
       <button type="submit" className="primary-button">

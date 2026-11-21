@@ -7,11 +7,23 @@ import { CategoryForm } from './CategoryForm'
 const CATS = DEFAULT_CATEGORIES as Category[]
 
 describe('CategoryForm', () => {
-  it('création : titre, icône Bébé présélectionnée, noms accessibles, « … » absente', () => {
+  it('H13 : nouvelle catégorie → « Étiquette » en tête et présélectionnée ; modification → icône actuelle gardée', () => {
+    const { unmount } = render(<CategoryForm categories={CATS} onSubmit={() => {}} onClose={() => {}} />)
+    const radios = screen.getAllByRole('radio')
+    expect(radios[0]).toHaveAccessibleName('Étiquette')
+    expect(radios[0]).toBeChecked()
+    expect(screen.getByText("Aucune ne correspond ? Gardez l'étiquette.")).toBeInTheDocument()
+    unmount()
+    render(<CategoryForm categories={CATS} initial={CATS[3]} onSubmit={() => {}} onClose={() => {}} />)
+    expect(screen.getByRole('radio', { name: 'Ticket' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: 'Étiquette' })).not.toBeChecked()
+  })
+
+  it('création : titre, icône Étiquette présélectionnée, noms accessibles, « … » absente', () => {
     render(<CategoryForm categories={CATS} onSubmit={() => {}} onClose={() => {}} />)
     expect(screen.getByRole('heading', { name: 'Nouvelle catégorie' })).toBeInTheDocument()
-    expect(screen.getByRole('radio', { name: 'Bébé' })).toBeChecked()
-    expect(screen.getByRole('radio', { name: 'Cadeau' })).not.toBeChecked()
+    expect(screen.getByRole('radio', { name: 'Étiquette' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: 'Bébé' })).not.toBeChecked()
     expect(screen.queryByRole('radio', { name: /Autres|Points/ })).not.toBeInTheDocument()
   })
 
@@ -34,7 +46,7 @@ describe('CategoryForm', () => {
     fireEvent.click(screen.getByRole('button', { name: /Ajouter la catégorie/ }))
     fireEvent.click(screen.getByRole('button', { name: /Ajouter la catégorie/ }))
     expect(onSubmit).toHaveBeenCalledTimes(1)
-    expect(onSubmit).toHaveBeenCalledWith({ name: 'Enfants', icon: 'Baby' })
+    expect(onSubmit).toHaveBeenCalledWith({ name: 'Enfants', icon: 'Tag' })
   })
 
   it('modification : prérempli, icône actuelle, son propre nom accepté', () => {
