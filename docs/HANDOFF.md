@@ -10,7 +10,7 @@
 - Maquette :
 - Écarts constatés (rempli par Claude Code) :
 
-## Ordre de priorité (décidé le 18/11/2026, H8 avancée le 20/11/2026)
+## Ordre de priorité (décidé le 18/11/2026, H8 avancée le 20/11/2026, H10 à H14 ajoutées le 21/11/2026 après les tests finaux)
 Si le temps manque, les specs du bas sont les premières à tomber. Sources : `docs/DECISIONS.md` (prime en cas d'écart avec une maquette), `docs/01_analyse/scenarios.md`, `docs/03_conception/innovation.md`, `docs/02_maquettes/`.
 
 | Ordre | Spec | Fonctionnalité |
@@ -25,6 +25,11 @@ Si le temps manque, les specs du bas sont les premières à tomber. Sources : `d
 | 8 | H6 Graphiques | F3 |
 | 9 | H7 Réglages | Transversal |
 | 10 | H9 Compte e-mail facultatif | Transversal (version réduite, décidée le 21/11) |
+| 11 | H10 Liste des dépenses du mois | F1 (retour n° 7 des tests finaux) |
+| 12 | H11 Lien « Gérer les catégories » | Transversal (retour n° 1) |
+| 13 | H12 Logo et icône de l'application | Transversal (retour n° 2) |
+| 14 | H13 Icône neutre de catégorie | Transversal (retour n° 4) |
+| 15 | H14 Compte plus visible | Transversal (retour n° 6) |
 
 Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme le 19/11/2026.
 
@@ -496,3 +501,83 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - **Pour la démo** : elle se fait sans compte, car `/demo` remplace les données du compte en cours. À rappeler dans `innovation.md` §5.3 (Cowork).
   - **Mise en production** le 21/11 à 12 h 53, en clonant le canal `h9` (code identique à `main`). Vérifié en production, sans compte : Réglages › Compte (« Sans compte pour l'instant ») et parcours de démo (`/demo`, alerte, conseil).
   - Plan : `app/docs/plans/2026-11-21-h9-compte.md`.
+
+---
+
+## Corrections après les tests sur l'application finale (21/11/2026)
+
+Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECISIONS.md` (21/11). Les détails marqués ✱ sont proposés par Cowork le 21/11 ; Kader a validé le lot et peut les corriger. Faire dans l'ordre H10 → H14 ; si le temps manque, les dernières tombent. `/demo` et le parcours de démo (`innovation.md` §5.3) doivent toujours passer sans compte.
+
+### H10 Liste des dépenses du mois — statut : à faire
+- **Scénario source** : S2 (Nadia vérifie les dépenses du mois) ; retour n° 7 de P3 (impossible de voir plus que les 4 dernières dépenses, ni les mois passés, donc de corriger une dépense ancienne).
+- **Fonctionnalité du sujet** : F1.
+- **Contenu et interactions** :
+  - **Accès** : sur l'Accueil, lien « Tout voir » à droite du titre « Dernières dépenses », même style que « Tout voir » de « Vos budgets » (bleu vif, gras, non souligné). ✱ Affiché dès qu'il y a au moins une dépense.
+  - **Écran « Dépenses »** (✱ route `/depenses`) : bouton retour vers l'Accueil, titre « Dépenses ». Barre de navigation comme sur l'Accueil (téléphone) ; sur ordinateur, dans le panneau de contenu, même largeur que les autres écrans.
+  - **Sélecteur de mois** : le même composant que Graphiques (« ‹ Novembre 2026 › », « en cours », flèches grisées et inactives au bout, libellés « Mois précédent » / « Mois suivant », cibles de 44 px, groupe nommé « Mois affiché »). ✱ Mois couverts : du mois de la plus ancienne dépense au mois en cours, **sans limite de 6 mois** (différent de Graphiques). À chaque ouverture de l'écran : le mois en cours.
+  - ✱ Sous le sélecteur : « Total : 29 000 DA · 12 dépenses » (« 1 dépense » au singulier).
+  - **Liste** : dépenses du mois choisi, de la plus récente à la plus ancienne, ✱ groupées par jour avec un intertitre (« Aujourd'hui », « Hier », puis « samedi 14 novembre », format de date de H0). Chaque ligne comme « Dernières dépenses » (H1) : icône de la catégorie, titre = la note, sinon le nom de la catégorie ; sous-titre = la catégorie ; montant « −250 DA ».
+  - **Toucher une dépense** ouvre le formulaire de modification de H1 (« Enregistrer », « Supprimer la dépense ») ; après enregistrement ou suppression, ✱ retour à la liste sur le même mois, avec le message de H1 et « Annuler ».
+  - **Mois sans dépense** : « Aucune dépense ce mois-ci » et un bouton « Ajouter une dépense » pour le mois en cours ; « Aucune dépense en août 2026 », sans bouton, pour un mois passé (comme Graphiques, H6).
+  - Mise à jour immédiate après un ajout, une modification ou une suppression ; fonctionne hors connexion (données déjà sur l'appareil).
+  - Hors périmètre : filtre par catégorie, recherche, export.
+- **Critères visés et comment** : C2 (toutes les dépenses à un geste de l'Accueil) ; C5 (une erreur ancienne se corrige) ; C6 (mêmes flèches de mois que Graphiques, mêmes lignes que « Dernières dépenses », même formulaire) ; C1 (mois affiché, total et « en cours » toujours visibles).
+- **Critères d'acceptation** :
+  - Tests Vitest : mois couverts (de la plus ancienne dépense au mois en cours, passage d'année) ; dépenses du 1er et du dernier jour dans le bon mois ; groupement par jour et ordre ; total et nombre de dépenses (singulier) ; mois sans dépense.
+  - Parcours dans un navigateur, en local et en ligne : `/demo` → Accueil → « Tout voir » → mois en cours, « › » grisée → « ‹ » jusqu'à M-4, puis grisée → toucher une dépense de M-2 → modifier le montant → retour sur M-2, message et « Annuler » → supprimer une dépense → « Annuler » → la dépense revient. Recharger `/demo` à la fin.
+  - Mêmes libellés sur téléphone et ordinateur ; rien n'est porté par la couleur seule ; aucun texte souligné.
+- **Maquette** : aucune (écran ajouté après les tests finaux ; maquettes gardées à l'état du 17/11, DECISIONS.md).
+- **Écarts constatés (rempli par Claude Code)** :
+
+### H11 Lien « Gérer les catégories » — statut : à faire
+- **Scénario source** : S2 (Nadia crée la catégorie « Enfants ») ; retour n° 1 de P1 (gestion des catégories difficile à trouver dans Réglages).
+- **Fonctionnalité du sujet** : transversal (F1, F2).
+- **Contenu et interactions** :
+  - **Formulaire Dépense** (ajout et modification, H1) : sous la grille des catégories, lien « Gérer les catégories » (bleu vif, gras, non souligné, cible de 44 px) qui ouvre Réglages directement sur la section « Catégories » (✱ `/reglages#categories`, comme `#alertes` en H7).
+  - ✱ Si le formulaire contient une saisie non enregistrée (montant, note, catégorie ou date changés) : fenêtre de confirmation commune avant de quitter, titre « Quitter sans enregistrer la dépense ? », boutons « Rester » / « Quitter » (bleu, pas rouge). Sans saisie : pas de fenêtre.
+  - **Écran Budgets** : ✱ sous la liste, le même lien « Gérer les catégories ».
+  - Hors périmètre : créer une catégorie sans quitter le formulaire Dépense.
+- **Critères visés et comment** : C1 (la gestion des catégories se trouve là où on en a besoin) ; C2 (un geste au lieu de chercher dans Réglages) ; C5 (aucune saisie perdue sans prévenir) ; C6 (même fenêtre de confirmation, même cible `#…` que « Gérer les alertes »).
+- **Critères d'acceptation** :
+  - Test Vitest : la fenêtre s'affiche seulement s'il y a une saisie non enregistrée.
+  - Parcours dans un navigateur : formulaire vide → « Gérer les catégories » → section Catégories à l'écran ; formulaire avec un montant → fenêtre → « Rester » → montant conservé ; Budgets → lien → section Catégories.
+- **Maquette** : aucune (maquettes gardées à l'état du 17/11).
+- **Écarts constatés (rempli par Claude Code)** :
+
+### H12 Logo et icône de l'application — statut : à faire
+- **Scénario source** : tous (identité de l'application) ; retour n° 2 de P1 ; décision du logo (DECISIONS.md, 21/11).
+- **Fonctionnalité du sujet** : transversal.
+- **Contenu et interactions** :
+  - **Fichiers** : `docs/02_maquettes/logo/` (logo-blanc et logo-bleu-nuit, en PNG 512 × 512 et SVG, sans fond). Les copier dans `app/` ; ne pas les redessiner.
+  - **À côté du titre « EcoBudget »**, partout où il apparaît (barre latérale sur ordinateur ; en-tête de Créer un compte et Se connecter sur ordinateur ; ✱ carte « Bienvenue sur EcoBudget » de la Première ouverture) : logo **à gauche** du titre, hauteur d'environ deux fois celle des lettres (✱ 32 px pour un titre de 22 px), centré verticalement, écart de 10 px. **Blanc sur fond bleu nuit, bleu nuit (#1E2B4F) sur fond clair**, comme le titre. ✱ `alt=""` : le titre à côté suffit.
+  - **Icône de l'application** (onglet du navigateur, écran d'accueil du téléphone, manifeste de la PWA) : logo blanc sur un carré bleu nuit arrondi ; ✱ version « maskable » avec marge de sécurité ; remplace les icônes actuelles.
+  - Hors périmètre : écran de démarrage animé, changement de couleur de thème.
+- **Critères visés et comment** : C6 (même logo dans l'application et le diaporama, même couleur que le titre) ; C7 (un portefeuille se comprend sans texte) ; C8 (le cochon de l'ancien logo pouvait heurter le public algérien).
+- **Critères d'acceptation** : logo visible et net (écran 2×) partout où le titre apparaît, sur téléphone et ordinateur ; icône correcte dans l'onglet et après installation sur Android ; aucun écran décalé.
+- **Maquette** : aucune (logo non ajouté aux maquettes, DECISIONS.md 21/11).
+- **Écarts constatés (rempli par Claude Code)** :
+
+### H13 Icône neutre de catégorie — statut : à faire
+- **Scénario source** : S2 (créer « Enfants ») ; retour n° 4 de P2 (une icône est imposée même quand aucune ne correspond).
+- **Fonctionnalité du sujet** : transversal (catégories, H7).
+- **Contenu et interactions** :
+  - Ajouter à `CATEGORY_ICONS` une icône neutre **« Étiquette »** (contour d'étiquette, même style de trait que les autres), nom accessible « Étiquette ».
+  - ✱ Formulaire « Nouvelle catégorie » : « Étiquette » **présélectionnée** (remplace « la première icône non utilisée », H7) et placée en tête de la liste. Elle peut servir à plusieurs catégories. En modification : l'icône actuelle reste sélectionnée.
+  - ✱ Aide sous le choix d'icône : « Aucune ne correspond ? Gardez l'étiquette. »
+  - L'icône « … » d'« Autres » n'est toujours pas proposée.
+- **Critères visés et comment** : C4 (on n'est pas forcé de choisir une image qui ne correspond pas) ; C7 (une icône neutre ne trompe pas sur le contenu de la catégorie) ; C2 (rien à choisir si rien ne convient).
+- **Critères d'acceptation** : tests Vitest de la présélection (nouvelle catégorie → « Étiquette » ; modification → icône actuelle) ; « Étiquette » affichée partout où l'icône d'une catégorie apparaît (listes, formulaire Dépense, Budgets, Graphiques) ; mettre à jour les tests de H7 qui attendaient « Bébé ».
+- **Maquette** : aucune.
+- **Écarts constatés (rempli par Claude Code)** :
+
+### H14 Compte plus visible — statut : à faire
+- **Scénario source** : S3 (Yasmine crée un compte puis se connecte sur son PC) ; retour n° 6 de P3 (créer un compte ou se connecter n'est pas assez clair, surtout quand l'appareil contient déjà des dépenses).
+- **Fonctionnalité du sujet** : transversal (H9).
+- **Contenu et interactions** :
+  - **Réglages › Compte, sans compte, si l'appareil a au moins une dépense** : ✱ sous le texte actuel, une ligne en gras « Vos 12 dépenses seront conservées si vous créez un compte. » (« Votre dépense sera conservée… » pour une seule). Sans dépense : texte de H9 inchangé. Boutons inchangés (« Créer un compte » en bleu, « Se connecter » en contour).
+  - **Se connecter**, quand l'avertissement « Cet appareil contient N dépenses… » est affiché : ✱ juste sous l'avertissement, lien « Les garder : créer un compte » (bleu vif, gras, non souligné), qui ouvre Créer un compte avec l'adresse déjà saisie.
+  - Rien d'autre ne change dans H9 (pas de fusion des données).
+- **Critères visés et comment** : C1 (le bon choix est indiqué au bon moment) ; C5 (on évite de perdre ses dépenses en se connectant par erreur) ; C2 (le compte reste facultatif, rien n'est ajouté à l'Accueil).
+- **Critères d'acceptation** : tests Vitest (ligne absente sans dépense, singulier pour une, lien seulement avec l'avertissement) ; parcours : `/demo` → Réglages › Compte → ligne avec le nombre de dépenses du jeu de démo → « Se connecter » → avertissement et lien → lien → Créer un compte avec l'adresse remplie.
+- **Maquette** : aucune (maquettes gardées à l'état du 17/11).
+- **Écarts constatés (rempli par Claude Code)** :
