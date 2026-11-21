@@ -601,7 +601,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
     - `/demo` et parcours de démo sans compte : OK.
   - **Mise en production** le 21/11 à 20 h 19, en copiant le canal `h11` vers la production (code identique à `main` après la PR n°10). La nouvelle version était servie dès le premier contrôle, sur `/` et sur `/demo`. Vérifié en production, sans compte : parcours de H11 (« Tout voir » à 44 px, `/depenses` en haut, « Gérer les catégories » depuis le formulaire vide, avec montant, et depuis Budgets), parcours complet de H10, parcours de démo (`innovation.md` §5.3).
 
-### H12 Logo et icône de l'application — statut : fait (branche `h12-logo`, non fusionnée)
+### H12 Logo et icône de l'application — statut : fait (fusionné dans main le 21/11, PR n°11)
 - **Scénario source** : tous (identité de l'application) ; retour n° 2 de P1 ; décision du logo (DECISIONS.md, 21/11).
 - **Fonctionnalité du sujet** : transversal.
 - **Contenu et interactions** :
@@ -623,6 +623,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
     - favicon de l'onglet et 4 icônes du manifeste servies ;
     - `/demo` et parcours de démo sans compte : OK.
   - Pas vérifié : l'installation réelle sur un téléphone Android (pas d'appareil disponible).
+  - **Mise en production** le 21/11 à 20 h 33, en copiant le canal `h12` vers la production (code identique à `main` après la PR n°11). La nouvelle version et le nouveau favicon étaient servis dès le premier contrôle. Vérifié en production, sans compte : les mêmes contrôles que sur le canal, puis le parcours de démo (`innovation.md` §5.3).
 
 ### H13 Icône neutre de catégorie — statut : à faire
 - **Scénario source** : S2 (créer « Enfants ») ; retour n° 4 de P2 (une icône est imposée même quand aucune ne correspond).
