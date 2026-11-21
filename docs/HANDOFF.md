@@ -458,3 +458,40 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
   - Avant la fusion : `/demo` et le parcours de démo (`innovation.md` §5.3) fonctionnent toujours **sans compte**.
 - **Maquette** : `telephone-10`, `ordinateur-09` (Créer un compte) ; `telephone-11`, `ordinateur-10` (Se connecter) ; `telephone-08`, `ordinateur-08` (Réglages › Compte). Écarts (DECISIONS.md prime) : liste de conditions qui passent au vert au lieu d'une ligne de règles ; encadré « seront ajoutées à votre compte » (beige) remplacé par l'avertissement « ne seront pas ajoutées » (bleu) ; liens non soulignés ; bouton « Se déconnecter » ajouté (absent des maquettes).
 - **Écarts constatés (rempli par Claude Code)** :
+  - **Vérifié** :
+    - 532 tests Vitest et 7 tests des règles Firestore. Les tests couvrent : conditions du mot de passe, messages selon les erreurs Firebase, avertissement « N dépenses » (absent sans dépense, singulier pour une), Réglages › Compte dans ses deux états, déconnexion refusée hors connexion ou si l'attente échoue, confirmation de « Mot de passe oublié ? ».
+    - Parcours de la spec (6 étapes, deux navigateurs) passé dans un navigateur piloté, en local puis sur le canal de prévisualisation `h9` (https://ecobudget-3b3a4--h9-baf0sy6c.web.app, expire le 28/11).
+    - Aucun texte souligné sur 10 écrans, téléphone et ordinateur, dont Objectifs vide (« Créer un objectif »).
+    - `/demo` et le parcours de démo (`innovation.md` §5.3) passent **sans compte**, en local et sur le canal. H7 repasse sur le canal.
+    - **E-mail de réinitialisation reçu en français, vérifié par Kader sur le canal le 21/11.**
+  - **Textes choisis (non fixés par la spec)** :
+    - échecs généraux, avec le bouton « Réessayer » : « Le compte n'a pas pu être créé. », « La connexion n'a pas abouti. », « L'e-mail n'a pas pu être envoyé. » ;
+    - « Mot de passe oublié ? » : « Connectez-vous à internet pour recevoir le lien. » hors connexion, « Trop d'essais. Réessayez dans quelques minutes. » après trop d'essais ;
+    - mot de passe vide à la connexion : « Saisissez votre mot de passe. ».
+  - **« Mot de passe oublié ? »** :
+    - hors connexion, le message s'affiche tout de suite, sans fenêtre de confirmation (comme la déconnexion) ;
+    - bouton protégé du double appui.
+  - **« Annuler » des messages** : il reste en bleu clair (#C9D5FA) et en gras, sans soulignement, car le bleu vif serait illisible sur le bleu nuit (validé le 21/11). « Tout voir » passe en gras.
+  - **« Un compte existe déjà avec cette adresse. »** : son lien « Se connecter » ouvre Se connecter avec l'adresse déjà remplie.
+  - **Déconnexion** :
+    - elle attend que les écritures en attente soient envoyées. L'attente est faite deux fois, pour couvrir une dépense notée pendant « Déconnexion… », et dure 10 s au plus. Pendant ce temps, le bouton est désactivé et affiche « Déconnexion… » ;
+    - si le délai est dépassé ou si l'attente échoue, la déconnexion est refusée : le bouton redevient « Se déconnecter », avec le message hors connexion, affiché 8 s (message long).
+  - **Changement de compte** : toute l'application repart de zéro (données et écrans). La navigation et le message (« Vous êtes connecté », « Vous êtes déconnecté ») sont conservés.
+  - **Redirections** :
+    - `/compte/creer` et `/compte/connexion` redirigent vers Réglages si un compte e-mail est connecté ;
+    - après une connexion réussie, on arrive sur l'Accueil. Ce cas a été corrigé après l'E2E : sans le correctif, on arrivait sur Réglages, parce que l'application est remontée avant la fin de la navigation.
+  - **Créer un compte ouvert directement** (rechargement de la page, application rouverte) : l'écran attend les données. Le prénom est donc prérempli, et jamais effacé par erreur.
+  - **Accessibilité** :
+    - après une validation ratée, le focus va sur le premier champ en erreur, comme pour le formulaire Dépense ;
+    - les conditions sont lues en entier (« Au moins un chiffre : condition remplie ») ;
+    - la confirmation de « Mot de passe oublié ? » est annoncée (`role="status"`).
+  - **Fenêtres de confirmation** : un mot long, comme une adresse e-mail, passe à la ligne au lieu d'élargir la fenêtre au-delà de l'écran. Cela vaut pour toutes les fenêtres de confirmation.
+  - **Données** :
+    - les comptes de test `ecobudget.e2e.…@example.com` créés par l'E2E restent dans Firebase Auth et peuvent être supprimés depuis la console ;
+    - le cache local du compte quitté reste sur l'appareil, sans être affiché.
+  - **Points mineurs de la revue, non corrigés (décision de Kader, 21/11)** :
+    - le drapeau interne « connexion en cours » peut rester actif si l'on quitte l'écran pendant la connexion (« Retour »). Un compte connecté qui tape ensuite `/compte/connexion` arrive alors sur l'Accueil au lieu de Réglages ;
+    - un message « Annuler » de l'ancien compte survit à une connexion faite dans un autre onglet. Toucher « Annuler » écrit alors dans l'ancien compte : l'écriture est refusée, sans effet visible ;
+    - réseau annoncé mais serveur injoignable, sans rien en attente : la déconnexion passe, puis l'écran « connectez-vous à internet » de la première ouverture s'affiche. Rien n'est perdu, et l'application réessaie toutes les 10 s.
+  - **Pour la démo** : elle se fait sans compte, car `/demo` remplace les données du compte en cours. À rappeler dans `innovation.md` §5.3 (Cowork).
+  - Plan : `app/docs/plans/2026-11-21-h9-compte.md`.
