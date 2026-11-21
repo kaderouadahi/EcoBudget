@@ -12,22 +12,24 @@
 
 ## Changements issus des retours des testeurs
 
-| N° | Changement apporté | Testeur(s) | Observation | Critère(s) | Décision |
-|---|---|---|---|---|---|
-| 1 | Écran Alerte : un seul bouton « Compris » à la place de « Ce n'est pas inhabituel » et « Ignorer pour cette fois », avec le lien « Gérer les alertes » | P1 | — | C2, C3, C7 | DECISIONS.md, 18/11 (écran Alerte) |
-| 2 | Carte Conseil : « Compris » à la place de « Accepter » et « Ignorer » | P1 | — | C2, C3, C6 | DECISIONS.md, 18/11 (carte Conseil) |
-| 3 | Phrase « Pourquoi ? » plus explicite : comparaison à la dépense habituelle de la catégorie, nombre de dépenses et date de départ du calcul | P2 | La participante ne comprenait ni le fonctionnement des alertes ni leur intérêt. | C1, C7 | DECISIONS.md, 18/11 (alerte, historique) |
-| 4 | Carte d'alerte de l'Accueil en bleu plutôt qu'en orange | P1 | — | C7 | DECISIONS.md, 19/11 (H3) |
-| 5 | Deux interrupteurs distincts (alertes, conseils), avec la mention « Activé » / « Désactivé » | P1, P3 | — | C3, C4, C7 | DECISIONS.md, 18/11 (Réglages) et 20/11 (H7) |
-| 6 | État du budget indiqué dans le message de confirmation dès 80 %, sans interrupteur « Alerte de budget » | P3 | — | C1, C5, C7 | DECISIONS.md, 18/11 (prévenir avant le dépassement) |
-| 7 | « Annuler » proposé après l'ajout et la modification d'une dépense | P1, P3 | — | C3, C5 | HANDOFF.md, H1 (écarts constatés) |
-| 8 | Bouton « Ajouter de l'épargne » sur chaque objectif | P1 | — | C1, C2, C8 | DECISIONS.md, 18/11 (F4, ajout d'épargne) |
-| 9 | Étapes à 25, 50 et 75 %, message « Objectif atteint ! », objectifs triés par date visée | P3 | — | C1, C2, C7 | DECISIONS.md, 18/11 (objectif atteint) et 19/11 (H4) |
-| 10 | Graphiques sans phrase de synthèse ni onglets, avec un sélecteur de mois | P3 | — | C1, C2, C6 | DECISIONS.md, 20/11 (H6) |
-| 11 | Couleur fixe pour chaque catégorie, d'un mois à l'autre | P2 | — | C6, C7 | DECISIONS.md, 20/11 (H6, suites de la revue) |
-| 12 | Réglage « Le mois commence le » retiré | P3 | — | C2, C8 | DECISIONS.md, 18/11 (mois budgétaire) |
-| 13 | Corbeilles grises dans la liste des catégories, rouge réservé au bouton « Supprimer » | P1 | — | C7 | DECISIONS.md, 20/11 (H7, supprimer une catégorie) |
-| 14 | Conditions du mot de passe affichées en liste et validées en vert pendant la saisie | P2 | La participante ne respectait pas les exigences du mot de passe et ne comprenait pas pourquoi sa saisie était refusée. | C1, C5 | DECISIONS.md, 21/11 (H9, créer un compte) |
+Gravité non notée pendant les tests, estimée par l'équipe le 21/11 : 1 = gêne de lecture ou de cohérence, 2 = hésitation ou erreur rattrapable, 3 = tâche bloquée.
+
+| N° | Changement apporté | Testeur(s) | Problème corrigé | Gravité estimée | Critère(s) | Décision |
+|---|---|---|---|---|---|---|
+| 1 | Écran Alerte : un seul bouton « Compris » à la place de « Ce n'est pas inhabituel » et « Ignorer pour cette fois », avec le lien « Gérer les alertes » | P1 | Deux boutons pour une alerte qui ne déclenche aucune action : rien à décider, et confusion possible entre les deux (d'après DECISIONS.md) | 1 | C2, C3, C7 | DECISIONS.md, 18/11 (écran Alerte) |
+| 2 | Carte Conseil : « Compris » à la place de « Accepter » et « Ignorer » | P1 | Deux choix (« Accepter », « Ignorer ») alors qu'il n'y a rien à décider ni à modifier ; fonctionnement différent de l'alerte (d'après DECISIONS.md) | 1 | C2, C3, C6 | DECISIONS.md, 18/11 (carte Conseil) |
+| 3 | Phrase « Pourquoi ? » plus explicite : comparaison à la dépense habituelle de la catégorie, nombre de dépenses et date de départ du calcul | P2 | La participante ne comprenait ni le fonctionnement des alertes ni leur intérêt (observé pendant le test). | 3 | C1, C7 | DECISIONS.md, 18/11 (alerte, historique) |
+| 4 | Carte d'alerte de l'Accueil en bleu plutôt qu'en orange | P1 | Carte d'alerte en orange, couleur réservée à l'état des budgets : confusion possible avec un budget presque atteint (d'après DECISIONS.md) | 1 | C7 | DECISIONS.md, 19/11 (H3) |
+| 5 | Deux interrupteurs distincts (alertes, conseils), avec la mention « Activé » / « Désactivé » | P1, P3 | Alertes et conseils ne se désactivaient pas séparément ; état du réglage lisible seulement à la couleur (d'après DECISIONS.md) | 1 | C3, C4, C7 | DECISIONS.md, 18/11 (Réglages) et 20/11 (H7) |
+| 6 | État du budget indiqué dans le message de confirmation dès 80 %, sans interrupteur « Alerte de budget » | P3 | Pas d'avertissement au moment de la saisie ; il fallait un réglage en plus (« Alerte de budget ») (d'après DECISIONS.md) | 1 | C1, C5, C7 | DECISIONS.md, 18/11 (prévenir avant le dépassement) |
+| 7 | « Annuler » proposé après l'ajout et la modification d'une dépense | P1, P3 | Non noté | 1 | C3, C5 | HANDOFF.md, H1 (écarts constatés) |
+| 8 | Bouton « Ajouter de l'épargne » sur chaque objectif | P1 | Rien ne faisait progresser un objectif (d'après DECISIONS.md) | 2 | C1, C2, C8 | DECISIONS.md, 18/11 (F4, ajout d'épargne) |
+| 9 | Étapes à 25, 50 et 75 %, message « Objectif atteint ! », objectifs triés par date visée | P3 | Réussite d'un objectif peu valorisée ; objectifs non classés par urgence (d'après DECISIONS.md) | 1 | C1, C2, C7 | DECISIONS.md, 18/11 (objectif atteint) et 19/11 (H4) |
+| 10 | Graphiques sans phrase de synthèse ni onglets, avec un sélecteur de mois | P3 | Phrase de synthèse en doublon avec le conseil ; mois détaillé pas toujours visible (d'après DECISIONS.md) | 1 | C1, C2, C6 | DECISIONS.md, 20/11 (H6) |
+| 11 | Couleur fixe pour chaque catégorie, d'un mois à l'autre | P2 | Une catégorie changeait de couleur d'un mois à l'autre (d'après DECISIONS.md) | 1 | C6, C7 | DECISIONS.md, 20/11 (H6, suites de la revue) |
+| 12 | Réglage « Le mois commence le » retiré | P3 | Réglage demandé par aucun scénario, qui touchait tous les calculs (budgets, graphiques, conseil) (d'après DECISIONS.md) | 1 | C2, C8 | DECISIONS.md, 18/11 (mois budgétaire) |
+| 13 | Corbeilles grises dans la liste des catégories, rouge réservé au bouton « Supprimer » | P1 | Corbeilles rouges dans la liste : le rouge perdait son sens (état de budget, suppression) (d'après DECISIONS.md) | 1 | C7 | DECISIONS.md, 20/11 (H7, supprimer une catégorie) |
+| 14 | Conditions du mot de passe affichées en liste et validées en vert pendant la saisie | P2 | La participante ne respectait pas les exigences du mot de passe et ne comprenait pas pourquoi sa saisie était refusée (observé pendant le test). | 3 | C1, C5 | DECISIONS.md, 21/11 (H9, créer un compte) |
 
 ## Changements issus d'essais de l'équipe
 
