@@ -10,7 +10,7 @@ Mis à jour le 17/11/2026. Décisions : voir `docs/DECISIONS.md` (17/11/2026).
 
 Les montants sont des **données de démonstration** (voir `docs/01_analyse/scenarios.md`).
 
-**À compléter (décisions du 18/11/2026)** : écran Objectifs (bouton « Ajouter de l'épargne », formulaire avec l'aide « Il reste X DA », état Atteint) ; écrans Alerte et Objectifs (« Compris » au lieu des anciens boutons) ; Réglages (section « Alertes et conseils », deux interrupteurs ; retirer « Mois budgétaire » et l'interrupteur « Alerte de budget »).
+**Maquettes gardées à l'état du 17/11 (décision du 21/11/2026)** : les maquettes et le prototype représentent la première version, à l'étape de conception ; ils ne sont pas mis à jour vers l'application finale. Les écarts ci-dessous documentent ce qui a changé ensuite (voir aussi `docs/DECISIONS.md` et les lignes « Après revue » du diaporama). Écarts des décisions du 18/11/2026 : écran Objectifs (bouton « Ajouter de l'épargne », formulaire avec l'aide « Il reste X DA », état Atteint) ; écrans Alerte et Objectifs (« Compris » au lieu des anciens boutons) ; Réglages (section « Alertes et conseils », deux interrupteurs ; « Mois budgétaire » et l'interrupteur « Alerte de budget » retirés).
 
 **Écart (décision du 20/11/2026)** : écran Graphiques sans onglets ni phrase de synthèse (fond orange clair, ampoule) ; sélecteur de mois, menu de catégorie et montants au-dessus des barres à ajouter (spec H6 de `docs/HANDOFF.md`).
 
@@ -24,8 +24,8 @@ Les montants sont des **données de démonstration** (voir `docs/01_analyse/scen
 |---|---|
 | S1 · Amine note sa première dépense | Première ouverture → « Noter ma première dépense » → Nouvelle dépense → « Enregistrer la dépense » → Accueil avec « Dépense ajoutée · Annuler » |
 | S2 · Nadia tient le budget des courses | Accueil → budget Courses (orange) → Budgets et détail ; Réglages → icône poubelle d'une catégorie → confirmation de suppression |
-| S3 · Yasmine fait le point le soir | Bouton « Ordinateur » → Première ouverture → « Se connecter » → Accueil → Graphiques → Objectifs (conseil : « Pourquoi ? » puis « Compris » ; décision du 18/11, le prototype affiche encore « Accepter / Ignorer », à mettre à jour) ; création de compte depuis Réglages > « Créer un compte » |
-| S4 · Amine reçoit une alerte inhabituelle | Accueil → carte « Dépense inhabituelle » → « Pourquoi ? » → Alerte → « Compris » ou « Gérer les alertes » (décision du 18/11 ; le prototype affiche encore « Ce n'est pas inhabituel » et « Ignorer », à mettre à jour) |
+| S3 · Yasmine fait le point le soir | Bouton « Ordinateur » → Première ouverture → « Se connecter » → Accueil → Graphiques → Objectifs (conseil : « Pourquoi ? » puis « Compris » ; décision du 18/11, le prototype affiche encore « Accepter / Ignorer », écart conservé (décision du 21/11)) ; création de compte depuis Réglages > « Créer un compte » |
+| S4 · Amine reçoit une alerte inhabituelle | Accueil → carte « Dépense inhabituelle » → « Pourquoi ? » → Alerte → « Compris » ou « Gérer les alertes » (décision du 18/11 ; le prototype affiche encore « Ce n'est pas inhabituel » et « Ignorer », écart conservé (décision du 21/11)) |
 
 ## Écrans, scénarios, besoins et critères
 
