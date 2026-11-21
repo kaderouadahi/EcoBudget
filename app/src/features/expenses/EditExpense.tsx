@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useUid } from '../../auth/AuthGate'
 import { useData } from '../../data/DataProvider'
 import { createDoc, removeDoc, updateDocFields } from '../../data/repo'
@@ -18,6 +18,9 @@ export function EditExpense() {
   useEffect(() => dismiss(), [dismiss])
   const navigate = useNavigate()
   const close = useClose()
+  // Ouvert depuis la liste du mois (H10) : retour sur la liste, même mois ; sinon l'Accueil (H1).
+  const wanted = (useLocation().state as { back?: unknown } | null)?.back
+  const back = typeof wanted === 'string' && wanted.startsWith('/depenses') ? wanted : '/'
   const [confirming, setConfirming] = useState(false)
 
   if (!ready) return null
@@ -34,7 +37,7 @@ export function EditExpense() {
 
   function save(v: ExpenseValues) {
     updateDocFields(uid, 'expenses', id, v)
-    navigate('/', { replace: true })
+    navigate(back, { replace: true })
     show({
       message: `Dépense modifiée : ${formatDA(v.amount)}`,
       undo: () => updateDocFields(uid, 'expenses', id, { ...previous, note: previous.note }),
@@ -44,7 +47,7 @@ export function EditExpense() {
   function remove() {
     removeDoc(uid, 'expenses', id)
     setConfirming(false)
-    navigate('/', { replace: true })
+    navigate(back, { replace: true })
     show({
       message: `Dépense supprimée : ${formatDA(previous.amount)}`,
       undo: () => createDoc(uid, 'expenses', previous, id),
