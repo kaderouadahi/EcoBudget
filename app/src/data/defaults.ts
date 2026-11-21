@@ -1,6 +1,6 @@
 import {
   Baby, BookOpen, BusFront, Car, Dumbbell, Ellipsis, Gift, Heart, House, PawPrint, Plane, Shirt,
-  ShoppingCart, Smartphone, Ticket, Utensils, Wrench, type LucideIcon,
+  ShoppingCart, Smartphone, Tag, Ticket, Utensils, Wrench, type LucideIcon,
 } from 'lucide-react'
 import type { Category, WithoutId } from './model'
 
@@ -20,6 +20,7 @@ export const DEFAULT_CATEGORIES: (WithoutId<Category> & { id: string })[] = [
 export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Utensils, ShoppingCart, BusFront, Ticket, Heart, House, BookOpen, Ellipsis,
   Baby, Gift, Shirt, Smartphone, Car, PawPrint, Dumbbell, Plane, Wrench,
+  Tag, // H13 : icône neutre « Étiquette »
   UtensilsCrossed: Utensils, // ancien nom, données déjà créées
 }
 

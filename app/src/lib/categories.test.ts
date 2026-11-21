@@ -41,16 +41,16 @@ describe('icônes', () => {
     expect(PICKABLE_ICONS.find((i) => i.key === 'Gift')?.label).toBe('Cadeau')
     expect(PICKABLE_ICONS.every((i) => i.label.length > 0)).toBe(true)
   })
-  it('présélection : la première icône non utilisée (Bébé avec les catégories par défaut)', () => {
-    expect(defaultIcon(CATS)).toBe('Baby')
-    expect(defaultIcon([...CATS, { id: 'x', name: 'Enfants', icon: 'Baby', order: 7, locked: false }])).toBe('Gift')
+  it('présélection (H13) : l’étiquette neutre, même si une autre catégorie l’utilise déjà', () => {
+    expect(defaultIcon(CATS)).toBe('Tag')
+    expect(defaultIcon([...CATS, { id: 'x', name: 'Enfants', icon: 'Tag', order: 7, locked: false }])).toBe('Tag')
   })
   it('en modification : l’icône actuelle', () => {
     expect(defaultIcon(CATS, 'Ticket')).toBe('Ticket')
   })
   it('ancien nom UtensilsCrossed (comptes d’avant le 19/11) traité comme Couverts', () => {
     const old = CATS.map((c) => (c.id === 'repas' ? { ...c, icon: 'UtensilsCrossed' } : c))
-    expect(defaultIcon(old)).toBe('Baby')
+    expect(defaultIcon(old)).toBe('Tag')
     expect(defaultIcon(old, 'UtensilsCrossed')).toBe('Utensils')
   })
 })
