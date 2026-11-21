@@ -647,7 +647,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
     - `/demo` et parcours de démo sans compte : OK.
   - **Mise en production** le 21/11 à 20 h 42, en copiant le canal `h13` vers la production (code identique à `main` après la PR n°12). La nouvelle version était servie au deuxième contrôle. Vérifié en production, sans compte : les mêmes contrôles que sur le canal, puis le parcours de démo (`innovation.md` §5.3).
 
-### H14 Compte plus visible — statut : à faire
+### H14 Compte plus visible — statut : fait (branche `h14-compte`, non fusionnée)
 - **Scénario source** : S3 (Yasmine crée un compte sur son téléphone puis se connecte sur son PC) ; retour n° 6 de P3 (créer un compte ou se connecter n'est pas assez clair ni mis en valeur, surtout quand l'appareil contient déjà des dépenses). Spec revue par Kader le 21/11.
 - **Fonctionnalité du sujet** : transversal (H9).
 - **Contenu et interactions** :
@@ -665,3 +665,11 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
   - Vérification rapide sur un canal h14 : carte sous « Reste à dépenser » (et sous « Bienvenue » à la Première ouverture) ; les deux boutons mènent aux bons écrans ; carte absente une fois connecté ; `/demo` et le parcours de démo (`innovation.md` §5.3) passent sans compte, carte visible.
 - **Maquette** : aucune (maquettes gardées à l'état du 17/11).
 - **Écarts constatés (rempli par Claude Code)** :
+  - Carte `features/home/AccountCard.tsx` avec les classes de Réglages › Compte (icône nuage, mêmes boutons), nommée « Compte » pour les lecteurs d'écran.
+  - Boutons de 56 px, sans retour à la ligne dans leur texte : sur téléphone (390 px), ils passent l'un sous l'autre au lieu que « Créer un compte » se coupe sur deux lignes. Côte à côte sur ordinateur.
+  - **Impact sur la démo (décision de Kader, 21/11 : la spec est gardée)** : sur téléphone, la carte fait descendre la carte d'alerte. Juste après l'ajout de 4 500 DA, le message « Dépense ajoutée · Annuler » recouvre « Pourquoi ? » pendant 6 s. **Il faut attendre que le message disparaisse avant de toucher « Pourquoi ? »** : à ajouter au script de démo (`innovation.md` §5.3, Cowork).
+  - Vérifié : 571 tests, dont le test demandé. Parcours en local, puis sur le canal `h14` (https://ecobudget-3b3a4--h14-39ag3h4x.web.app, expire le 28/11) :
+    - carte sous « Bienvenue » à la Première ouverture, puis sous « Reste à dépenser » après `/demo` ;
+    - les deux boutons mènent aux bons écrans ;
+    - compte e-mail créé (adresse de test `…@example.com`) → plus de carte ; déconnexion → la carte revient ;
+    - `/demo` et parcours de démo sans compte : OK, en attendant la fin du message avant « Pourquoi ? ».
