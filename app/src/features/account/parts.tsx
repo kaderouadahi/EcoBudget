@@ -59,10 +59,11 @@ export function PasswordField({ id, value, onChange, error, checks, showCheckErr
             const failed = showCheckErrors && !c.met
             const Icon = c.met ? CircleCheck : failed ? CircleAlert : Circle
             return (
-              <li key={c.label} className={c.met ? 'is-met' : failed ? 'is-error' : undefined}>
+              // Ligne lue en entier à chaque changement : « Au moins un chiffre : condition remplie ».
+              <li key={c.label} className={c.met ? 'is-met' : failed ? 'is-error' : undefined} aria-atomic="true">
                 <Icon aria-hidden size={18} />
                 <span>{c.label}</span>
-                <span className="sr-only">{c.met ? 'Condition remplie' : 'Condition non remplie'}</span>
+                <span className="sr-only">{` : ${c.met ? 'condition remplie' : 'condition non remplie'}`}</span>
               </li>
             )
           })}

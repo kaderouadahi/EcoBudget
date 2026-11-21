@@ -77,14 +77,15 @@ describe('Créer un compte', () => {
     expect(screen.getByRole('link', { name: 'Se connecter' })).toHaveAttribute('href', '/compte/connexion')
   })
 
-  it('conditions visibles dès l’ouverture, remplies ou non pendant la saisie', () => {
+  it('conditions visibles dès l’ouverture, remplies ou non pendant la saisie, chacune nommée', () => {
     setup()
-    expect(within(conditions()).getAllByText('Condition non remplie')).toHaveLength(2)
+    const lines = () => within(conditions()).getAllByRole('listitem').map((li) => li.textContent)
+    expect(lines()).toEqual(['Au moins 8 caractères : condition non remplie', 'Au moins un chiffre : condition non remplie'])
     fireEvent.change(password(), { target: { value: 'abc12345' } })
-    expect(within(conditions()).getAllByText('Condition remplie')).toHaveLength(2)
+    expect(lines()).toEqual(['Au moins 8 caractères : condition remplie', 'Au moins un chiffre : condition remplie'])
     fireEvent.change(password(), { target: { value: 'abcdefgh' } })
-    expect(condition('Au moins 8 caractères')).toHaveTextContent('Condition remplie')
-    expect(condition('Au moins un chiffre')).toHaveTextContent('Condition non remplie')
+    expect(lines()).toEqual(['Au moins 8 caractères : condition remplie', 'Au moins un chiffre : condition non remplie'])
+    for (const li of within(conditions()).getAllByRole('listitem')) expect(li).toHaveAttribute('aria-atomic', 'true')
   })
 
   it('« Afficher » puis « Masquer » le mot de passe', () => {

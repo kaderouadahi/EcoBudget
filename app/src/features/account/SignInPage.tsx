@@ -152,8 +152,11 @@ export function SignInPage() {
         error={passwordError ?? undefined}
       />
 
-      <button type="button" className="text-link account-forgot" disabled={resetBusy} onClick={forgotPassword}>Mot de passe oublié ?</button>
-      <p className="form-note" aria-live="polite" hidden={!resetSent}>{resetSent ? RESET_SENT : ''}</p>
+      <div className="account-forgot-row">
+        <button type="button" className="text-link account-forgot" disabled={resetBusy} onClick={forgotPassword}>Mot de passe oublié ?</button>
+        {/* Zone présente dès l'ouverture : la confirmation ajoutée ensuite est annoncée par les lecteurs d'écran. */}
+        <div role="status" className="reset-status">{resetSent && <p className="form-note">{RESET_SENT}</p>}</div>
+      </div>
 
       {formProblem && <FormProblem message={formProblem.message} onRetry={formProblem.kind === 'retry' ? () => submit() : undefined} />}
 

@@ -193,13 +193,16 @@ describe('Se connecter', () => {
     expect(sendReset).toHaveBeenCalledTimes(1)
   })
 
-  it('mot de passe oublié : e-mail envoyé, message neutre', async () => {
+  it('mot de passe oublié : e-mail envoyé, message neutre annoncé (zone role="status" présente dès l’ouverture)', async () => {
     sendReset.mockResolvedValue(undefined)
     setup()
+    const zone = screen.getAllByRole('status').find((z) => !z.classList.contains('toast-region'))
+    expect(zone).toBeDefined()
+    expect(zone).toBeEmptyDOMElement()
     fireEvent.change(email(), { target: { value: 'yasmine@gmail.com' } })
     await act(async () => { fireEvent.click(forgot()) })
     expect(sendReset).toHaveBeenCalledWith('yasmine@gmail.com')
-    expect(screen.getByText(RESET_SENT)).toBeInTheDocument()
+    expect(zone).toHaveTextContent(RESET_SENT)
   })
 
   it('mot de passe oublié pour une adresse sans compte : même message neutre', async () => {

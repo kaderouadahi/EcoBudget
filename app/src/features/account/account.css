@@ -51,7 +51,9 @@
 .account-submit { width: 100%; }
 .account-alt { margin: 0; text-align: center; color: var(--muted); }
 .account-alt a { display: inline-block; min-height: var(--tap); line-height: var(--tap); }
-.account-forgot { align-self: flex-end; margin-top: -8px; }
+.account-forgot-row { display: flex; flex-direction: column; align-items: flex-end; margin-top: -8px; }
+.reset-status { align-self: stretch; }
+.reset-status:not(:empty) { margin-top: 8px; }
 
 .device-warning {
   display: flex;
