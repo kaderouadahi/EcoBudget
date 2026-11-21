@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { EditExpense } from './features/expenses/EditExpense'
+import { ExpensesPage } from './features/expenses/ExpensesPage'
 import { NewExpense } from './features/expenses/NewExpense'
 import { BudgetDetail, BudgetsPage, EditBudget, SetBudget } from './features/budgets/BudgetPages'
 import { AddSavings, EditGoal, GoalsPage, NewGoal } from './features/goals/GoalPages'
@@ -30,6 +31,7 @@ export function AppRoutes() {
         <Route path="reglages/categories/nouvelle" element={<NewCategory />} />
         <Route path="reglages/categories/:id" element={<EditCategory />} />
         <Route path="demo" element={<DemoPage />} />
+        <Route path="depenses" element={<ExpensesPage />} />
         <Route path="depense/nouvelle" element={<NewExpense />} />
         <Route path="depense/:id" element={<EditExpense />} />
         <Route path="*" element={<Navigate to="/" replace />} />

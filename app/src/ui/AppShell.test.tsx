@@ -50,6 +50,12 @@ describe('AppShell', () => {
     expect(screen.queryByRole('navigation', { name: 'Navigation principale (téléphone)' })).not.toBeInTheDocument()
   })
 
+  it('liste des Dépenses (H10) : écran « Dépenses » avec la barre du bas', () => {
+    render(<MemoryRouter initialEntries={['/depenses']}><ToastProvider><AppRoutes /></ToastProvider></MemoryRouter>)
+    expect(screen.getByRole('heading', { level: 1, name: 'Dépenses' })).toBeInTheDocument()
+    expect(screen.getByRole('navigation', { name: 'Navigation principale (téléphone)' })).toBeInTheDocument()
+  })
+
   it('marque la page active', () => {
     renderAt('/reglages')
     const sidebar = screen.getByRole('navigation', { name: 'Navigation principale (ordinateur)' })

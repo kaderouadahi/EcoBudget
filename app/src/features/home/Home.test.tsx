@@ -40,6 +40,14 @@ describe('Accueil', () => {
     expect(screen.getByText('Novembre 2026')).toBeInTheDocument()
   })
 
+  it('« Tout voir » des dernières dépenses mène à la liste du mois, dès une dépense (H10)', () => {
+    const { unmount } = renderHome(user(), [exp('a', {})])
+    expect(screen.getByRole('link', { name: 'Tout voir les dépenses' })).toHaveAttribute('href', '/depenses')
+    unmount()
+    renderHome(user(), [])
+    expect(screen.queryByRole('link', { name: 'Tout voir les dépenses' })).not.toBeInTheDocument()
+  })
+
   it('dernières dépenses : 4 au plus, titre = note sinon catégorie, montant négatif', () => {
     renderHome(user(), [
       exp('a', { note: 'Cafétéria', amount: 250, createdAt: 5 }),
