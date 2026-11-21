@@ -508,7 +508,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECISIONS.md` (21/11). Les détails marqués ✱ sont proposés par Cowork le 21/11 ; Kader a validé le lot et peut les corriger. Faire dans l'ordre H10 → H14 ; si le temps manque, les dernières tombent. `/demo` et le parcours de démo (`innovation.md` §5.3) doivent toujours passer sans compte.
 
-### H10 Liste des dépenses du mois — statut : fait (branche `h10-depenses`, non fusionnée)
+### H10 Liste des dépenses du mois — statut : fait (fusionné dans main le 21/11, PR n°9)
 - **Scénario source** : S2 (Nadia vérifie les dépenses du mois) ; retour n° 7 de P3 (impossible de voir plus que les 4 dernières dépenses, ni les mois passés, donc de corriger une dépense ancienne).
 - **Fonctionnalité du sujet** : F1.
 - **Contenu et interactions** :
