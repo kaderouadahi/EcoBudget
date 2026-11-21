@@ -1,14 +1,21 @@
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { AppShell } from './AppShell'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { AppRoutes } from '../App'
+import { ToastProvider } from './Toast'
+
+// Écrans de compte réels (H9) : compte anonyme, appareil sans dépense, Firebase jamais appelé.
+vi.mock('../auth/AuthGate', () => ({ useUid: () => 'u1', useAccount: () => ({ uid: 'u1', email: null, isAnonymous: true, refresh: () => {} }) }))
+vi.mock('../auth/actions', () => ({}))
+vi.mock('../data/repo', () => ({}))
+vi.mock('../data/DataProvider', () => ({ useData: () => ({ user: null, expenses: [], categories: [], budgets: [], goals: [], contributions: [], ready: true }) }))
 
 const LABELS = ['Accueil', 'Budgets', 'Graphiques', 'Objectifs', 'Réglages', 'Ajouter une dépense']
 
 // Coquille seule : les pages ont besoin des données, on les remplace par une page factice.
 function renderAt(path: string) {
-  if (path.startsWith('/compte')) return render(<MemoryRouter initialEntries={[path]}><AppRoutes /></MemoryRouter>)
+  if (path.startsWith('/compte')) return render(<MemoryRouter initialEntries={[path]}><ToastProvider><AppRoutes /></ToastProvider></MemoryRouter>)
   return render(
     <MemoryRouter initialEntries={[path]}>
       <Routes><Route element={<AppShell />}><Route path="*" element={<p>page</p>} /></Route></Routes>

@@ -17,7 +17,11 @@
 }
 .dialog h2 { font-size: 21px; }
 .dialog p { color: var(--muted); line-height: 1.5; }
+/* Mot long (adresse e-mail) : il passe à la ligne au lieu d'élargir la fenêtre au-delà de l'écran. */
+.dialog { min-width: 0; overflow-wrap: anywhere; }
 .dialog-actions { display: flex; gap: 10px; margin-top: 20px; }
 .dialog-actions button { flex: 1; min-height: 52px; border-radius: 12px; font-weight: 700; font-size: 17px; }
 .dialog-cancel { border: 1px solid var(--border); background: var(--surface); color: var(--navy); }
 .dialog-confirm { border: 0; background: var(--danger); color: #fff; }
+/* Rien n'est perdu (ex. se déconnecter, H9) : bleu, le rouge garde son sens. */
+.dialog-confirm.is-primary { background: var(--blue); }

@@ -14,6 +14,8 @@ export const app = initializeApp({
 })
 
 export const auth = getAuth(app)
+// E-mail et page de réinitialisation du mot de passe en français (HANDOFF H9), en plus du réglage de la console.
+auth.languageCode = 'fr'
 
 // Copie hors connexion (HANDOFF H0) : cache persistant, partagé entre onglets.
 export const db = initializeFirestore(app, {

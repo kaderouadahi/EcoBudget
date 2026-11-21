@@ -32,6 +32,15 @@ describe('message de confirmation commun', () => {
     expect(screen.queryByText('Dépense supprimée')).not.toBeInTheDocument()
   })
 
+  it('durée choisie (message long) : encore là à 7 999 ms, disparu à 8 000 ms', () => {
+    setup()
+    act(() => show({ message: 'Message long', duration: 8000 }))
+    act(() => { vi.advanceTimersByTime(7999) })
+    expect(screen.getByText('Message long')).toBeInTheDocument()
+    act(() => { vi.advanceTimersByTime(1) })
+    expect(screen.queryByText('Message long')).not.toBeInTheDocument()
+  })
+
   it('disparaît après 6 s quand il propose « Annuler »', () => {
     setup()
     act(() => show({ message: 'Budget retiré', undo: () => {} }))

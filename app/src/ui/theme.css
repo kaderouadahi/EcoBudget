@@ -38,7 +38,9 @@ body {
 }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
-a { color: var(--blue); }
+/* Aucun texte souligné (DECISIONS.md 21/11) : liens en bleu vif et en gras, le gras les distingue sans la couleur seule. */
+a { color: var(--blue); text-decoration: none; }
+a:not([class]), .text-link { font-weight: 700; }
 h1, h2, h3 { color: var(--navy); margin: 0; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 

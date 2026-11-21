@@ -10,6 +10,8 @@ export interface ToastOptions {
   tone?: ToastTone
   /** Présent quand l'action est réversible : affiche « Annuler » (C3). */
   undo?: () => void
+  /** Durée d'affichage en ms pour un message long (sinon 4 s, ou 6 s avec « Annuler »). */
+  duration?: number
 }
 
 interface ToastApi {
@@ -35,7 +37,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!toast) return
-    const id = setTimeout(() => setToast(null), toast.undo ? TOAST_MS_WITH_UNDO : TOAST_MS)
+    const id = setTimeout(() => setToast(null), toast.duration ?? (toast.undo ? TOAST_MS_WITH_UNDO : TOAST_MS))
     return () => clearTimeout(id)
   }, [toast])
 

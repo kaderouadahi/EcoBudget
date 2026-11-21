@@ -9,14 +9,15 @@ import './ui/theme.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthGate>
-      <DataProvider>
-        <BrowserRouter>
-          <ToastProvider>
+    {/* Navigation et messages au-dessus du compte : ils survivent à la connexion et à la déconnexion (H9). */}
+    <BrowserRouter>
+      <ToastProvider>
+        <AuthGate>
+          <DataProvider>
             <AppRoutes />
-          </ToastProvider>
-        </BrowserRouter>
-      </DataProvider>
-    </AuthGate>
+          </DataProvider>
+        </AuthGate>
+      </ToastProvider>
+    </BrowserRouter>
   </StrictMode>,
 )

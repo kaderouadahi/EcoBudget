@@ -10,10 +10,12 @@ interface Props {
   onCancel: () => void
   /** Contenu en plus sous le message (ex. menu « Déplacer les dépenses vers »). */
   children?: ReactNode
+  /** 'primary' quand rien n'est perdu (bouton bleu au lieu de rouge). */
+  tone?: 'danger' | 'primary'
 }
 
 /** Confirmation d'une action destructive (CLAUDE.md §8, C3/C5) ; toujours suivie d'un « Annuler ». */
-export function ConfirmDialog({ title, message, confirmLabel, cancelLabel = 'Garder', onConfirm, onCancel, children }: Props) {
+export function ConfirmDialog({ title, message, confirmLabel, cancelLabel = 'Garder', onConfirm, onCancel, children, tone = 'danger' }: Props) {
   const cancelRef = useRef<HTMLButtonElement>(null)
   const descId = useId()
   // Focus sur « Garder » à l'ouverture seulement : un nouveau rendu (menu modifié) ne doit pas voler le focus.
@@ -43,7 +45,7 @@ export function ConfirmDialog({ title, message, confirmLabel, cancelLabel = 'Gar
         </div>
         <div className="dialog-actions">
           <button type="button" ref={cancelRef} className="dialog-cancel" onClick={onCancel}>{cancelLabel}</button>
-          <button type="button" className="dialog-confirm" onClick={onConfirm}>{confirmLabel}</button>
+          <button type="button" className={tone === 'primary' ? 'dialog-confirm is-primary' : 'dialog-confirm'} onClick={onConfirm}>{confirmLabel}</button>
         </div>
       </div>
     </div>

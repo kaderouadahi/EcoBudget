@@ -1,4 +1,4 @@
-import { Cloud, Lock, Pencil, Plus, Trash2 } from 'lucide-react'
+import { Lock, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useUid } from '../../auth/AuthGate'
@@ -10,6 +10,7 @@ import { deleteCategoryPlan, deleteConfirmText, deleteMessage, OTHER_ID } from '
 import { ConfirmDialog } from '../../ui/ConfirmDialog'
 import { cleanFirstName, FIRST_NAME_MAX } from '../../lib/settings'
 import { useToast } from '../../ui/Toast'
+import { AccountSection } from './AccountSection'
 import '../expenses/ExpenseForm.css'
 import '../budgets/budgets.css'
 import '../home/Home.css'
@@ -51,13 +52,7 @@ export function SettingsPage() {
           <section className="settings-section" aria-labelledby="compte-title">
             <h2 id="compte-title" className="section-title">Compte</h2>
             <div className="card settings-card">
-              <div className="account-row">
-                <span className="round-icon"><Cloud aria-hidden size={22} /></span>
-                <div>
-                  <strong>Sans compte</strong>
-                  <p className="muted">Vos données sont enregistrées de façon anonyme sur cet appareil.</p>
-                </div>
-              </div>
+              <AccountSection />
               <FirstNameField
                 saved={user?.firstName}
                 onSave={(firstName) => {

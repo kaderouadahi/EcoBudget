@@ -1,23 +1,42 @@
 import { onAuthStateChanged, signInAnonymously } from 'firebase/auth'
-import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
+import { createContext, Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { auth } from '../firebase'
 import './AuthGate.css'
 
-const UidContext = createContext<string | null>(null)
+/** Compte courant (H9) : anonyme, ou compte e-mail. */
+export interface Account {
+  uid: string
+  email: string | null
+  isAnonymous: boolean
+  /** Relit le compte courant (après la création d'un compte : même uid, onAuthStateChanged ne se déclenche pas). */
+  refresh: () => void
+}
+
+const AccountContext = createContext<Account | null>(null)
 
 /** uid de l'utilisateur courant (anonyme ou connecté). Utilisable sous <AuthGate>. */
 export function useUid(): string {
-  const uid = useContext(UidContext)
-  if (!uid) throw new Error('useUid doit être utilisé sous <AuthGate>')
-  return uid
+  const account = useContext(AccountContext)
+  if (!account) throw new Error('useUid doit être utilisé sous <AuthGate>')
+  return account.uid
+}
+
+export function useAccount(): Account {
+  const account = useContext(AccountContext)
+  if (!account) throw new Error('useAccount doit être utilisé sous <AuthGate>')
+  return account
 }
 
 export const RETRY_MS = 10_000
 
+interface AuthUser { uid: string; email?: string | null; isAnonymous?: boolean }
+
 type State =
   | { kind: 'loading' }
   | { kind: 'failed'; network: boolean }
-  | { kind: 'ready'; uid: string }
+  | { kind: 'ready'; uid: string; email: string | null; isAnonymous: boolean }
+
+const ready = (u: AuthUser): State => ({ kind: 'ready', uid: u.uid, email: u.email ?? null, isAnonymous: u.isAnonymous !== false })
 
 /**
  * Compte anonyme créé à la première ouverture, sans aucun écran (DECISIONS.md 17/11, C2).
@@ -37,8 +56,12 @@ export function AuthGate({ children }: { children: ReactNode }) {
       })
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) setState({ kind: 'ready', uid: user.uid })
-      else tryRef.current()
+      if (user) setState(ready(user))
+      else {
+        // Déconnexion (H9) : rien de l'ancien compte ne reste affiché ni abonné ; un nouveau compte anonyme vide suit.
+        setState((s) => (s.kind === 'ready' ? { kind: 'loading' } : s))
+        tryRef.current()
+      }
     })
     const onOnline = () => tryRef.current()
     window.addEventListener('online', onOnline)
@@ -58,9 +81,26 @@ export function AuthGate({ children }: { children: ReactNode }) {
   }, [failed])
 
   const retry = useCallback(() => tryRef.current(), [])
+  const refresh = useCallback(() => {
+    const user = auth.currentUser
+    if (user) setState(ready(user))
+  }, [])
 
-  if (state.kind === 'ready') {
-    return <UidContext.Provider value={state.uid}>{children}</UidContext.Provider>
+  const readyUid = state.kind === 'ready' ? state.uid : null
+  const readyEmail = state.kind === 'ready' ? state.email : null
+  const readyAnonymous = state.kind === 'ready' ? state.isAnonymous : true
+  const account = useMemo<Account | null>(
+    () => (readyUid ? { uid: readyUid, email: readyEmail, isAnonymous: readyAnonymous, refresh } : null),
+    [readyUid, readyEmail, readyAnonymous, refresh],
+  )
+
+  if (account) {
+    // Autre compte (connexion, déconnexion) : toute l'application repart de zéro (données, abonnements, écrans).
+    return (
+      <AccountContext.Provider value={account}>
+        <Fragment key={account.uid}>{children}</Fragment>
+      </AccountContext.Provider>
+    )
   }
   if (state.kind === 'failed') {
     return (
