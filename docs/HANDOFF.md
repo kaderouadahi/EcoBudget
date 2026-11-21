@@ -564,8 +564,7 @@ Source : `docs/04_evaluation/synthese.md` (retours de P1, P2, P3) et `docs/DECIS
     - Après une modification depuis la liste, la liste était empilée deux fois dans l'historique, et le geste retour semblait sans effet. C'est maintenant un vrai retour arrière (constaté à la relecture finale).
   - Le sélecteur de mois est un composant commun, `ui/MonthPicker.tsx` : groupe « Mois détaillé » dans Graphiques, « Mois affiché » dans Dépenses.
   - **Points mineurs de la relecture, non corrigés** :
-    - « Tout voir » (le nouveau, et celui des budgets dont il reprend le style) fait environ 20 px de haut, sous les 44 px de la charte ;
-    - un test de la liste échouera le 1er mars d'une année non bissextile (le 28 février y devient « Hier ») : remplacer le 28 par le 27.
+    - « Tout voir » (le nouveau, et celui des budgets dont il reprend le style) fait environ 20 px de haut, sous les 44 px de la charte.
   - Plan : `app/docs/plans/2026-11-21-h10-depenses.md`.
 
 ### H11 Lien « Gérer les catégories » — statut : à faire
