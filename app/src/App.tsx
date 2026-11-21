@@ -10,6 +10,7 @@ import { EditCategory, NewCategory } from './features/settings/CategoryPages'
 import { SettingsPage } from './features/settings/SettingsPage'
 import { Placeholder } from './pages/Placeholder'
 import { AppShell, BareLayout } from './ui/AppShell'
+import { CreateAccountPage } from './features/account/CreateAccountPage'
 
 export function AppRoutes() {
   return (
@@ -34,7 +35,7 @@ export function AppRoutes() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
       <Route path="compte" element={<BareLayout />}>
-        <Route path="creer" element={<Placeholder title="Créer un compte" />} />
+        <Route path="creer" element={<CreateAccountPage />} />
         <Route path="connexion" element={<Placeholder title="Se connecter" />} />
       </Route>
     </Routes>
