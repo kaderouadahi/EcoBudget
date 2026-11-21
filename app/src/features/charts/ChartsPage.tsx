@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Bar, BarChart, Cell, LabelList, Pie, PieChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
@@ -7,6 +7,7 @@ import { BAR_OTHER, BAR_SELECTED, breakdown, categoryColor, coveredMonths, month
 import { formatDA, formatMonthTitle, formatNumber } from '../../lib/format'
 import { monthLabel } from '../../lib/goals'
 import { currentMonth } from '../../lib/month'
+import { MonthPicker } from '../../ui/MonthPicker'
 import '../home/Home.css'
 import './charts.css'
 
@@ -25,7 +26,6 @@ export function ChartsPage() {
   const months = coveredMonths(expenses, today)
   // Données changées (ajout, chargement de démo) : un mois qui n'est plus couvert revient au mois en cours.
   const month = months.includes(selected) ? selected : M
-  const index = months.indexOf(month)
   const { total, rows } = breakdown(expenses, categories, month)
   const sorted = [...categories].sort((a, b) => a.order - b.order)
   const bars = monthlyTotals(expenses, categories, months, filter === 'all' ? null : filter)
@@ -41,19 +41,7 @@ export function ChartsPage() {
         <section className="card chart-card" aria-labelledby="repartition-title">
           <div className="chart-card-head">
             <h2 id="repartition-title" className="card-title">Répartition du mois</h2>
-            <div className="month-picker" role="group" aria-label="Mois détaillé">
-              <button type="button" className="month-arrow" aria-label="Mois précédent" disabled={index <= 0} onClick={() => setSelected(months[index - 1])}>
-                <ChevronLeft aria-hidden size={22} />
-              </button>
-              <span className="month-picker-label" aria-live="polite">
-                {formatMonthTitle(month)}{' '}
-                {/* Place toujours réservée : les flèches ne bougent pas d'un mois à l'autre. */}
-                <span className={isCurrent ? 'month-current' : 'month-current is-hidden'} aria-hidden={!isCurrent}>en cours</span>
-              </span>
-              <button type="button" className="month-arrow" aria-label="Mois suivant" disabled={index >= months.length - 1} onClick={() => setSelected(months[index + 1])}>
-                <ChevronRight aria-hidden size={22} />
-              </button>
-            </div>
+            <MonthPicker months={months} value={month} current={M} label="Mois détaillé" onChange={setSelected} />
           </div>
 
           {total === 0 ? (
