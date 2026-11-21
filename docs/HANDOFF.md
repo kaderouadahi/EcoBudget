@@ -404,7 +404,7 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
 
 ---
 
-### H9 Compte e-mail facultatif — statut : à faire
+### H9 Compte e-mail facultatif — statut : fait (fusionné dans main le 21/11, PR n°8)
 - **Scénario source** : S3 (Yasmine a créé un compte sur son téléphone ; le soir, sur son PC, elle se connecte et retrouve ses dépenses, étapes 1 et 2). Choix proposés par Cowork et validés par le binôme le 21/11 (DECISIONS.md, 21/11).
 - **Fonctionnalité du sujet** : transversal (retrouver F1 à F4 et INNOV sur un autre appareil).
 - **Prérequis (Kader, console Firebase)** : connexion « Adresse e-mail/Mot de passe » activée (Authentication › Méthodes de connexion) ; langue des modèles d'e-mail en français (fait le 21/11).
@@ -494,4 +494,5 @@ Les choix marqués ✱ ont été proposés par Cowork et validés par le binôme
     - un message « Annuler » de l'ancien compte survit à une connexion faite dans un autre onglet. Toucher « Annuler » écrit alors dans l'ancien compte : l'écriture est refusée, sans effet visible ;
     - réseau annoncé mais serveur injoignable, sans rien en attente : la déconnexion passe, puis l'écran « connectez-vous à internet » de la première ouverture s'affiche. Rien n'est perdu, et l'application réessaie toutes les 10 s.
   - **Pour la démo** : elle se fait sans compte, car `/demo` remplace les données du compte en cours. À rappeler dans `innovation.md` §5.3 (Cowork).
+  - **Mise en production** le 21/11 à 12 h 53, en clonant le canal `h9` (code identique à `main`). Vérifié en production, sans compte : Réglages › Compte (« Sans compte pour l'instant ») et parcours de démo (`/demo`, alerte, conseil).
   - Plan : `app/docs/plans/2026-11-21-h9-compte.md`.
